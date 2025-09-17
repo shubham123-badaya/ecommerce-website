@@ -9,60 +9,40 @@ import { API_URL } from "../config";
 const Sign_in = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showNotification, setShowNotification] = useState(true);
   // /const { setUser } = useAuth();
 
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
+// sign_in.jsx (login handler)
+const handleLogin = async (e) => {
+  e.preventDefault();
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
+  try {
+    const res = await fetch(`${API_URL}/admin/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-  //   if (!email) {
-  //     toast.error("Email is required");
-  //     return;
-  //   }
+    const data = await res.json();
 
-  //   if (!password) {
-  //     toast.error("Password is required");
-  //     return;
-  //   }
+    if (res.ok) {
+      // ✅ Save token & user in localStorage
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
 
-  //   try {
-  //     const res = await fetch(`${API_URL}/auth/login`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ email, password }),
-  //     });
+      toast.success("Login successful!");
 
-  //     const data = await res.json();
+      // ✅ Navigate to dashboard
+      navigate("/dashboard");
+    } else {
+      toast.error(data.message || "Invalid credentials");
+    }
+  } catch (err) {
+    toast.error("Something went wrong.");
+    console.error(err);
+  }
+};
 
-  //     if (res.ok) {
-  //       toast.success("Login successful!");
-  //       localStorage.setItem("token", data.token);
-  //       localStorage.setItem("user", JSON.stringify(data.user));
-  //       localStorage.setItem("userId", data.user._id);
-  //       setUser(data.user);
-
-  //       // Get role from user object
-  //       const role = data.user.role;
-
-  //       // Redirect based on role
-  //       let dashboardPath = "/dashboard"; // default fallback
-  //       if (role === "admin") dashboardPath = "/dashboard/admin";
-  //       else if (role === "hr") dashboardPath = "/dashboard/hr";
-  //       else if (role === "employee") dashboardPath = "/dashboard/employee";
-
-  //       setTimeout(() => navigate(dashboardPath), 1000);
-  //     } else {
-  //       toast.error(data.message || "Invalid credentials");
-  //     }
-  //   } catch (err) {
-  //     toast.error("Something went wrong. Please try again.");
-  //     console.error("Login error:", err);
-  //   }
-  // };
 
   return (
     <div>
@@ -71,37 +51,18 @@ const Sign_in = () => {
         <div className="w-full lg:w-1/2 bg-neutral-900 text-white flex flex-col lg:items-end justify-center lg:rounded-l-xs rounded-4xl sm:mx-18 mx-8 my-15 lg:m-0">
           <div className="container px-2 bg-neutral-900 lg:pl-33 w-full mx-0 sm:py-32 py-2 rounded-4xl">
             <div className="px-1 container mx-auto">
-              <div className="mx-10 w-32 h-32 rounded-md pt-4">
-                <img src="./logo.png" />
+              <div className="mx-10 text-[#c0bcbc] text-2xl font-bold rounded-md pt-4">
+                <h1>E-Commerce</h1>
               </div>
 
               <div className="pt-5">
                 <h1 className="text-xl mx-10 font-bold justify-start">
                   Sign In
                 </h1>
-                {/* <p className="text-slate-600 mx-10">
-                  Don't have an account?
-                  <a classNamLoge="font-semibold text-white">&nbsp;Sign Up</a>
-                </p> */}
               </div>
-
-              {/* {showNotification && (
-                <div className="bg-neutral-800 text-sm p-4 rounded-md flex justify-between items-center mb-6 mt-3 ml-10 mr-8">
-                  <span>
-                    Welcome to Tailwise demo! Simply click Sign In to explore
-                    and access our documentation.
-                  </span>
-                  <button
-                    onClick={() => setShowNotification(false)}
-                    className="ml-4 text-gray-400 hover:text-white"
-                  >
-                    ✕
-                  </button>
-                </div>
-              )} */}
             </div>
 
-            <form className="container px-10 mx-auto">
+            <form className="container px-10 mx-auto" onSubmit={handleLogin}>
               <div>
                 <label className="block text-sm mb-1 text-slate-600 pt-5">
                   Email*

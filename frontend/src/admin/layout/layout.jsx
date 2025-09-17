@@ -1,15 +1,15 @@
-// components/Layout.jsx
-import React from "react";
-import Sidebar from "../layout/sidebar";
-import Header from "../components/Header";
+import { Outlet } from "react-router-dom";
+import Sidebar from "./sidebar";
 
-const Layout = ({ children }) => {
+const Layout = () => {
   return (
     <div className="flex">
+      {/* Sidebar Permanent Rahega */}
       <Sidebar />
-      <main className="w-full p-1">
-        { <Header />       /*Breadcrumb bar */}
-        {children}       {/* Current route content */}
+
+      {/* Page Content */}
+      <main className="flex-1 bg-gray-100 min-h-screen">
+        <Outlet />
       </main>
     </div>
   );
