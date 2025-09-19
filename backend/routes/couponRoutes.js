@@ -5,8 +5,8 @@ import { verifyAdmin } from "../middleware/auth.js";
 const router = express.Router();
 
 // Only admin can create, update, delete coupons
-router.post("/add", verifyAdmin, createCoupon);
-router.get("/all", verifyAdmin, getCoupons);
+router.get("/", verifyAdmin, getCoupons);
+router.post("/create", verifyAdmin, createCoupon);
 router.put("/update/:id", verifyAdmin, updateCoupon);
 router.delete("/delete/:id", verifyAdmin, deleteCoupon);
 

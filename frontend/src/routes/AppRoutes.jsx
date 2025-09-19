@@ -12,6 +12,15 @@ import Customers from "../frontend/pages/Customers.jsx";
 import Orders from "../frontend/pages/Orders.jsx";
 import Products from "../frontend/pages/Products.jsx";
 import Reports from "../frontend/pages/Reports.jsx";
+import CategoryListPage from "../frontend/pages/category/CategoryListPage.jsx";
+import AddCategoryPage from "../frontend/pages/category/AddCategoryPage.jsx";
+import EditCategoryPage from "../frontend/pages/category/EditCategoryPage.jsx";
+import SliderListPage from "../frontend/pages/sliders/SliderListPage.jsx";
+import AddSliderPage from "../frontend/pages/sliders/AddSliderPage.jsx";
+import EditSliderPage from "../frontend/pages/sliders/EditSliderPage.jsx";
+import CouponListPage from "../frontend/pages/coupon/CouponListPage.jsx";
+import AddCouponPage from "../frontend/pages/coupon/AddCouponPage.jsx";
+import EditCouponPage from "../frontend/pages/coupon/EditCouponPage.jsx";
 
 // ---------- ProtectedRoute ----------
 const ProtectedRoute = ({ children }) => {
@@ -51,6 +60,21 @@ function AppRoutes() {
           <Route path="orders" element={<Orders />} />
           <Route path="customers" element={<Customers />} />
           <Route path="reports" element={<Reports />} />
+          {/* category  */}
+          <Route path="/admin/category_list" element={<CategoryListPage />} />
+          <Route path="/admin/category_add" element={<AddCategoryPage />} />
+          <Route path="/admin/category_update/:id" element={<EditCategoryPage />} />
+          {/* sliders  */}
+          <Route path="/admin/slider_list" element={<SliderListPage />} />
+          <Route path="/admin/slider_add" element={<AddSliderPage />} />
+          <Route path="/admin/slider_update/:id" element={<EditSliderPage />} />
+          {/* coupons  */}
+          <Route path="/admin/coupons_list" element={<CouponListPage />} />
+          <Route path="/admin/coupons_add" element={<AddCouponPage />} />
+          <Route path="/admin/coupons_update/:id" element={<EditCouponPage />} />
+
+
+
         </Route>
 
         {/* ---------- Catch-all (Optional) ---------- */}
