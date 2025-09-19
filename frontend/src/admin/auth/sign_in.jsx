@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+// import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
 
 import { API_URL } from "../config";
@@ -33,7 +34,7 @@ const handleLogin = async (e) => {
       toast.success("Login successful!");
 
       // ✅ Navigate to dashboard
-      navigate("/dashboard");
+      navigate("/admin/dashboard");
     } else {
       toast.error(data.message || "Invalid credentials");
     }
@@ -46,7 +47,7 @@ const handleLogin = async (e) => {
 
   return (
     <div>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <div className="w-full h-min-screen mx-auto bg-gradient-to-r from-blue-600 to-blue-800 flex min-h-screen">
         <div className="w-full lg:w-1/2 bg-neutral-900 text-white flex flex-col lg:items-end justify-center lg:rounded-l-xs rounded-4xl sm:mx-18 mx-8 my-15 lg:m-0">
           <div className="container px-2 bg-neutral-900 lg:pl-33 w-full mx-0 sm:py-32 py-2 rounded-4xl">

@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
-// Frontend Pages
+// ---------- Frontend Pages ----------
 import Home from "../frontend/pages/Home";
 
-// Admin Pages
+// ---------- Admin Pages ----------
 import Login from "../admin/auth/sign_in.jsx";
 import Dashboard from "../admin/dashboard/AdminDashboard.jsx";
 import Layout from "../admin/layout/layout.jsx";
@@ -31,19 +31,21 @@ function AppRoutes() {
   return (
     <Router>
       <Routes>
-        {/* Public Route */}
+        {/* ---------- Frontend Routes ---------- */}
+        <Route path="/" element={<Home />} />
+
+        {/* ---------- Admin Routes ---------- */}
         <Route path="/admin/login" element={<Login />} />
 
-        {/* Protected Routes (Layout + Sidebar) */}
+        {/* Protected Admin Routes with Layout (Sidebar + Header etc.) */}
         <Route
-          path="/"
+          path="/admin"
           element={
             <ProtectedRoute>
               <Layout />
             </ProtectedRoute>
           }
         >
-          <Route index element={<Home />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="products" element={<Products />} />
           <Route path="orders" element={<Orders />} />
@@ -51,7 +53,7 @@ function AppRoutes() {
           <Route path="reports" element={<Reports />} />
         </Route>
 
-        {/* Optional: redirect unknown routes */}
+        {/* ---------- Catch-all (Optional) ---------- */}
         {/* <Route path="*" element={<Navigate to="/" />} /> */}
       </Routes>
     </Router>

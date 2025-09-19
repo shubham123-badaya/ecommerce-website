@@ -16,22 +16,22 @@ const Sidebar = () => {
     <aside className="w-64 bg-[#e2e2e2] text-black min-h-screen p-6">
       <h2 className="text-2xl font-bold mb-10">E-Commerce </h2>
       <nav className="flex flex-col gap-4 text-gray-700 font-bold">
-        <Link to="/dashboard" className="hover:bg-gray-400 p-3 rounded-lg">
+        <Link to="/admin/dashboard" className="hover:bg-gray-400 p-3 rounded-lg">
           Dashboard
         </Link>
-        <Link to="/products" className="hover:bg-gray-400 p-3 rounded-lg">
+        <Link to="/admin/products" className="hover:bg-gray-400 p-3 rounded-lg">
           Products
         </Link>
-        <Link to="/orders" className="hover:bg-gray-400 p-3 rounded-lg">
+        <Link to="/admin/orders" className="hover:bg-gray-400 p-3 rounded-lg">
           Orders
         </Link>
-        <Link to="/customers" className="hover:bg-gray-400 p-3 rounded-lg">
+        <Link to="/admin/customers" className="hover:bg-gray-400 p-3 rounded-lg">
           Customers
         </Link>
-        <Link to="/reports" className="hover:bg-gray-400 p-3 rounded-lg">
+        <Link to="/admin/reports" className="hover:bg-gray-400 p-3 rounded-lg">
           Reports
         </Link>
-        <Link to="/" className="hover:bg-gray-400 p-3 rounded-lg">
+        <Link to="/admin/settings" className="hover:bg-gray-400 p-3 rounded-lg">
           Settings
         </Link>
         <button

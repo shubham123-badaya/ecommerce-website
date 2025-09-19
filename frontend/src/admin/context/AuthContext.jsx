@@ -7,10 +7,18 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   // Optional: localStorage se user load karna on refresh
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
-  }, []);
+    useEffect(() => {
+      try {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      } catch (error) {
+        console.error("Invalid user data in localStorage:", error);
+        localStorage.removeItem("user");
+      }
+    }, []);
+
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
