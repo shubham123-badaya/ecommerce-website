@@ -57,8 +57,8 @@ const CouponListPage = () => {
         </Link>
       </div>
 
-      <table className="w-full  rounded-lg shadow-md">
-        <thead className="bg-gray-100">
+      <table className="w-full  rounded-lg uppercase">
+        <thead className="">
           <tr>
             <th className="p-2 ">Code</th>
             <th className="p-2 ">Discount</th>
