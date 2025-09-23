@@ -29,6 +29,7 @@ import AddCouponPage from "../frontend/pages/coupon/AddCouponPage.jsx";
 import EditCouponPage from "../frontend/pages/coupon/EditCouponPage.jsx";
 import ProductListPage from "../frontend/pages/products/ProductListPage.jsx";
 import AddProductPage from "../frontend/pages/products/AddProductPage.jsx";
+import UpdateProductPage from "../frontend/pages/products/UpdateProductPage.jsx";
 
 // ---------- ProtectedRoute ----------
 const ProtectedRoute = ({ children }) => {
@@ -85,6 +86,7 @@ function AppRoutes() {
           {/* products  */}
           <Route path="/admin/products_list" element={<ProductListPage />} />
           <Route path="/admin/products_add" element={<AddProductPage/>} />
+          <Route path="/admin/products_update/:id" element={<UpdateProductPage/>} />
           </Route>
 
         {/* ---------- Catch-all (Optional) ---------- */}

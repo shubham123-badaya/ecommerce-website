@@ -1,38 +1,29 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const API_URL = "http://localhost:5000/api/products/create";
+const API_URL = "http://localhost:5000/api/products";
 
-const AddProductPage = () => {
+const UpdateProductPage = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const [categories, setCategories] = useState([]);
-  const [formData, setFormData] = useState({
-    name: "",
-    category: "",
-    price: "",
-    stock: "",
-    description: "",
-    variants: [],
-    is_featured: 0,
-    isBestSelling: 0,
-    isNewArrival: 0,
-    isTopRated: 0,
-  });
+  const [formData, setFormData] = useState(null);
   const [image, setImage] = useState(null);
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchProducts = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/categories/"); // 👈 apna API lagao
-        setCategories(res.data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
+        const res = await axios.get(`${API_URL}/${id}`);
+        setFormData(res.data);
+      } catch (err) {
+        console.error("Error fetching products:", err);
       }
     };
+    fetchProducts();
+  }, [id]);
 
-    fetchCategories();
-  }, []);
+  if (!formData) return <p className="text-center">Loading...</p>;
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === "checkbox") {
@@ -42,6 +33,12 @@ const AddProductPage = () => {
     }
   };
 
+  const handleVariantChange = (index, e) => {
+    const newVariants = [...formData.variants];
+    newVariants[index][e.target.name] = e.target.value;
+    setFormData({ ...formData, variants: newVariants });
+  };
+
   const addVariant = () => {
     setFormData({
       ...formData,
@@ -49,16 +46,9 @@ const AddProductPage = () => {
     });
   };
 
-  const handleVariantChange = (index, e) => {
-    const newVariants = [...formData.variants];
-    newVariants[index][e.target.name] = e.target.value;
-    setFormData({ ...formData, variants: newVariants });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = new FormData();
-
     Object.keys(formData).forEach((key) => {
       if (key === "variants") {
         form.append("variants", JSON.stringify(formData.variants));
@@ -66,25 +56,25 @@ const AddProductPage = () => {
         form.append(key, formData[key]);
       }
     });
-
     if (image) form.append("image", image);
 
     try {
       const token = localStorage.getItem("token");
-      await axios.post(API_URL, form, {
+      await axios.put(`${API_URL}/update/${id}`, form, {
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
       navigate("/admin/products_list");
     } catch (err) {
-      console.error("Error adding product:", err.response?.data || err.message);
+      console.error("Error updating product:", err);
     }
   };
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow rounded">
-      <h1 className="text-xl font-bold mb-4">Add Product</h1>
+      <h1 className="text-xl font-bold mb-4">Update Product</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
@@ -94,22 +84,14 @@ const AddProductPage = () => {
           onChange={handleChange}
           className="w-full border p-2"
         />
-        <select
+        <input
+          type="text"
           name="category"
+          placeholder="Category ID"
           value={formData.category}
-          onChange={(e) =>
-            setFormData({ ...formData, category: e.target.value })
-          }
+          onChange={handleChange}
           className="w-full border p-2"
-        >
-          <option value="">-- Select Category --</option>
-          {categories.map((cat) => (
-            <option key={cat._id} value={cat._id}>
-              {cat.title}
-            </option>
-          ))}
-        </select>
-
+        />
         <input
           type="number"
           name="price"
@@ -211,25 +193,16 @@ const AddProductPage = () => {
             Top Rated
           </label>
         </div>
-        <div className="flex gap-3">
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Save
-          </button>
-          <button>
-            <Link
-              to="/admin/products_list"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-            >
-              Back
-            </Link>
-          </button>
-        </div>
+
+        <button
+          type="submit"
+          className="bg-green-600 text-white px-4 py-2 rounded"
+        >
+          Update
+        </button>
       </form>
     </div>
   );
 };
 
-export default AddProductPage;
+export default UpdateProductPage;

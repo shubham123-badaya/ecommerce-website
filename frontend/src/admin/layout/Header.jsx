@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaUser, FaSignOutAlt, FaLock } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DarkmodeToggle from "./DarkmodeToggle";
+import DarkmodeToggle from "../components/DarkmodeToggle";
 
 const Header = () => {
   const location = useLocation();
