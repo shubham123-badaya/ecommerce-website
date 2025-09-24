@@ -10,6 +10,11 @@ import path from "path";
 import cors from "cors";
 import { fileURLToPath } from "url";
 
+// User Route
+import userRoutes from "./routes/userRoutes.js";
+
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -21,12 +26,16 @@ connectDB();
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// --- Routes ---
+// --- Admin Routes ---
 app.use("/api/admin", adminRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/slider", sliderRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/coupons", couponRoutes);
+
+// --- User Routes ---
+app.use("/api/user", userRoutes);
+
 
 
 // --- Global Error Handler ---
