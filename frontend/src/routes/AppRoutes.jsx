@@ -8,28 +8,27 @@ import {
 import { toast } from "react-toastify";
 
 // ---------- Frontend Pages ----------
-import Home from "../frontend/pages/Home";
+import Home from "../routes/FrontendRoutes.jsx";
 
 // ---------- Admin Pages ----------
 import Login from "../admin/auth/sign_in.jsx";
 import Dashboard from "../admin/dashboard/AdminDashboard.jsx";
 import Layout from "../admin/layout/layout.jsx";
-import Customers from "../frontend/pages/Customers.jsx";
-import Orders from "../frontend/pages/Orders.jsx";
-
-import Reports from "../frontend/pages/Reports.jsx";
-import CategoryListPage from "../frontend/pages/category/CategoryListPage.jsx";
-import AddCategoryPage from "../frontend/pages/category/AddCategoryPage.jsx";
-import EditCategoryPage from "../frontend/pages/category/EditCategoryPage.jsx";
-import SliderListPage from "../frontend/pages/sliders/SliderListPage.jsx";
-import AddSliderPage from "../frontend/pages/sliders/AddSliderPage.jsx";
-import EditSliderPage from "../frontend/pages/sliders/EditSliderPage.jsx";
-import CouponListPage from "../frontend/pages/coupon/CouponListPage.jsx";
-import AddCouponPage from "../frontend/pages/coupon/AddCouponPage.jsx";
-import EditCouponPage from "../frontend/pages/coupon/EditCouponPage.jsx";
-import ProductListPage from "../frontend/pages/products/ProductListPage.jsx";
-import AddProductPage from "../frontend/pages/products/AddProductPage.jsx";
-import UpdateProductPage from "../frontend/pages/products/UpdateProductPage.jsx";
+import Customers from "../admin/frontend/pages/Customers.jsx";
+import Orders from "../admin/frontend/pages/Orders.jsx";
+import Reports from "../admin/frontend/pages/Reports.jsx";
+import CategoryListPage from "../admin/frontend/pages/category/CategoryListPage.jsx";
+import AddCategoryPage from "../admin/frontend/pages/category/AddCategoryPage.jsx";
+import EditCategoryPage from "../admin/frontend/pages/category/EditCategoryPage.jsx";
+import SliderListPage from "../admin/frontend/pages/sliders/SliderListPage.jsx";
+import AddSliderPage from "../admin/frontend/pages/sliders/AddSliderPage.jsx";
+import EditSliderPage from "../admin/frontend/pages/sliders/EditSliderPage.jsx";
+import CouponListPage from "../admin/frontend/pages/coupon/CouponListPage.jsx";
+import AddCouponPage from "../admin/frontend/pages/coupon/AddCouponPage.jsx";
+import EditCouponPage from "../admin/frontend/pages/coupon/EditCouponPage.jsx";
+import ProductListPage from "../admin/frontend/pages/products/ProductListPage.jsx";
+import AddProductPage from "../admin/frontend/pages/products/AddProductPage.jsx";
+import UpdateProductPage from "../admin/frontend/pages/products/UpdateProductPage.jsx";
 
 // ---------- ProtectedRoute ----------
 const ProtectedRoute = ({ children }) => {
