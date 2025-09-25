@@ -8,7 +8,7 @@ import {
   FaUser,
   FaShoppingBag,
 } from "react-icons/fa";
-
+import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <div className="w-full fixed top-0 z-50 bg-white shadow-md">
@@ -42,22 +42,27 @@ const Navbar = () => {
       {/* Main Navbar */}
       <div className="flex justify-between items-center py-4 px-15 bg-white shadow-sm">
         {/* Logo + Tagline */}
-        <div className="flex flex-col">
-          <div className="flex items-center">
-            <div className="w-12 h-12 flex justify-center items-center font-bold text-white rounded-full bg-red-500">
-              <h1>shop</h1>
+        <Link to="/">
+          {" "}
+          <div className="flex flex-col">
+            <div className="flex items-center">
+              <div className="w-12 h-12 flex justify-center items-center font-bold text-white rounded-full bg-red-500">
+                <h1>shop</h1>
+              </div>
+              {/* Replace with your logo */}
             </div>
-            {/* Replace with your logo */}
+            <span className="text-sm italic text-[#8b3f1c]">
+              Nourishing life
+            </span>
           </div>
-          <span className="text-sm italic text-[#8b3f1c]">Nourishing life</span>
-        </div>
+        </Link>
 
         {/* Nav Links */}
         <div className="hidden md:flex space-x-8 font-semibold text-black text-lg">
-          <a href="#">DRY FRUITS</a>
-          <a href="#">SEEDS</a>
-          <a href="#">DATES</a>
-          <a href="#">NUTS & BERRIES</a>
+          <Link to="/dryfruit">DRY FRUITS</Link>
+          <Link to="/seeds">SEEDS</Link>
+          <Link to="/dates">DATES</Link>
+          <Link to="/nuts_berries">NUTS & BERRIES</Link>
         </div>
 
         {/* Icons */}

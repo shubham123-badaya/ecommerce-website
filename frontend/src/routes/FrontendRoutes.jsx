@@ -1,29 +1,25 @@
 import React from "react";
-import Navbar from "../frontend/components/Navbar";
-import HomeSlider from "../frontend/pages/home/HomeSlider";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import ShopByCategories from "../frontend/pages/home/shopbycate/ShopByCategories";
-import ShopBySecondCategories from "../frontend/pages/home/shopbycate/ShopBySecondCategories";
-import AboutUs from "../frontend/pages/home/AboutUs";
-import LatestBlog from "../frontend/pages/home/LatestBlog";
-import BenefitsSection from "../frontend/pages/home/BenefitsSection";
+import { Routes, Route } from "react-router-dom";
+import FrontendLayout from "../frontend/components/layout/FrontendLayout";
+
+// Pages
+import HomeRoutes from "../frontend/pages/home/HomeRoutes";
+import Dryfruit from "../frontend/pages/dryfruit/dryfruit";
+import NutsBerries from "../frontend/pages/nuts_berries/NutsBerries";
+import Dates from "../frontend/pages/dates/Dates";
+import Seeds from "../frontend/pages/seeds/Seeds";
 
 function FrontendRoutes() {
   return (
-    <div>
-      {" "}
-      {/* Adjust as per navbar height */}
-      <Navbar />
-      <div className="pt-[150px]">
-        <HomeSlider />
-        <ShopByCategories />
-        <ShopBySecondCategories/>
-        <AboutUs/>
-        <LatestBlog/>
-        <BenefitsSection/>
-      </div>
-    </div>
+    <Routes>
+      <Route element={<FrontendLayout />}>
+        <Route path="/" element={<HomeRoutes />} />
+        <Route path="/dryfruit" element={<Dryfruit />} />
+        <Route path="/seeds" element={<Seeds />} />
+        <Route path="/dates" element={<Dates />} />
+        <Route path="/nuts_berries" element={<NutsBerries />} />
+      </Route>
+    </Routes>
   );
 }
 
