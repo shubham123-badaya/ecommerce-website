@@ -2,9 +2,9 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#fcf9f3] text-[#7a3e2e] text-sm">
+    <footer className="bg-[#fcf9f3] text-[#7a3e2e]  border border-t  text-md">
       {/* Top Section */}
-      <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-6   gap-8 border-b border-gray-200">
+      <div className="max-w-7xl mx-auto  py-10 grid grid-cols-1 md:grid-cols-6   gap-8 border-b  border-gray-200">
         {/* Categories */}
         <div>
           <h3 className="font-bold mb-2">CATEGORIES</h3>
@@ -40,7 +40,7 @@ const Footer = () => {
         {/* About Us */}
         <div>
           <h3 className="font-bold mb-2">ABOUT US</h3>
-          <ul className="space-y-1 text-black font-semibold ">
+          <ul className="space-y-1 text-[#7a3e2e] text-lg font-semibold ">
             <li>Corporate Gifting</li>
             <li>Quality</li>
             <li>Blog</li>
@@ -82,7 +82,7 @@ const Footer = () => {
       </div>
 
       {/* Description Text */}
-      <div className="max-w- mx-auto px-20 py-10 text-sm  text-gray-900 bg-[#e7e7d5] font-medium leading-relaxed">
+      <div className="max-w- mx-auto px-20 py-10 text-sm  text-gray-900 bg-[#f2f2df] font-medium leading-relaxed">
         <p>
           Buy Dry Fruits and Nuts online in India from DryFruit Basket. Order
           premium quality dry fruits like almonds, cashews, walnuts, apricots,
