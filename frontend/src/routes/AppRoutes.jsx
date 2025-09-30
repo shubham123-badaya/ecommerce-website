@@ -1,26 +1,40 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import { toast } from "react-toastify";
 
 // ---------- Frontend Pages ----------
-import Home from "../frontend/pages/Home";
+import FrontendRoutes from "../routes/FrontendRoutes.jsx";
 
 // ---------- Admin Pages ----------
 import Login from "../admin/auth/sign_in.jsx";
 import Dashboard from "../admin/dashboard/AdminDashboard.jsx";
 import Layout from "../admin/layout/layout.jsx";
-import Customers from "../frontend/pages/Customers.jsx";
-import Orders from "../frontend/pages/Orders.jsx";
-import Products from "../frontend/pages/Products.jsx";
-import Reports from "../frontend/pages/Reports.jsx";
-import CategoryListPage from "../frontend/pages/category/CategoryListPage.jsx";
-import AddCategoryPage from "../frontend/pages/category/AddCategoryPage.jsx";
-import EditCategoryPage from "../frontend/pages/category/EditCategoryPage.jsx";
-import SliderListPage from "../frontend/pages/sliders/SliderListPage.jsx";
-import AddSliderPage from "../frontend/pages/sliders/AddSliderPage.jsx";
-import EditSliderPage from "../frontend/pages/sliders/EditSliderPage.jsx";
-import CouponListPage from "../frontend/pages/coupon/CouponListPage.jsx";
-import AddCouponPage from "../frontend/pages/coupon/AddCouponPage.jsx";
-import EditCouponPage from "../frontend/pages/coupon/EditCouponPage.jsx";
+import Customers from "../admin/pages/Customers.jsx";
+import Orders from "../admin/pages/Orders.jsx";
+import Reports from "../admin/pages/Reports.jsx";
+import CategoryListPage from "../admin/pages/category/CategoryListPage.jsx";
+import AddCategoryPage from "../admin/pages/category/AddCategoryPage.jsx";
+import EditCategoryPage from "../admin/pages/category/EditCategoryPage.jsx";
+import SliderListPage from "../admin/pages/sliders/SliderListPage.jsx";
+import AddSliderPage from "../admin/pages/sliders/AddSliderPage.jsx";
+import EditSliderPage from "../admin/pages/sliders/EditSliderPage.jsx";
+import CouponListPage from "../admin/pages/coupon/CouponListPage.jsx";
+import AddCouponPage from "../admin/pages/coupon/AddCouponPage.jsx";
+import EditCouponPage from "../admin/pages/coupon/EditCouponPage.jsx";
+import ProductListPage from "../admin/pages/products/ProductListPage.jsx";
+import AddProductPage from "../admin/pages/products/AddProductPage.jsx";
+import UpdateProductPage from "../admin/pages/products/UpdateProductPage.jsx";
+import Dryfruit from "../frontend/pages/dryfruit/dryfruit.jsx";
+import Seeds from "../frontend/pages/seeds/Seeds.jsx";
+import Dates from "../frontend/pages/dates/Dates.jsx";
+import NutsBerries from "../frontend/pages/nuts_berries/NutsBerries.jsx";
+import FrontendLayout from "../frontend/components/layout/FrontendLayout.jsx";
+import ProductDetail from "../frontend/pages/seeds/ProductDetails.jsx";
 
 // ---------- ProtectedRoute ----------
 const ProtectedRoute = ({ children }) => {
@@ -40,9 +54,15 @@ function AppRoutes() {
   return (
     <Router>
       <Routes>
-        {/* ---------- Frontend Routes ---------- */}
-        <Route path="/" element={<Home />} />
-
+        <Route element={<FrontendLayout />}>
+          {/* ---------- Frontend Routes ---------- */}
+          <Route path="/" element={<FrontendRoutes />} />
+          <Route path="/dryfruit" element={<Dryfruit />} />
+          <Route path="/seeds" element={<Seeds />} />
+          <Route path="/product/:name" element={<ProductDetail />} />
+          <Route path="/dates" element={<Dates />} />
+          <Route path="/nuts_berries" element={<NutsBerries />} />
+        </Route>
         {/* ---------- Admin Routes ---------- */}
         <Route path="/admin/login" element={<Login />} />
 
@@ -56,14 +76,16 @@ function AppRoutes() {
           }
         >
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="products" element={<Products />} />
           <Route path="orders" element={<Orders />} />
           <Route path="customers" element={<Customers />} />
           <Route path="reports" element={<Reports />} />
           {/* category  */}
           <Route path="/admin/category_list" element={<CategoryListPage />} />
           <Route path="/admin/category_add" element={<AddCategoryPage />} />
-          <Route path="/admin/category_update/:id" element={<EditCategoryPage />} />
+          <Route
+            path="/admin/category_update/:id"
+            element={<EditCategoryPage />}
+          />
           {/* sliders  */}
           <Route path="/admin/slider_list" element={<SliderListPage />} />
           <Route path="/admin/slider_add" element={<AddSliderPage />} />
@@ -71,10 +93,17 @@ function AppRoutes() {
           {/* coupons  */}
           <Route path="/admin/coupons_list" element={<CouponListPage />} />
           <Route path="/admin/coupons_add" element={<AddCouponPage />} />
-          <Route path="/admin/coupons_update/:id" element={<EditCouponPage />} />
-
-
-
+          <Route
+            path="/admin/coupons_update/:id"
+            element={<EditCouponPage />}
+          />
+          {/* products  */}
+          <Route path="/admin/products_list" element={<ProductListPage />} />
+          <Route path="/admin/products_add" element={<AddProductPage />} />
+          <Route
+            path="/admin/products_update/:id"
+            element={<UpdateProductPage />}
+          />
         </Route>
 
         {/* ---------- Catch-all (Optional) ---------- */}

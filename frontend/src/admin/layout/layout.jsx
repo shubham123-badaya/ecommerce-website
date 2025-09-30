@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "./sidebar";
-import Header from "../components/Header"
+import Header from "./Header"
 
 const Layout = () => {
   return (
