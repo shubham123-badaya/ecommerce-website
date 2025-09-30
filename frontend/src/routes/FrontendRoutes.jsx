@@ -8,6 +8,7 @@ import Dryfruit from "../frontend/pages/dryfruit/dryfruit";
 import NutsBerries from "../frontend/pages/nuts_berries/NutsBerries";
 import Dates from "../frontend/pages/dates/Dates";
 import Seeds from "../frontend/pages/seeds/Seeds";
+import Login from "../admin/auth/Login.jsx";
 
 function FrontendRoutes() {
   return (
@@ -18,6 +19,7 @@ function FrontendRoutes() {
         <Route path="/seeds" element={<Seeds />} />
         <Route path="/dates" element={<Dates />} />
         <Route path="/nuts_berries" element={<NutsBerries />} />
+        <Route path="/admin/login" element={<Login />} />
       </Route>
     </Routes>
   );

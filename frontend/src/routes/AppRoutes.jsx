@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import FrontendRoutes from "../routes/FrontendRoutes.jsx";
 
 // ---------- Admin Pages ----------
-import Login from "../admin/auth/sign_in.jsx";
+import Login from "../admin/auth/Login.jsx";
 import Dashboard from "../admin/dashboard/AdminDashboard.jsx";
 import Layout from "../admin/layout/layout.jsx";
 import Customers from "../admin/pages/Customers.jsx";
