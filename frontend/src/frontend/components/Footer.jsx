@@ -2,13 +2,13 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#fcf9f3] text-[#7a3e2e]  border border-t  text-md">
+    <footer className="bg-[#fafafa] w-full text-[#7a3e2e] border-t text-md">
       {/* Top Section */}
-      <div className="max-w-7xl mx-auto  py-10 grid grid-cols-1 md:grid-cols-6   gap-8 border-b  border-gray-200">
+      <div className="max-w-7xl mx-auto py-10 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-8 border-b border-gray-200">
         {/* Categories */}
-        <div>
+        <div className="hidden sm:block">
           <h3 className="font-bold mb-2">CATEGORIES</h3>
-          <ul className="space-y-1 text-black font-semibold ">
+          <ul className="space-y-1 text-black font-semibold">
             <li>Dry Fruits</li>
             <li>Seeds</li>
             <li>Dates</li>
@@ -17,9 +17,9 @@ const Footer = () => {
         </div>
 
         {/* My Account */}
-        <div>
+        <div className="hidden sm:block">
           <h3 className="font-bold mb-2">MY ACCOUNT</h3>
-          <ul className="space-y-1 text-black font-semibold ">
+          <ul className="space-y-1 text-black font-semibold">
             <li>My Account</li>
             <li>Order History</li>
             <li>Wish List</li>
@@ -27,20 +27,20 @@ const Footer = () => {
         </div>
 
         {/* Customer Care */}
-        <div>
+        <div className="hidden sm:block">
           <h3 className="font-bold mb-2">CUSTOMER CARE</h3>
-          <ul className="space-y-1 text-black font-semibold  ">
+          <ul className="space-y-1 text-black font-semibold">
             <li>FAQ</li>
             <li>Contact Us</li>
-            <li>Terms Conditions</li>
+            <li>Terms & Conditions</li>
             <li>Privacy Policy</li>
           </ul>
         </div>
 
         {/* About Us */}
-        <div>
+        <div className="hidden sm:block">
           <h3 className="font-bold mb-2">ABOUT US</h3>
-          <ul className="space-y-1 text-[#7a3e2e] text-lg font-semibold ">
+          <ul className="space-y-1 text-[#7a3e2e] text-sm font-semibold">
             <li>Corporate Gifting</li>
             <li>Quality</li>
             <li>Blog</li>
@@ -49,40 +49,42 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Newsletter & Contact */}
-        <div>
-          <h3 className="font-bold mb-2">SUBSCRIBE OUR NEWSLETTER</h3>
-          <div className="flex">
-            <input
-              type="email"
-              placeholder="Enter Email Address"
-              className="px-2 py-1 border border-gray-300 rounded-l"
-            />
-            <button className="bg-black text-white px-2 py-1 rounded-r">
-              SUBSCRIBE
-            </button>
+        {/* Newsletter */}
+        <div className="col-span-1 sm:col-span-2 md:col-span-2 flex flex-col md:flex-row gap-5">
+          <div className="flex-1 p-4  rounded">
+            <h3 className="font-semibold text-md mb-2">
+              SUBSCRIBE OUR NEWSLETTER
+            </h3>
+            <div className="flex border rounded overflow-hidden">
+              <input
+                type="email"
+                placeholder="Enter Email Address"
+                className="px-2 py-1 border border-gray-300 rounded-l flex-1"
+              />
+              <button className="bg-black text-white px-4 py-1 rounded-r">
+                SUBSCRIBE
+              </button>
+            </div>
+            <div className="mt-4 space-y-1 text-black font-semibold text-sm">
+              <p>📞 +91 8424 888 555</p>
+              <p>📧 info@dryfruitsbasket.in</p>
+            </div>
           </div>
-          <div className="mt-4 space-y-1 text-black font-semibold    ">
-            <p>📞 +91 8424 888 555</p>
-            <p>📧 info@dryfruitsbasket.in</p>
-          </div>
-        </div>
 
-        {/* Google Pay */}
-        <div className="   flex flex-col  ml-7 justify-between items-center ">
-          <div className="text-center md:text-left">
-            <h1 className="text-center">Google Pay</h1>
+          {/* Google Pay */}
+          <div className="flex-1 p-4  rounded flex flex-col items-center justify-center">
+            <h3 className="text-center text-md mb-2">Google Pay</h3>
             <img
-              src=" https://www.dryfruitbasket.in/themes/storefront/public/images/google-pay.png?v=2.1.1"
+              src="https://www.dryfruitbasket.in/themes/storefront/public/images/google-pay.png?v=2.1.1"
               alt="Google Pay QR"
-              className="w-23  mx-auto md:mx-0"
+              className="w-32 sm:w-40 md:w-48"
             />
           </div>
         </div>
       </div>
 
       {/* Description Text */}
-      <div className="max-w- mx-auto px-20 py-10 text-sm  text-gray-900 bg-[#f2f2df] font-medium leading-relaxed">
+      <div className=" mx-auto px-15 py-10 text-sm text-gray-900 bg-[#f2f2df] font-medium leading-relaxed">
         <p>
           Buy Dry Fruits and Nuts online in India from DryFruit Basket. Order
           premium quality dry fruits like almonds, cashews, walnuts, apricots,
@@ -95,7 +97,7 @@ const Footer = () => {
           potlis, homemade dryfruit chocolates & dryfruit combo options. We also
           offer a wide variety of exotic nuts & berries like prunes, pine nuts,
           pecan nuts, macadamia nuts, hazelnuts, brazil nuts, fox nuts,
-          cranberries, blueberries & black currents.
+          cranberries, blueberries & black currants.
           <br />
           <br />
           Indulge in the rich flavors and nutritional benefits of our handpicked
@@ -107,7 +109,6 @@ const Footer = () => {
       </div>
 
       {/* Bottom Strip */}
-
       <div className="bg-[#fffaf0] border-t border-gray-200 py-4 text-xs text-gray-900">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Text */}
@@ -115,7 +116,7 @@ const Footer = () => {
             © Copyright 2023 Dry Fruit Basket.in Pvt. Ltd. |
             <a href="#" className="text-[#7a3e2e] underline mx-1">
               Web design
-            </a>{" "}
+            </a>
             by Image Online Pvt. Ltd. |
             <a href="#" className="text-[#7a3e2e] underline ml-1">
               Site Map
@@ -123,7 +124,7 @@ const Footer = () => {
           </p>
 
           {/* Payment Icons */}
-          <div className="flex items-center justify-center space-x-3">
+          <div className="flex items-center justify-center space-x-3 mt-2 md:mt-0">
             <img
               src="https://www.dryfruitbasket.in/themes/storefront/public/images/cc-avenue.png"
               alt="CCAvenue"
