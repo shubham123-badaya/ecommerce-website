@@ -3,7 +3,7 @@ import HomeSlider from "./HomeSlider";
 import ShopByCategories from "./shopbycate/ShopByCategories";
 import ShopBySecondCategories from "./shopbycate/ShopBySecondCategories";
 import AboutUs from "./AboutUs";
-import LatestBlog from "./LatestBlog";
+import LatestBlog from "../blog/LatestBlog";
 import BenefitsSection from "./BenefitsSection";
 import Testimonials from "./Testimonials";
 

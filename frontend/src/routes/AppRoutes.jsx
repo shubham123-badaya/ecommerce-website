@@ -36,6 +36,7 @@ import NutsBerries from "../frontend/pages/nuts_berries/NutsBerries.jsx";
 import FrontendLayout from "../frontend/components/layout/FrontendLayout.jsx";
 import ProductDetail from "../frontend/pages/seeds/ProductDetails.jsx";
 import AllBlogsPage from "../frontend/pages/blog/AllBlogsPage.js.jsx";
+import BlogDetails from "../frontend/pages/blog/BlogDetails.jsx";
 
 // ---------- ProtectedRoute ----------
 const ProtectedRoute = ({ children }) => {
@@ -62,6 +63,7 @@ function AppRoutes() {
           <Route path="/seeds" element={<Seeds />} />
           <Route path="/product/:name" element={<ProductDetail />} />
           <Route path="/blogs" element={<AllBlogsPage />} />
+          <Route path="/blogs/:id" element={<BlogDetails />} />
 
           <Route path="/dates" element={<Dates />} />
           <Route path="/nuts_berries" element={<NutsBerries />} />
