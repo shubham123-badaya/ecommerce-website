@@ -60,7 +60,7 @@ const HeroSlider = () => {
   return (
     <>
       {" "}
-      <div className="relative  bg-blue-200">
+      <div className="relative    bg-blue-200">
         {" "}
         {/* margin to compensate for fixed navbar */}
         <Slider {...settings}>
