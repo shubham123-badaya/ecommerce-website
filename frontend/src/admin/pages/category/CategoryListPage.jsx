@@ -27,7 +27,13 @@ const CategoryListPage = () => {
     if (!window.confirm("Are you sure you want to delete this category?"))
       return;
     try {
-      await axios.delete(`${API_URL}delete/${id}`);
+      const token = localStorage.getItem("token");
+      await axios.delete(`${API_URL}delete/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${token}`,
+        },
+      });
       fetchCategories();
     } catch (err) {
       console.error("Error deleting:", err);
@@ -82,7 +88,7 @@ const CategoryListPage = () => {
                     <span className="text-gray-500">❌ Not Featured</span>
                   )}
                 </td>
-              <td className="py-5 px-2 text-lg text-left flex gap-3">
+                <td className="py-5 px-2 text-lg text-left flex gap-3">
                   <Link
                     to={`/admin/category_update/${cate._id}`}
                     className="text-yellow-500  rounded-lg "
@@ -136,4 +142,3 @@ const CategoryListPage = () => {
 };
 
 export default CategoryListPage;
-
