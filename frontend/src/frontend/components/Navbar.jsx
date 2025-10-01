@@ -14,38 +14,14 @@ const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(null);
 
   const seedsCategories = [
-    {
-      name: "Watermelon Seeds",
-      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
-    },
-    {
-      name: "Pumpkin Seeds",
-      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
-    },
-    {
-      name: "Oats Seeds",
-      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
-    },
-    {
-      name: "Sunflower Seeds",
-      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
-    },
-    {
-      name: "Flax Seeds",
-      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
-    },
-    {
-      name: "Chia Seeds",
-      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
-    },
-    {
-      name: "Millets Seeds",
-      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
-    },
-    {
-      name: "Jowar Seeds",
-      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
-    },
+    { name: "Watermelon Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
+    { name: "Pumpkin Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
+    { name: "Oats Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
+    { name: "Sunflower Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
+    { name: "Flax Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
+    { name: "Chia Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
+    { name: "Millets Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
+    { name: "Jowar Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
   ];
 
   return (
@@ -86,9 +62,7 @@ const Navbar = () => {
                 <h1>shop</h1>
               </div>
             </div>
-            <span className="text-sm italic text-[#8b3f1c]">
-              Nourishing life
-            </span>
+            <span className="text-sm italic text-[#8b3f1c]">Nourishing life</span>
           </div>
         </Link>
 
@@ -96,7 +70,7 @@ const Navbar = () => {
         <div className="hidden md:flex space-x-8 font-semibold text-black text-lg">
           <Link to="/dryfruit">DRY FRUITS</Link>
 
-          {/* Seeds with Mega Menu */}
+          {/* Seeds with Mega Menu - wrapped properly */}
           <div
             className="relative"
             onMouseEnter={() => setOpenMenu("seeds")}
@@ -105,6 +79,31 @@ const Navbar = () => {
             <button className="hover:text-[#8b3f1c]">
               <Link to="/seeds">SEEDS</Link>
             </button>
+
+            {openMenu === "seeds" && (
+              <div className="absolute left-1/2 -translate-x-1/2 top-[100%] 
+                              w-[90vw] lg:w-[100vw] bg-[#fef7f7] rounded-lg 
+                              py-6 px-10 grid grid-cols-2 sm:grid-cols-3 
+                              lg:grid-cols-4 gap-6 z-40">
+                {seedsCategories.map((cat, i) => (
+                  <Link
+                    to={`/product/${encodeURIComponent(cat.name)}`}
+                    key={i}
+                    className="flex gap-3 mx-auto items-center hover:scale-105 transition"
+                    onClick={() => setOpenMenu(null)} // close on click
+                  >
+                    <img
+                      src={cat.img}
+                      alt={cat.name}
+                      className="w-12 h-12 object-contain"
+                    />
+                    <p className="mt-2 text-sm font-medium text-gray-700 text-center">
+                      {cat.name}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
 
           <Link to="/dates">DATES</Link>
@@ -129,28 +128,6 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-
-      {openMenu === "seeds" && (
-        <div className="absolute left-1/2 -translate-x-1/2 top-[100%]  w-[90vw] lg:w-[100vw]   bg-[#fef7f7] rounded-lg py-6 px-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 z-40">
-          {seedsCategories.map((cat, i) => (
-            <Link
-              to={`/product/${encodeURIComponent(cat.name)}`}
-              key={i}
-              className="flex gap-3 mx-auto items-center hover:scale-105 transition"
-              onClick={() => setOpenMenu(null)} // Optional: close the menu on click
-            >
-              <img
-                src={cat.img}
-                alt={cat.name}
-                className="w-12 h-12 object-contain"
-              />
-              <p className="mt-2 text-sm font-medium text-gray-700 text-center">
-                {cat.name}
-              </p>
-            </Link>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
