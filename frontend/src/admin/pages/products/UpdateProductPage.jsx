@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { FaPlus, FaTrash } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const API_URL = "http://localhost:5000/api/products";
 
@@ -8,22 +11,42 @@ const UpdateProductPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState(null);
+  const [categories, setCategories] = useState([]);
   const [image, setImage] = useState(null);
 
+  console.log("Form Data:", formData);
+
   useEffect(() => {
-    const fetchProducts = async () => {
+    // Fetch product details
+    const fetchProduct = async () => {
       try {
         const res = await axios.get(`${API_URL}/${id}`);
-        setFormData(res.data);
+        setFormData({
+          ...res.data,
+          category: res.data.category?._id || "",
+        });
       } catch (err) {
-        console.error("Error fetching products:", err);
+        console.error("Error fetching product:", err);
       }
     };
-    fetchProducts();
+
+    // Fetch categories for dropdown
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/categories/");
+        setCategories(res.data); // [{_id, title}, ...]
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    };
+
+    fetchProduct();
+    fetchCategories();
   }, [id]);
 
   if (!formData) return <p className="text-center">Loading...</p>;
 
+  // Normal input handler
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === "checkbox") {
@@ -33,19 +56,28 @@ const UpdateProductPage = () => {
     }
   };
 
-  const handleVariantChange = (index, e) => {
+  // Variant input handler
+  const handleVariantChange = (index, field, value) => {
     const newVariants = [...formData.variants];
-    newVariants[index][e.target.name] = e.target.value;
+    newVariants[index][field] = value;
     setFormData({ ...formData, variants: newVariants });
   };
 
+  // Add Variant
   const addVariant = () => {
     setFormData({
       ...formData,
-      variants: [...formData.variants, { size: "", color: "" }],
+      variants: [...formData.variants, { name: "", price: "", mrp: "" }],
     });
   };
 
+  // Remove Variant
+  const removeVariant = (index) => {
+    const newVariants = formData.variants.filter((_, i) => i !== index);
+    setFormData({ ...formData, variants: newVariants });
+  };
+
+  // Submit update
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = new FormData();
@@ -66,9 +98,12 @@ const UpdateProductPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      navigate("/admin/products_list");
+
+      toast.success("Product updated successfully!");
+      navigate("/admin/products_list"); 
     } catch (err) {
       console.error("Error updating product:", err);
+      toast.error("Failed to update product");
     }
   };
 
@@ -84,14 +119,24 @@ const UpdateProductPage = () => {
           onChange={handleChange}
           className="w-full border p-2"
         />
-        <input
-          type="text"
+
+        {/* Category Dropdown */}
+        <select
           name="category"
-          placeholder="Category ID"
           value={formData.category}
-          onChange={handleChange}
+          onChange={(e) =>
+            setFormData({ ...formData, category: e.target.value })
+          }
           className="w-full border p-2"
-        />
+        >
+          <option value="">-- Select Category --</option>
+          {categories.map((cat) => (
+            <option key={cat._id} value={cat._id}>
+              {cat.title}
+            </option>
+          ))}
+        </select>
+
         <input
           type="number"
           name="price"
@@ -115,6 +160,15 @@ const UpdateProductPage = () => {
           onChange={handleChange}
           className="w-full border p-2"
         />
+        {formData.images && formData.images.length > 0 && (
+          <div className="mb-2">
+            <img
+              src={`http://localhost:5000/uploads/product/${formData.images[0]}`} // backend folder path
+              alt="Product"
+              className="w-32 h-32 object-cover"
+            />
+          </div>
+        )}
 
         <input
           type="file"
@@ -126,32 +180,56 @@ const UpdateProductPage = () => {
         <div>
           <h2 className="font-semibold mb-2">Variants</h2>
           {formData.variants.map((variant, index) => (
-            <div key={index} className="flex gap-2 mb-2">
+            <div key={index} className="flex items-center gap-2 mb-2">
               <input
                 type="text"
-                name="size"
-                placeholder="Size"
-                value={variant.size}
-                onChange={(e) => handleVariantChange(index, e)}
-                className="border p-2"
+                placeholder="Variant Name (e.g. 100gm)"
+                value={variant.name}
+                onChange={(e) =>
+                  handleVariantChange(index, "name", e.target.value)
+                }
+                className="border p-2 w-1/3"
               />
               <input
-                type="text"
-                name="color"
-                placeholder="Color"
-                value={variant.color}
-                onChange={(e) => handleVariantChange(index, e)}
-                className="border p-2"
+                type="number"
+                placeholder="Selling Price"
+                value={variant.price}
+                onChange={(e) =>
+                  handleVariantChange(index, "price", e.target.value)
+                }
+                className="border p-2 w-1/3"
               />
+              <input
+                type="number"
+                placeholder="MRP"
+                value={variant.mrp}
+                onChange={(e) =>
+                  handleVariantChange(index, "mrp", e.target.value)
+                }
+                className="border p-2 w-1/3"
+              />
+
+              {/* Add More */}
+              {index === formData.variants.length - 1 && (
+                <button
+                  type="button"
+                  onClick={addVariant}
+                  className="text-green-500"
+                >
+                  <FaPlus />
+                </button>
+              )}
+
+              {/* Delete */}
+              <button
+                type="button"
+                onClick={() => removeVariant(index)}
+                className="text-red-500"
+              >
+                <FaTrash />
+              </button>
             </div>
           ))}
-          <button
-            type="button"
-            onClick={addVariant}
-            className="bg-blue-500 text-white px-3 py-1 rounded"
-          >
-            + Add Variant
-          </button>
         </div>
 
         {/* Flags */}

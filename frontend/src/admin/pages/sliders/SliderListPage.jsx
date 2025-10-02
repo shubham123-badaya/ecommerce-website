@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { MdOutlineDeleteSweep } from "react-icons/md";
 import { RiEdit2Line } from "react-icons/ri";
+import { toast } from "react-toastify";
+
 
 const API_URL = "http://localhost:5000/api/slider/";
 
@@ -33,9 +35,11 @@ const SliderListPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      toast.success("Slider deleted successfully!");
       fetchSliders();
     } catch (err) {
       console.error("Error deleting slider:", err);
+      toast.error("Failed to delete slider");
     }
   };
 
@@ -57,7 +61,6 @@ const SliderListPage = () => {
           <thead className="bg-gray-100 text-left uppercase">
             <tr>
               <th className="p-3">Image</th>
-              <th className="p-3">File Name</th>
               <th className="p-3">Actions</th>
             </tr>
           </thead>
@@ -76,7 +79,6 @@ const SliderListPage = () => {
                     }
                   />
                 </td>
-                <td className="p-3">{slider.image}</td>
                 <td className="p-3 flex  gap-4 text-lg">
                   <button>
                     <Link

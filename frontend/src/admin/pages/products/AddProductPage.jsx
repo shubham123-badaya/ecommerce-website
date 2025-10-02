@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-
+import { FaPlus, FaTrash } from "react-icons/fa";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const API_URL = "http://localhost:5000/api/products/create";
 
 const AddProductPage = () => {
@@ -11,6 +13,7 @@ const AddProductPage = () => {
     name: "",
     category: "",
     price: "",
+    mrp: "",
     stock: "",
     description: "",
     variants: [],
@@ -24,8 +27,9 @@ const AddProductPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/categories/"); // 👈 apna API lagao
-        setCategories(res.data);
+        const res = await axios.get("http://localhost:5000/api/categories/");
+        // If your categories endpoint returns { categories: [...] } adjust accordingly
+        setCategories(res.data || []);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -33,6 +37,7 @@ const AddProductPage = () => {
 
     fetchCategories();
   }, []);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === "checkbox") {
@@ -42,43 +47,58 @@ const AddProductPage = () => {
     }
   };
 
+  // Add new empty variant
   const addVariant = () => {
     setFormData({
       ...formData,
-      variants: [...formData.variants, { size: "", color: "" }],
+      variants: [...formData.variants, { name: "", price: "", mrp: "" }],
     });
   };
 
-  const handleVariantChange = (index, e) => {
+  // Remove variant by index
+  const removeVariant = (index) => {
     const newVariants = [...formData.variants];
-    newVariants[index][e.target.name] = e.target.value;
+    newVariants.splice(index, 1);
+    setFormData({ ...formData, variants: newVariants });
+  };
+
+  // Update variant fields
+  const handleVariantChange = (index, e) => {
+    const { name, value } = e.target;
+    const newVariants = [...formData.variants];
+    newVariants[index] = { ...newVariants[index], [name]: value };
     setFormData({ ...formData, variants: newVariants });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = new FormData();
-
-    Object.keys(formData).forEach((key) => {
-      if (key === "variants") {
-        form.append("variants", JSON.stringify(formData.variants));
-      } else {
-        form.append(key, formData[key]);
-      }
-    });
-
-    if (image) form.append("image", image);
-
     try {
+      const form = new FormData();
+
+      // Append simple fields
+      Object.keys(formData).forEach((key) => {
+        if (key === "variants") {
+          form.append("variants", JSON.stringify(formData.variants));
+        } else {
+          form.append(key, formData[key]);
+        }
+      });
+
+      if (image) form.append("image", image);
+
       const token = localStorage.getItem("token");
       await axios.post(API_URL, form, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         },
       });
+
+      toast.success("Product added successfully!");
       navigate("/admin/products_list");
     } catch (err) {
       console.error("Error adding product:", err.response?.data || err.message);
+      toast.error("Failed to add product");
     }
   };
 
@@ -94,6 +114,7 @@ const AddProductPage = () => {
           onChange={handleChange}
           className="w-full border p-2"
         />
+
         <select
           name="category"
           value={formData.category}
@@ -104,8 +125,8 @@ const AddProductPage = () => {
         >
           <option value="">-- Select Category --</option>
           {categories.map((cat) => (
-            <option key={cat._id} value={cat._id}>
-              {cat.title}
+            <option key={cat._id || cat.id} value={cat._id || cat.id}>
+              {cat.title || cat.name}
             </option>
           ))}
         </select>
@@ -113,11 +134,21 @@ const AddProductPage = () => {
         <input
           type="number"
           name="price"
-          placeholder="Price"
+          placeholder="Base Price"
           value={formData.price}
           onChange={handleChange}
           className="w-full border p-2"
         />
+
+        <input
+          type="number"
+          name="mrp"
+          placeholder="MRP"
+          value={formData.mrp}
+          onChange={handleChange}
+          className="w-full border p-2"
+        />
+
         <input
           type="number"
           name="stock"
@@ -126,6 +157,7 @@ const AddProductPage = () => {
           onChange={handleChange}
           className="w-full border p-2"
         />
+
         <textarea
           name="description"
           placeholder="Description"
@@ -142,34 +174,57 @@ const AddProductPage = () => {
 
         {/* Variants */}
         <div>
-          <h2 className="font-semibold mb-2">Variants</h2>
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="font-semibold">Variants</h2>
+            <button
+              type="button"
+              onClick={addVariant}
+              className="text-green-500"
+            >
+              <FaPlus />
+            </button>
+          </div>
+
+          {formData.variants.length === 0 && (
+            <p className="text-sm text-gray-500 mb-2">No variants added yet.</p>
+          )}
+
           {formData.variants.map((variant, index) => (
-            <div key={index} className="flex gap-2 mb-2">
+            <div key={index} className="flex gap-2 mb-2 items-center">
               <input
                 type="text"
-                name="size"
-                placeholder="Size"
-                value={variant.size}
+                name="name"
+                placeholder="Variant Name (e.g. 100gm)"
+                value={variant.name}
                 onChange={(e) => handleVariantChange(index, e)}
-                className="border p-2"
+                className="border p-2 w-1/3"
               />
               <input
-                type="text"
-                name="color"
-                placeholder="Color"
-                value={variant.color}
+                type="number"
+                name="price"
+                placeholder="Price"
+                value={variant.price}
                 onChange={(e) => handleVariantChange(index, e)}
-                className="border p-2"
+                className="border p-2 w-1/3"
               />
+              <input
+                type="number"
+                name="mrp"
+                placeholder="MRP"
+                value={variant.mrp}
+                onChange={(e) => handleVariantChange(index, e)}
+                className="border p-2 w-1/3"
+              />
+              <button
+                type="button"
+                onClick={() => removeVariant(index)}
+                className="text-red-600 hover:text-red-800 p-2"
+                title="Remove variant"
+              >
+                <FaTrash />
+              </button>
             </div>
           ))}
-          <button
-            type="button"
-            onClick={addVariant}
-            className="bg-blue-500 text-white px-3 py-1 rounded"
-          >
-            + Add Variant
-          </button>
         </div>
 
         {/* Flags */}
@@ -211,6 +266,7 @@ const AddProductPage = () => {
             Top Rated
           </label>
         </div>
+
         <div className="flex gap-3">
           <button
             type="submit"
@@ -218,14 +274,12 @@ const AddProductPage = () => {
           >
             Save
           </button>
-          <button>
-            <Link
-              to="/admin/products_list"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-            >
-              Back
-            </Link>
-          </button>
+          <Link
+            to="/admin/products_list"
+            className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+          >
+            Back
+          </Link>
         </div>
       </form>
     </div>

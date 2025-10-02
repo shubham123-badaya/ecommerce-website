@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const API_URL = "http://localhost:5000/api/categories/create";
 
 const AddCategoryPage = () => {
   const [form, setForm] = useState({ title: "", is_featured: false });
-  const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,20 +23,21 @@ const AddCategoryPage = () => {
       const formData = new FormData();
       formData.append("title", form.title);
       formData.append("is_featured", form.is_featured ? 1 : 0);
-      if (file) formData.append("image", file);
 
-      const token = localStorage.getItem("token"); // 👈 yahan se token uthao
+      const token = localStorage.getItem("token");
 
       await axios.post(API_URL, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`, // 👈 token bhejna mandatory hai
+          Authorization: `Bearer ${token}`,
         },
       });
 
+      toast.success("Category added successfully!");
       navigate("/admin/category_list");
     } catch (err) {
       console.error("Error adding category:", err);
+      toast.error("Failed to add category");
     }
   };
 
@@ -53,13 +54,6 @@ const AddCategoryPage = () => {
           value={form.title}
           onChange={handleChange}
           placeholder="Category Title"
-          className="border p-3 rounded-lg w-full mb-4"
-        />
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files[0])}
           className="border p-3 rounded-lg w-full mb-4"
         />
 

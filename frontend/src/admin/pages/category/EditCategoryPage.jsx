@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const API_URL = "http://localhost:5000/api/categories/";
+const API_URL = "http://localhost:5000/api/categories";
 
 const EditCategoryPage = () => {
   const { id } = useParams();
   const [form, setForm] = useState({ title: "", is_featured: false });
-  const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,18 +42,20 @@ const EditCategoryPage = () => {
       const formData = new FormData();
       formData.append("title", form.title);
       formData.append("is_featured", form.is_featured ? 1 : 0);
-      if (file) formData.append("image", file);
+
       const token = localStorage.getItem("token");
-      await axios.put(`${API_URL}update/${id}`, formData, {
+      await axios.put(`${API_URL}/update/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
 
-      navigate("/admin/category_list");
+      toast.success("Category updated successfully!"); // ✅ Toast notification
+      navigate("/admin/category_list"); // ✅ Immediate redirect
     } catch (err) {
       console.error("Error updating category:", err);
+      toast.error("Failed to update category"); // ✅ Error toast
     }
   };
 
@@ -70,13 +72,6 @@ const EditCategoryPage = () => {
           value={form.title}
           onChange={handleChange}
           placeholder="Category Title"
-          className="border p-3 rounded-lg w-full mb-4"
-        />
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files[0])}
           className="border p-3 rounded-lg w-full mb-4"
         />
 
