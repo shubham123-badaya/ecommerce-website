@@ -37,6 +37,10 @@ import FrontendLayout from "../frontend/components/layout/FrontendLayout.jsx";
 import ProductDetail from "../frontend/pages/seeds/ProductDetails.jsx";
 import AllBlogsPage from "../frontend/pages/blog/AllBlogsPage.js.jsx";
 import BlogDetails from "../frontend/pages/blog/BlogDetails.jsx";
+import About_Company from "../frontend/pages/about/About_Company.jsx";
+import MyAccount from "../frontend/pages/MyAccounts/MyAccount.jsx";
+import Register from "../frontend/pages/MyAccounts/Register.jsx";
+import ResetPassword from "../frontend/pages/MyAccounts/ResetPassword.jsx";
 
 // ---------- ProtectedRoute ----------
 const ProtectedRoute = ({ children }) => {
@@ -64,6 +68,14 @@ function AppRoutes() {
           <Route path="/product/:name" element={<ProductDetail />} />
           <Route path="/blogs" element={<AllBlogsPage />} />
           <Route path="/blogs/:id" element={<BlogDetails />} />
+          <Route path="/about_company" element={<About_Company />} />
+          {/* account  */}
+          <Route path="/myaccount" element={<MyAccount />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forget/reset" element={<ResetPassword/>} />
+
+
+
 
           <Route path="/dates" element={<Dates />} />
           <Route path="/nuts_berries" element={<NutsBerries />} />

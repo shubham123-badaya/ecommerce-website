@@ -7,8 +7,10 @@ import {
   FaStar,
 } from "react-icons/fa";
 import about from "../../../assets/about-us.png";
+import { useNavigate } from "react-router-dom";
 
 const AboutUs = () => {
+  const navigate = useNavigate();
   return (
     <div className="w-full bg-white">
       {/* Main Section */}
@@ -43,7 +45,7 @@ const AboutUs = () => {
             packaging under one roof.
           </p>
 
-          <button className="border text-brown-700 px-3 py-2 text-[#70512e] font-bold  rounded hover:bg-[#70512e] hover:text-white transition">
+          <button onClick={()=>navigate("/about_company")} className="border text-brown-700 px-3 py-2 text-[#70512e] font-bold  rounded hover:bg-[#70512e] hover:text-white transition">
             KNOW MORE
           </button>
         </div>

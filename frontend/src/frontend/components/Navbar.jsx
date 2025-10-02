@@ -51,33 +51,33 @@ const Navbar = () => {
   return (
     <div className="w-full fixed top-0 z-50 bg-white shadow-md">
       {/* Top Bar */}
-      <div className="bg-gray-50 text-sm flex justify-between items-center px-4 lg:px-16 py-2 border-b">
+      <div className=" max-w-7xl mx-auto text-sm flex justify-between items-center px-4 lg:px-16 py-2 ">
         <div className="flex items-center space-x-4">
-          <span className="bg-black rounded-full w-7 h-7 flex justify-center items-center">
-            <FaPhoneAlt className="text-white text-sm" />
+          <span className="bg-black rounded-full w-5 h-5 flex justify-center items-center">
+            <FaPhoneAlt className="text-white text-xs " />
           </span>
           <span className="font-bold">91 8424 888 555</span>
           <span>|</span>
           <span className="font-bold">91 22 4127 8855</span>
         </div>
-        <div className="text-[#8b3f1c] font-bold text-xs sm:text-sm md:text-md text-center">
+        <div className="text-[#8b3f1c] font-bold text-xs sm:text-sm md:text-sm text-center">
           ₹ 1 From every pack sold will be donated to SKRM Foundation
         </div>
         <div className="flex space-x-3 text-black">
-          <span className="bg-black rounded-full w-8 h-8 flex justify-center items-center">
+          <span className="bg-black rounded-full w-5 h-5 flex justify-center items-center">
             <FaFacebookF className="text-white" />
           </span>
-          <span className="bg-black rounded-full w-8 h-8 flex justify-center items-center">
+          <span className="bg-black rounded-full w-5 h-5 flex justify-center items-center">
             <FaTwitter className="text-white" />
           </span>
-          <span className="bg-black rounded-full w-8 h-8 flex justify-center items-center">
+          <span className="bg-black rounded-full w-5 h-5 flex justify-center items-center">
             <FaInstagram className="text-white" />
           </span>
         </div>
       </div>
 
       {/* Main Navbar */}
-      <div className="flex justify-between items-center py-4 px-4 lg:px-16 bg-white shadow-sm relative">
+      <div className="flex justify-between items-center max-w-7xl mx-auto py-4 px-4 lg:px-16   relative">
         {/* Logo + Tagline */}
         <Link to="/">
           <div className="flex flex-col">
