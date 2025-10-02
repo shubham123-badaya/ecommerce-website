@@ -1,0 +1,96 @@
+// src/pages/UserDashboard.jsx
+
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
+import Sidebar from './Sidebar'; // 1. Import the new Sidebar component
+
+const UserDashboard = () => {
+  const user = {
+    name: "Rahul Kumar",
+    email: "rahul247@gmail.com",
+    phone: "9786543210"
+  };
+
+  const orders = []; // Empty array to show "No Order Found!"
+
+  // 2. The sidebarLinks array and mapping logic have been removed from here.
+
+  return (
+    <div className="container mx-auto px-4 py-25">
+      <div className="mb-6 text-sm text-gray-500">
+        Home &gt; My Account &gt; Dashboard
+      </div>
+      <div className="text-2xl font-bold text-[#8b3f1c]">Dashboard</div>
+
+      <div className="flex flex-col md:flex-row gap-8">
+        
+        <Sidebar /> {/* 3. Use the clean, reusable Sidebar component */}
+
+        {/* --- Main Dashboard Content --- */}
+        <main className="w-full md:w-3/4">
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* User Profile Card */}
+              <div className="bg-white p-6 rounded-lg shadow-md flex items-center space-x-6">
+                <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
+                  <span className="text-gray-400 text-4xl">👤</span>
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg">{user.name}</h3>
+                  <Link to='/user/profile' className="text-[#8b3f1c] hover:underline text-sm mt-1 inline-block">
+                    <FontAwesomeIcon icon={faEdit} className="mr-1" /> Edit Profile
+                  </Link>
+                </div>
+              </div>
+
+              {/* Address Card */}
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="font-bold text-lg mb-2 text-[#8b3f1c] uppercase">Address</h3>
+                <p className="text-gray-800 font-bold text-md">{user.name}</p>
+                <p className="text-gray-700">{user.email}</p>
+                <p className="text-gray-700">{user.phone}</p>
+                <Link to='/user/shipping' className="text-[#8b3f1c] hover:underline text-sm mt-2 inline-block">
+                  <FontAwesomeIcon icon={faEdit} className="mr-1" /> Edit Address
+                </Link>
+              </div>
+            </div>
+
+             {/* Recent Order History */}
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="font-bold text-lg text-[#8b3f1c]">Recent Order History</h3>
+                <Link to="/dashboard/orders" className="text-[#8b3f1c] hover:underline text-sm">View All</Link>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="min-w-full">
+                  <thead className="border-b">
+                    <tr>
+                      <th className="px-4 py-2 text-left text-lg font-bold text-gray-900">Order ID</th>
+                      <th className="px-4 py-2 text-left text-lg font-bold text-gray-900">Date</th>
+                      <th className="px-4 py-2 text-left text-lg font-bold text-gray-900">Total</th>
+                      <th className="px-4 py-2 text-left text-lg font-bold text-gray-900">Status</th>
+                      <th className="px-4 py-2 text-left text-lg font-bold text-gray-900">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.length === 0 ? (
+                      <tr>
+                        <td colSpan="5" className="text-gray-900 text-center text-lg font-bold py-8">No Order Found!</td>
+                      </tr>
+                    ) : (
+                      <></> // Map over actual orders here
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default UserDashboard;

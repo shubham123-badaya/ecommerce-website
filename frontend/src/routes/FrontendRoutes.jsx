@@ -12,13 +12,13 @@ import Seeds from "../frontend/pages/seeds/Seeds";
 function FrontendRoutes() {
   return (
     <Routes>
-      <Route element={<FrontendLayout />}>
+      {/* <Route element={<FrontendLayout />}> */}
         <Route path="/" element={<HomeRoutes />} />
         <Route path="/dryfruit" element={<Dryfruit />} />
         <Route path="/seeds" element={<Seeds />} />
         <Route path="/dates" element={<Dates />} />
         <Route path="/nuts_berries" element={<NutsBerries />} />
-      </Route>
+      {/* </Route> */}
     </Routes>
   );
 }

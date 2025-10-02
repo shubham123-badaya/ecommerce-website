@@ -35,6 +35,9 @@ import Dates from "../frontend/pages/dates/Dates.jsx";
 import NutsBerries from "../frontend/pages/nuts_berries/NutsBerries.jsx";
 import FrontendLayout from "../frontend/components/layout/FrontendLayout.jsx";
 import ProductDetail from "../frontend/pages/seeds/ProductDetails.jsx";
+import UserDashboard from "../user/pages/UserDashboard.jsx";
+import UserProfile from "../user/pages/UserProfile.jsx";
+import UserOrder from "../user/pages/UserOrder.jsx";
 
 // ---------- ProtectedRoute ----------
 const ProtectedRoute = ({ children }) => {
@@ -62,6 +65,9 @@ function AppRoutes() {
           <Route path="/product/:name" element={<ProductDetail />} />
           <Route path="/dates" element={<Dates />} />
           <Route path="/nuts_berries" element={<NutsBerries />} />
+          <Route path="/user/dashboard" element={<UserDashboard />} />
+          <Route path="/user/profile" element={<UserProfile />} />
+          <Route path="/user/order" element={<UserOrder />} />
         </Route>
         {/* ---------- Admin Routes ---------- */}
         <Route path="/admin/login" element={<Login />} />
