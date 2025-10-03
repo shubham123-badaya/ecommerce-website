@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +11,7 @@ const Register = () => {
     confirmPassword: "",
     agree: false,
   });
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -156,12 +157,20 @@ const Register = () => {
             </div>
 
             {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full bg-[#92553D] hover:bg-transparent text-white py-2 rounded-md hover:text-gray-600 duration-500 transition"
-            >
-              CREATE ACCOUNT
-            </button>
+            <div className="flex gap-2 ">
+              <button
+                type="submit"
+                className="w-full bg-[#92553D] hover:bg-transparent text-white py-2 rounded-md hover:text-gray-600 duration-500 transition"
+              >
+                CREATE ACCOUNT
+              </button>
+              <button
+                onClick={() => navigate(-1)}
+                className="w-full bg-[#92553D] text-white py-2 rounded-md hover:bg-amber-800 transition"
+              >
+                BACK
+              </button>
+            </div>
           </form>
         </div>
 
@@ -171,7 +180,7 @@ const Register = () => {
           <button className="mt-2 bg-[#92553D] text-white px-6 py-2 rounded-md hover:bg-amber-700 transition">
             SIGN IN
           </button>
-        </div> 
+        </div>
       </div>
     </div>
   );
