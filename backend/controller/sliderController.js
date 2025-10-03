@@ -21,7 +21,7 @@ export const addSlider = async (req, res) => {
     }
 
     const newSlider = new Slider({
-      image: req.file.filename, // sirf filename save karenge
+      image: req.file.filename, 
     });
 
     await newSlider.save();
