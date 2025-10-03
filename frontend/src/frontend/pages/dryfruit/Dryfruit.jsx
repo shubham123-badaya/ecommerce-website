@@ -35,11 +35,27 @@ const dryFruits = [
     name: "Walnuts (Akhrot)",
     img: "https://www.dryfruitbasket.in/storage/media/MbZbj4xG03oByliTd48UfKqA9AFUpePzxhUDYZqf.jpg",
   },
+  {
+    name: "Walnuts (Akhrot)",
+    img: "https://www.dryfruitbasket.in/storage/media/MbZbj4xG03oByliTd48UfKqA9AFUpePzxhUDYZqf.jpg",
+  },
+  {
+    name: "Walnuts (Akhrot)",
+    img: "https://www.dryfruitbasket.in/storage/media/MbZbj4xG03oByliTd48UfKqA9AFUpePzxhUDYZqf.jpg",
+  },
+  {
+    name: "Walnuts (Akhrot)",
+    img: "https://www.dryfruitbasket.in/storage/media/MbZbj4xG03oByliTd48UfKqA9AFUpePzxhUDYZqf.jpg",
+  },
+  {
+    name: "Walnuts (Akhrot)",
+    img: "https://www.dryfruitbasket.in/storage/media/MbZbj4xG03oByliTd48UfKqA9AFUpePzxhUDYZqf.jpg",
+  },
 ];
 
 const DryFruitsPage = () => {
   return (
-    <div className="min-h-screen w-full pt-20 pb-20  bg-white">
+    <div className="min-h-screen w-full mt-15 pb-15  bg-white">
       {/* Header Banner */}
       <div
         className="w-full mx-auto h-50 flex items-center justify-center "
@@ -50,13 +66,14 @@ const DryFruitsPage = () => {
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
-      >
-        {/* <h1 className="text-5xl font-bold text-brown-800">Dry Fruits</h1> */}
-      </div>
+      ></div>
 
       {/* Breadcrumb */}
       <div className="max-w-6xl mx-auto px-6 py-4 text-sm text-gray-600">
         Home &gt; Dry Fruits
+      </div>
+      <div className="max-w-6xl mx-auto px-6 py-4 text-xl font-bold  text-[#92553d]">
+        Dry Fruits
       </div>
 
       {/* Products Grid */}
@@ -65,7 +82,7 @@ const DryFruitsPage = () => {
           {dryFruits.map((fruit, index) => (
             <div
               key={index}
-              className=" p-8 flex flex-col items-center bg-white shadow-lg hover:shadow-md transition-shadow rounded"
+              className=" p-8 flex flex-col items-center bg-white border border-gray-300 hover:shadow-md transition-shadow rounded"
             >
               <img
                 src={fruit.img}
