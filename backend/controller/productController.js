@@ -44,7 +44,7 @@ export const addProduct = async (req, res) => {
       isTopRated
     } = req.body;
 
-    if (!name || !category || !price) {
+    if (!name || !category) {
       return res.status(400).json({ message: "Name, category and price are required" });
     }
 
@@ -161,7 +161,6 @@ export const deleteProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
     
-    // ✅ Image delete karna (agar hai to)
     if (product.images && product.images.length > 0) {
       product.images.forEach((img) => {
         const imagePath = path.join(process.cwd(), "uploads/product", img);

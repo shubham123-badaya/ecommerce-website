@@ -22,16 +22,8 @@ export const addCategory = async (req, res) => {
       return res.status(400).json({ message: "Title is required" });
     }
 
-    if (!req.file) {
-      return res.status(400).json({ message: "Image is required" });
-    }
-
-    // ✅ Save only filename in DB
-    const imageFile = req.file.filename;
-
     const newCategory = new Category({
       title: title.trim(),
-      imageUrl: imageFile,
       is_featured: is_featured === "1" || is_featured === 1 ? 1 : 0,
     });
 
@@ -60,18 +52,6 @@ export const updateCategory = async (req, res) => {
     }
 
     if (title) category.title = title.trim();
-
-    if (req.file) {
-      // ✅ delete old image first
-      if (category.imageUrl) {
-        const oldPath = path.join(process.cwd(), "uploads/category", category.imageUrl);
-        if (fs.existsSync(oldPath)) {
-          fs.unlinkSync(oldPath);
-        }
-      }
-      // ✅ save new filename
-      category.imageUrl = req.file.filename;
-    }
 
     if (is_featured !== undefined) {
       category.is_featured = is_featured === "1" || is_featured === 1 ? 1 : 0;
@@ -102,7 +82,11 @@ export const deleteCategory = async (req, res) => {
 
     // ✅ Delete image if exists
     if (category.imageUrl) {
-      const imagePath = path.join(process.cwd(), "uploads/category", category.imageUrl);
+      const imagePath = path.join(
+        process.cwd(),
+        "uploads/category",
+        category.imageUrl
+      );
       if (fs.existsSync(imagePath)) {
         fs.unlinkSync(imagePath);
       }

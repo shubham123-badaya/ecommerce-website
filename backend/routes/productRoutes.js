@@ -5,7 +5,6 @@ import { verifyAdmin } from "../middleware/auth.js";
 
 const router = express.Router();
 
-// Public GET
 router.get("/", getProducts);
 
 // Admin CRUD
