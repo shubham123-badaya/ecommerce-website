@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 const API_URL = "http://localhost:5000/api/slider/";
 
@@ -37,10 +39,11 @@ const EditSliderPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
+      toast.success("Slider updated successfully!");
       navigate("/admin/slider_list");
     } catch (err) {
       console.error("Error updating slider:", err);
+      toast.error("Failed to update slider");
     }
   };
 

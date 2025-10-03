@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { MdOutlineDeleteSweep } from "react-icons/md";
 import { RiEdit2Line } from "react-icons/ri";
+import { toast } from "react-toastify";
+
 
 const API_URL = "http://localhost:5000/api/categories/"; // 👈 apna backend ka URL lagao
 
@@ -34,9 +36,11 @@ const CategoryListPage = () => {
           Authorization: `bearer ${token}`,
         },
       });
+      toast.success("Category deleted successfully!");
       fetchCategories();
     } catch (err) {
       console.error("Error deleting:", err);
+      toast.error("Failed to delete category");
     }
   };
 
@@ -57,7 +61,6 @@ const CategoryListPage = () => {
         <table className="w-full  rounded-lg shadow-md">
           <thead className="uppercase text-left">
             <tr>
-              <th className="p-3">Image</th>
               <th className="p-3">Title</th>
               <th className="p-3">Featured</th>
               <th className="p-3">Actions</th>
@@ -66,18 +69,6 @@ const CategoryListPage = () => {
           <tbody>
             {categories.map((cate) => (
               <tr key={cate._id} className="border-t hover:bg-gray-50">
-                <td className="p-3">
-                  <img
-                    src={`http://localhost:5000/uploads/category/${cate.imageUrl}`}
-                    alt={cate.title}
-                    className="w-20 h-14 object-cover rounded cursor-pointer hover:opacity-80"
-                    onClick={() =>
-                      setPreviewImage(
-                        `http://localhost:5000/uploads/category/${cate.imageUrl}`
-                      )
-                    }
-                  />
-                </td>
                 <td className="p-3 font-medium">{cate.title}</td>
                 <td className="p-3">
                   {cate.is_featured ? (
