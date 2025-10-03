@@ -16,6 +16,9 @@ import userRoutes from "./routes/userRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
+import aboutUsRoutes from "./routes/aboutUsRoutes.js";
+import settingRoutes from "./routes/settingRoutes.js";
+import blogRoutes from "./routes/blogRoutes.js";
 
 // --- Config ---
 dotenv.config();
@@ -41,6 +44,10 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/slider", sliderRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/coupons", couponRoutes);
+app.use("/api/about", aboutUsRoutes);
+app.use("/api/setting", settingRoutes);
+app.use("/api/blog", blogRoutes);
+
 
 // User
 app.use("/api/user", userRoutes);

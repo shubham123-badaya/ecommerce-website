@@ -1,31 +1,34 @@
 import Product from "../models/Product.js";
 import Category from "../models/Category.js";
 import Slider from "../models/Slider.js";
+import AboutUs from "../models/AboutUs.js";
+import Blog from "../models/Blog.js";
+import path from "path";
+import fs from "fs";
 
+// --- Existing Product / Category / Slider APIs ---
+export const getCategoryByProduct = async (req, res) => {
+  try {
+    const { categoryId } = req.params;
 
-
-  export const getCategoryByProduct = async (req, res) => {
-    try {
-      const { categoryId } = req.params;
-
-      const category = await Category.findById(categoryId);
-      if (!category) {
-        return res.status(404).json({ message: "Category not found" });
-      }
-
-      const products = await Product.find({ category: categoryId });
-
-      res.status(200).json({
-        category: {
-          id: category._id,
-          name: category.title,
-        },
-        products,
-      });
-    } catch (error) {
-      res.status(500).json({ message: "Server error", error: error.message });
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
     }
-  };
+
+    const products = await Product.find({ category: categoryId });
+
+    res.status(200).json({
+      category: {
+        id: category._id,
+        name: category.title,
+      },
+      products,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
 export const getAllProducts = async (req, res) => {
   try {
@@ -107,5 +110,40 @@ export const getProductsByType = async (req, res) => {
   }
 };
 
+export const getAboutUs = async (req, res) => {
+  try {
+    const aboutUs = await AboutUs.findOne();
+    if (!aboutUs) {
+      return res.status(404).json({ message: "About Us not found" });
+    }
+    res.status(200).json({ aboutUs });
+  } catch (err) {
+    console.error("Error fetching About Us:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
 
 
+
+export const getLatestBlogs = async (req, res) => {
+  try {
+    const blogs = await Blog.find().sort({ createdAt: -1 }).limit(3);
+    res.status(200).json({ count: blogs.length, blogs });
+  } catch (err) {
+    console.error("Error fetching latest blogs:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+export const getBlogById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const blog = await Blog.findById(id);
+    if (!blog) return res.status(404).json({ message: "Blog not found" });
+
+    res.status(200).json(blog);
+  } catch (err) {
+    console.error("Error fetching blog:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
