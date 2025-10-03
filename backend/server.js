@@ -15,6 +15,7 @@ import frontendRoutes from "./routes/frontendRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
+import reviewRoutes from "./routes/reviewRoutes.js";
 
 // --- Config ---
 dotenv.config();
@@ -45,6 +46,8 @@ app.use("/api/coupons", couponRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/review", reviewRoutes);
+
 
 // --- Global Error Handler ---
 app.use((err, req, res, next) => {

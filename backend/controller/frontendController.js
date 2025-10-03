@@ -3,28 +3,29 @@ import Category from "../models/Category.js";
 import Slider from "../models/Slider.js";
 
 
-export const getCategoryByProduct = async (req, res) => {
-  try {
-    const { categoryId } = req.params;
 
-    const category = await Category.findById(categoryId);
-    if (!category) {
-      return res.status(404).json({ message: "Category not found" });
+  export const getCategoryByProduct = async (req, res) => {
+    try {
+      const { categoryId } = req.params;
+
+      const category = await Category.findById(categoryId);
+      if (!category) {
+        return res.status(404).json({ message: "Category not found" });
+      }
+
+      const products = await Product.find({ category: categoryId });
+
+      res.status(200).json({
+        category: {
+          id: category._id,
+          name: category.title,
+        },
+        products,
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Server error", error: error.message });
     }
-
-    const products = await Product.find({ category: categoryId });
-
-    res.status(200).json({
-      category: {
-        id: category._id,
-        name: category.title,
-      },
-      products,
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
-};
+  };
 
 export const getAllProducts = async (req, res) => {
   try {
@@ -67,3 +68,44 @@ export const getSliders = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+export const getAllCategories = async (req, res) => {
+  try {
+    const categories = await Category.find({ is_featured: 1 }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      count: categories.length,
+      categories: categories.map((cat) => ({
+        id: cat._id,
+        title: cat.title,
+        is_featured: cat.is_featured
+      }))
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const getProductsByType = async (req, res) => {
+  try {
+    const { type } = req.query; 
+
+    let filter = {};
+    if (type === "best") filter.isBestSelling = 1;
+    if (type === "new") filter.isNewArrival = 1;
+    if (type === "top") filter.isTopRated = 1;
+
+    const products = await Product.find(filter);
+
+    res.status(200).json({
+      type,
+      count: products.length,
+      products,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
+

@@ -124,7 +124,6 @@ export const updateProduct = async (req, res) => {
       product.isTopRated = isTopRated === "1" || isTopRated === 1 ? 1 : 0;
     }
 
-    // ✅ Agar nayi file mili to purani delete karke update karna
     if (req.file) {
       if (product.images.length > 0) {
         const oldImagePath = path.join(process.cwd(), "uploads/product", product.images[0]);
