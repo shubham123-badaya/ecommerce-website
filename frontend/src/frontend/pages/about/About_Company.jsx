@@ -49,7 +49,7 @@ function AboutCompany() {
 
       {/* Header */}
       <div className="w-full py-8 sm:py-12 border-b border-gray-200">
-        <div className="max-w-6xl mx-auto  flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <p className="text-[#92553d] text-sm sm:text-base">Home 👈 About Us</p>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">

@@ -58,7 +58,7 @@ const ShopByCategories = () => {
       </p>
 
       {/* Product Cards */}
-      <div className="flex  flex-wrap justify-center gap-8">
+      <div className="grid max-w-7xl mx-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
         {dummyProducts.map((product, i) => (
           <ProductCard key={i} product={product} />
         ))}

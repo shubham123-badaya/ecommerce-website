@@ -45,7 +45,10 @@ const AboutUs = () => {
             packaging under one roof.
           </p>
 
-          <button onClick={()=>navigate("/about_company")} className="border text-brown-700 px-3 py-2 text-[#70512e] font-bold  rounded hover:bg-[#70512e] hover:text-white transition">
+          <button
+            onClick={() => navigate("/about_company")}
+            className="border text-brown-700 px-3 py-2 text-[#70512e] font-bold  rounded hover:bg-[#70512e] hover:text-white transition"
+          >
             KNOW MORE
           </button>
         </div>
@@ -74,7 +77,7 @@ const AboutUs = () => {
             <p>Best Services</p>
           </div>
 
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center col-span-2 md:col-span-1">
             <FaShippingFast size={30} className="mb-2" />
             <p>On-Time Delivery</p>
           </div>

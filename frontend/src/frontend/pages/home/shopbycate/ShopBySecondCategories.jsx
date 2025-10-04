@@ -97,7 +97,7 @@ const ShopBySecondCategories = () => {
       </div>
 
       {/* Product Grid */}
-      <div className="grid max-w-6xl mx-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
+      <div className="grid max-w-7xl mx-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
         {filteredProducts.map((product, index) => (
           <div
             key={index}
