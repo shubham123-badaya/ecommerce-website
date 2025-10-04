@@ -38,6 +38,8 @@ import ProductDetail from "../frontend/pages/seeds/ProductDetails.jsx";
 import UserDashboard from "../user/pages/UserDashboard.jsx";
 import UserProfile from "../user/pages/UserProfile.jsx";
 import UserOrder from "../user/pages/UserOrder.jsx";
+import UserBilling from "../user/pages/UserBilling.jsx";
+import Userwishlist from "../user/pages/Userwishlist.jsx";
 
 // ---------- ProtectedRoute ----------
 const ProtectedRoute = ({ children }) => {
@@ -68,6 +70,8 @@ function AppRoutes() {
           <Route path="/user/dashboard" element={<UserDashboard />} />
           <Route path="/user/profile" element={<UserProfile />} />
           <Route path="/user/order" element={<UserOrder />} />
+          <Route path="/user/bill" element={<UserBilling />} />
+          <Route path="/user/wishlist" element={<Userwishlist />} />
         </Route>
         {/* ---------- Admin Routes ---------- */}
         <Route path="/admin/login" element={<Login />} />

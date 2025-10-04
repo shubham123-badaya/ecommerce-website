@@ -19,9 +19,8 @@ const sidebarLinks = [
   { name: 'Dashboard', icon: faTableColumns, path: '/user/dashboard' },
   { name: 'My Profile', icon: faUser, path: '/user/profile' },
   { name: 'My Order', icon: faBox, path: '/user/order' },
-  { name: 'My Wishlist', icon: faHeart, path: '/dashboard/wishlist' },
-  { name: 'Billing Information', icon: faFileInvoice, path: '/dashboard/billing' },
-  { name: 'Shipping Information', icon: faMapMarkerAlt, path: '/dashboard/shipping' },
+  { name: 'My Wishlist', icon: faHeart, path: '/user/wishlist' },
+  { name: 'Billing Information', icon: faFileInvoice, path: '/user/bill' },
   { name: 'Log Out', icon: faSignOutAlt, path: '/logout' },
 ];
 

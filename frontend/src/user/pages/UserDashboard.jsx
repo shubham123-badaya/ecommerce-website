@@ -51,7 +51,7 @@ const UserDashboard = () => {
                 <p className="text-gray-800 font-bold text-md">{user.name}</p>
                 <p className="text-gray-700">{user.email}</p>
                 <p className="text-gray-700">{user.phone}</p>
-                <Link to='/user/shipping' className="text-[#8b3f1c] hover:underline text-sm mt-2 inline-block">
+                <Link to='/user/bill' className="text-[#8b3f1c] hover:underline text-sm mt-2 inline-block">
                   <FontAwesomeIcon icon={faEdit} className="mr-1" /> Edit Address
                 </Link>
               </div>
