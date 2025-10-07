@@ -8,36 +8,39 @@ const AllBlogsPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 md:px-8">
-      {/* Mobile Header with Hamburger on Right */}
-      <div className="flex justify-between items-center mb-4 md:hidden">
+    <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 md:px-8 relative">
+      {/* Mobile Header */}
+      <div className="flex justify-between items-center mb-6 md:hidden">
         <button
           onClick={() => navigate(-1)}
           className="text-[#70512e] font-semibold hover:underline"
         >
           ← Back
         </button>
-
         <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
+          onClick={() => setSidebarOpen(true)}
           className="text-[#70512e] text-xl flex items-center gap-2 font-semibold"
         >
           Filters <FaBars />
         </button>
       </div>
 
-      <div className="flex md:grid md:grid-cols-4 gap-8">
+      <div className="flex flex-col md:flex-row gap-8">
         {/* Sidebar */}
         <aside
-          className={`fixed top-0 right-0 h-full w-64 bg-white z-50 transform transition-transform duration-300 md:relative md:translate-x-0 md:col-span-1 p-6 overflow-y-auto
-          ${sidebarOpen ? "translate-x-0" : "translate-x-full"}
-          `}
+          className={`
+    h-full w-64 bg-white p-6 overflow-y-auto
+    md:relative md:w-1/4 md:translate-x-0 md:z-auto
+    fixed top-0 right-0 z-50 transform transition-transform duration-300
+    md:flex-shrink-0
+    ${sidebarOpen ? "translate-x-0" : "translate-x-full"}
+  `}
         >
           {/* Close Button for Mobile */}
           <div className="flex justify-end md:hidden mb-4">
             <button
               onClick={() => setSidebarOpen(false)}
-              className="text-gray-700 text-xl"
+              className="text-gray-700 text-2xl"
             >
               <FaTimes />
             </button>
@@ -53,23 +56,18 @@ const AllBlogsPage = () => {
             />
           </div>
 
-          {/* Recent Post */}
+          {/* Recent Posts */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-2">RECENT POST</h3>
+            <h3 className="text-lg font-semibold mb-2">RECENT POSTS</h3>
             <ul className="space-y-2 text-sm text-[#70512e] font-medium">
               {blogs.slice(0, 3).map((post) => (
-                <li
-                  key={post.id}
-                  className="flex items-center gap-2 border-b pb-2"
-                >
+                <li key={post.id} className="flex items-center gap-2 border-b pb-2">
                   <img
                     src={post.image}
                     alt={post.title}
-                    className="w-20 h-auto rounded"
+                    className="w-20 h-20 object-cover rounded"
                   />
-                  <a href="#" className="hover:underline text-sm sm:text-base">
-                    {post.title}
-                  </a>
+                  <span className="text-sm sm:text-base">{post.title}</span>
                 </li>
               ))}
             </ul>
@@ -90,15 +88,23 @@ const AllBlogsPage = () => {
           {/* Tags */}
           <div>
             <h3 className="text-lg font-semibold mb-2">TAGS</h3>
-            <span className="inline-block bg-[#70512e] text-white px-3 py-1 text-sm rounded">
-              Blog Tag
-            </span>
+            <div className="flex flex-wrap gap-2">
+              <span className="inline-block bg-[#70512e] text-white px-3 py-1 text-sm rounded">
+                Blog Tag
+              </span>
+              <span className="inline-block bg-[#70512e] text-white px-3 py-1 text-sm rounded">
+                Tutorial
+              </span>
+              <span className="inline-block bg-[#70512e] text-white px-3 py-1 text-sm rounded">
+                Tips
+              </span>
+            </div>
           </div>
         </aside>
 
         {/* Blog Grid */}
-        <main className="md:col-span-3 space-y-10 w-full">
-          {/* Desktop Back button */}
+        <main className="flex-1 space-y-8 md:space-y-10">
+          {/* Desktop Back Button */}
           <div className="hidden md:block mb-4">
             <button
               onClick={() => navigate(-1)}
@@ -111,14 +117,14 @@ const AllBlogsPage = () => {
           {blogs.map((blog, index) => (
             <div
               key={blog.id}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center border rounded-2xl p-4 w-full"
+              className={`grid grid-cols-1 sm:grid-cols-2 gap-6 items-center border rounded-2xl p-4 w-full transition-transform hover:shadow-lg`}
             >
               {index % 2 === 0 ? (
                 <>
                   <img
                     src={blog.image}
                     alt={blog.title}
-                    className="w-full hover:scale-105 duration-700 h-48 sm:h-52 object-cover rounded-md"
+                    className="w-full h-48 sm:h-52 object-cover rounded-md hover:scale-105 duration-500"
                   />
                   <div>
                     <h2 className="text-lg sm:text-xl font-semibold mb-2">
@@ -154,7 +160,7 @@ const AllBlogsPage = () => {
                   <img
                     src={blog.image}
                     alt={blog.title}
-                    className="w-full hover:scale-105 duration-700 h-48 sm:h-52 object-cover rounded-md"
+                    className="w-full h-48 sm:h-52 object-cover rounded-md hover:scale-105 duration-500"
                   />
                 </>
               )}
@@ -162,6 +168,14 @@ const AllBlogsPage = () => {
           ))}
         </main>
       </div>
+
+      {/* Mobile Sidebar Overlay */}
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 bg-black bg-opacity-40 z-40 md:hidden"
+        />
+      )}
     </div>
   );
 };

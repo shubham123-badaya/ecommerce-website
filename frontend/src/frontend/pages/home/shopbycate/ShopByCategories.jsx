@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, } from "react";
 import CategoryTabs from "./CategoryTabs";
 import ProductCard from "./ProductCard";
+import { useNavigate } from "react-router-dom";
+
+
 // IMAGE
 import b1 from "../../../../../src/assets/shopbycate/b2.webp";
 import b2 from "../../../../../src/assets/shopbycate/b3.webp";
@@ -38,6 +41,7 @@ const dummyProducts = [
 
 const ShopByCategories = () => {
   const [activeCategory, setActiveCategory] = useState("DRY FRUITS");
+  const navigate = useNavigate();
 
   return (
     <div className="w-full px-6 py-12 text-center">
@@ -66,7 +70,7 @@ const ShopByCategories = () => {
 
       {/* View All Button */}
       <div className="mt-10">
-        <button className="border border-[#8b3f1c] text-[#8b3f1c] px-6 py-2 rounded hover:bg-[#8b3f1c] hover:text-white transition">
+        <button onClick={()=>navigate("/dryfruit")} className="border border-[#8b3f1c] text-[#8b3f1c] px-6 py-2 rounded hover:bg-[#8b3f1c] hover:text-white transition">
           VIEW ALL
         </button>
       </div>

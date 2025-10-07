@@ -68,7 +68,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-8 font-semibold text-black text-lg">
+        <div className="hidden md:flex items-center space-x-10 px-6 font-sens text-black text-md">
           <Link to="/dryfruit" className="hover:text-[#8b3f1c]">DRY FRUITS</Link>
 
           {/* Seeds Dropdown */}
@@ -97,7 +97,7 @@ const Navbar = () => {
           <Link to="/nuts_berries" className="hover:text-[#8b3f1c]">NUTS & BERRIES</Link>
 
           {/* Icons */}
-          <div className="flex  items-center space-x-6">
+          <div className="flex  items-center space-x-8">
             <div className="flex items-center space-x-1 cursor-pointer">
               <FaSearch />
               <span className="hidden lg:block">Search</span>

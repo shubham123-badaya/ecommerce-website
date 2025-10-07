@@ -41,6 +41,9 @@ import About_Company from "../frontend/pages/about/About_Company.jsx";
 import MyAccount from "../frontend/pages/MyAccounts/MyAccount.jsx";
 import Register from "../frontend/pages/MyAccounts/Register.jsx";
 import ResetPassword from "../frontend/pages/MyAccounts/ResetPassword.jsx";
+import Contact from "../frontend/pages/customercare/Contact.jsx";
+import TermsConditions from "../frontend/pages/customercare/TermsConditions.jsx";
+import PrivacyPolicy from "../frontend/pages/customercare/PrivacyPolicy.jsx";
 
 // ---------- ProtectedRoute ----------
 const ProtectedRoute = ({ children }) => {
@@ -73,6 +76,9 @@ function AppRoutes() {
           <Route path="/myaccount" element={<MyAccount />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forget/reset" element={<ResetPassword/>} />
+          <Route path="/contact_us" element={<Contact/>} />
+          <Route path="/terms_conditions" element={<TermsConditions/>} />
+          <Route path="/privacy_policy" element={<PrivacyPolicy/>} />
 
 
 

@@ -76,24 +76,26 @@ const ShopBySecondCategories = () => {
   );
 
   return (
-    <div className= "w-full bg-[#f6f6ed] py-8 px-4 sm:px-6 lg:px-12 lg:pt-20 lg:pb-20">
+    <div className="w-full bg-[#f6f6ed] py-8 px-4 sm:px-6 lg:px-12 lg:pt-20 lg:pb-20">
       {/* Category Tabs */}
-      <div className="flex overflow-x-auto space-x-6 sm:space-x-12 justify-start sm:justify-center mb-8">
-        {categories.map((cat, index) => (
-          <div
-            key={index}
-            onClick={() => onCategoryChange(cat.label)}
-            className={`cursor-pointer pb-2 border-b-2 transition duration-300 whitespace-nowrap ${
-              activeCategory === cat.label
-                ? "border-[#8b3f1c] text-[#8b3f1c] font-bold"
-                : "border-transparent text-gray-700 hover:text-[#8b3f1c]"
-            }`}
-          >
-            <span className="text-base sm:text-lg font-semibold">
-              {cat.label}
-            </span>
-          </div>
-        ))}
+      <div className="max-w-7xl mx-auto overflow-x-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <div className="inline-flex space-x-4 sm:space-x-8 md:space-x-12 justify-center w-full min-w-max">
+          {categories.map((cat, index) => (
+            <div
+              key={index}
+              onClick={() => onCategoryChange(cat.label)}
+              className={`cursor-pointer pb-2 border-b-2 transition duration-300 whitespace-nowrap flex-shrink-0 ${
+                activeCategory === cat.label
+                  ? "border-[#8b3f1c] text-[#8b3f1c] font-bold"
+                  : "border-transparent text-gray-700 hover:text-[#8b3f1c]"
+              }`}
+            >
+              <span className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold">
+                {cat.label}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Product Grid */}
