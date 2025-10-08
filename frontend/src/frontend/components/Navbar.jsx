@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Login from "../../admin/auth/Login";
+
 import {
   FaPhoneAlt,
   FaFacebookF,
@@ -12,7 +15,13 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(null);
+   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const navigate = useNavigate();
 
+  const handleLoginClick = () => {
+    setIsLoginOpen(true);                  
+    
+  };
   const seedsCategories = [
     { name: "Watermelon Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
     { name: "Pumpkin Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
@@ -116,10 +125,27 @@ const Navbar = () => {
             <FaSearch />
             <span>Search</span>
           </div>
-          <div className="flex items-center space-x-1 cursor-pointer">
-            <FaUser />
-            <span>Login</span>
-          </div>
+        <div>
+      <div
+  className="flex items-center space-x-1 cursor-pointer"
+  onClick={() => setIsLoginOpen(true)}
+>
+  <FaUser />
+  <span>Login</span>
+</div>
+<Login isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+
+
+      {/* Login Sidebar */}
+      <Login
+        isOpen={isLoginOpen}
+        onClose={() => {
+          setIsLoginOpen(false);
+          navigate(-1); // Optional: Close sidebar & go back in history
+        }}
+      />
+    </div>
+
           <div className="relative cursor-pointer">
             <FaShoppingBag size={20} />
             <span className="absolute -top-2 -right-2 bg-[#8b3f1c] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
