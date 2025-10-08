@@ -15,6 +15,7 @@ import Login from "../admin/auth/Login";
 function FrontendRoutes() {
   return (
     <Routes>
+      {/* Frontend pages wrapped in layout */}
       <Route element={<FrontendLayout />}>
         <Route path="/" element={<HomeRoutes />} />
         <Route path="/dryfruit" element={<Dryfruit />} />
@@ -23,7 +24,7 @@ function FrontendRoutes() {
         <Route path="/nuts_berries" element={<NutsBerries />} />
       </Route>
 
-      {/* Admin login should not use FrontendLayout */}
+      {/* Admin login without frontend layout */}
       <Route path="/admin/login" element={<Login />} />
     </Routes>
   );

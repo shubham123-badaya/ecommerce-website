@@ -41,6 +41,11 @@ import About_Company from "../frontend/pages/about/About_Company.jsx";
 import MyAccount from "../frontend/pages/MyAccounts/MyAccount.jsx";
 import Register from "../frontend/pages/MyAccounts/Register.jsx";
 import ResetPassword from "../frontend/pages/MyAccounts/ResetPassword.jsx";
+import UserDashboard from "../user/pages/UserDashboard.jsx";
+import UserProfile from "../user/pages/UserProfile.jsx";
+import UserOrder from "../user/pages/UserOrder.jsx";
+import UserBilling from "../user/pages/UserBilling.jsx";
+import Userwishlist from "../user/pages/Userwishlist.jsx";
 
 // ---------- ProtectedRoute ----------
 const ProtectedRoute = ({ children }) => {
@@ -79,6 +84,11 @@ function AppRoutes() {
 
           <Route path="/dates" element={<Dates />} />
           <Route path="/nuts_berries" element={<NutsBerries />} />
+          <Route path="/user/dashboard" element={<UserDashboard />} />
+          <Route path="/user/profile" element={<UserProfile />} />
+          <Route path="/user/order" element={<UserOrder />} />
+          <Route path="/user/bill" element={<UserBilling />} />
+          <Route path="/user/wishlist" element={<Userwishlist />} />
         </Route>
         {/* ---------- Admin Routes ---------- */}
         <Route path="/admin/login" element={<Login />} />
