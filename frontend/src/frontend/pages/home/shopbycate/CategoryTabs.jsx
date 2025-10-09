@@ -13,21 +13,27 @@ const categories = [
 
 const CategoryTabs = ({ activeCategory, onCategoryChange }) => {
   return (
-    <div className="flex max-w-7xl justify-center space-x-12 my-12">
+    <div className="flex flex-wrap justify-center max-w-7xl mx-auto my-12 gap-6 md:gap-12">
       {categories.map((cat, index) => (
         <div
           key={index}
           onClick={() => onCategoryChange(cat.label)}
-          className={`flex items-center space-x-2 cursor-pointer pb-2 border-b-2 ${
+          className={`flex flex-col md:flex-row items-center md:space-x-2 cursor-pointer pb-2 border-b-2 transition-all ${
             activeCategory === cat.label
               ? "border-[#8b3f1c] text-[#8b3f1c] font-bold"
-              : "border-transparent text-gray-700"
+              : "border-transparent text-gray-700 hover:text-[#8b3f1c] hover:border-[#8b3f1c]"
           }`}
         >
-          <span>
-            <img src={cat.icon} alt="dryfruit" />
+          <span className="w-12 h-12 md:w-8 md:h-8 flex justify-center items-center">
+            <img
+              src={cat.icon}
+              alt={cat.label}
+              className="w-full h-full object-contain"
+            />
           </span>
-          <span className="text-lg font-bold">{cat.label}</span>
+          <span className="text-sm md:text-lg font-bold mt-1 md:mt-0 text-center md:text-left">
+            {cat.label}
+          </span>
         </div>
       ))}
     </div>

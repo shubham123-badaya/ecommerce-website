@@ -59,15 +59,15 @@ const HeroSlider = () => {
 
   return (
     <>
-      {" "}
-      <div className="relative    bg-blue-200">
-        {" "}
+     
+      <div className="relative py-15 w-full  mx-auto  bg-[#f2f2df]">
+        
         {/* margin to compensate for fixed navbar */}
         <Slider {...settings}>
           {slides.map((slide) => (
             <div key={slide.id}>
               <div
-                className="h-[400px] w-full bg-cover bg-center relative flex items-center"
+                className="h-[200px] sm:h-[100px]  bg-cover bg-center relative flex items-center"
                 style={{ backgroundImage: `url(${slide.img})` }}
               >
                 <div className="pl-26">

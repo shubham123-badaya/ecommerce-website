@@ -21,7 +21,9 @@ const Footer = () => {
         <div className="hidden sm:block">
           <h3 className="font-bold mb-2">MY ACCOUNT</h3>
           <ul className="space-y-1 text-black font-semibold">
-            <Link to="/myaccount"><li>My Account</li></Link>
+            <Link to="/myaccount">
+              <li>My Account</li>
+            </Link>
             <li>Order History</li>
             <li>Wish List</li>
           </ul>
@@ -31,10 +33,15 @@ const Footer = () => {
         <div className="hidden sm:block">
           <h3 className="font-bold mb-2">CUSTOMER CARE</h3>
           <ul className="space-y-1 text-black font-semibold">
-            <li>FAQ</li>
-            <li>Contact Us</li>
-            <li>Terms & Conditions</li>
-            <li>Privacy Policy</li>
+            <Link to="/contact_us">
+              <li>Contact Us</li>
+            </Link>
+            <Link to="/terms_conditions">
+              <li>Terms & Conditions</li>
+            </Link>
+            <Link to="/privacy_policy">
+              <li>Privacy Policy</li>
+            </Link>
           </ul>
         </div>
 
@@ -42,9 +49,9 @@ const Footer = () => {
         <div className="hidden sm:block">
           <h3 className="font-bold mb-2">ABOUT US</h3>
           <ul className="space-y-1 text-[#7a3e2e] text-sm font-semibold">
-            <li>Corporate Gifting</li>
-            <li>Quality</li>
-            <li>Blog</li>
+             <Link to="/blogs">
+              <li>Blog</li>
+            </Link>
             <li>Testimonials</li>
             <li>Benefits of Dry Fruits and Nuts</li>
           </ul>
@@ -85,31 +92,32 @@ const Footer = () => {
       </div>
 
       {/* Description Text */}
-    <div className="w-full bg-[#f2f2df]">
+      <div className="w-full bg-[#f2f2df]">
         <div className="  max-w-7xl mx-auto  py-10 text-sm text-gray-900  font-medium leading-relaxed">
-        <p>
-          Buy Dry Fruits and Nuts online in India from DryFruit Basket. Order
-          premium quality dry fruits like almonds, cashews, walnuts, apricots,
-          raisins, pistachios, figs, dates, kesar, elaichi, mix dry fruits,
-          healthy seeds & berries etc at lowest price in Mumbai & all over
-          India.
-          <br />
-          <br />
-          Looking for a special treat for your loved ones? Explore our dry fruit
-          potlis, homemade dryfruit chocolates & dryfruit combo options. We also
-          offer a wide variety of exotic nuts & berries like prunes, pine nuts,
-          pecan nuts, macadamia nuts, hazelnuts, brazil nuts, fox nuts,
-          cranberries, blueberries & black currants.
-          <br />
-          <br />
-          Indulge in the rich flavors and nutritional benefits of our handpicked
-          premium quality dryfruits, carefully sourced from the best regions
-          around the world. From luscious almonds and cashews to succulent dates
-          and apricots, our collection offers a variety of options to satisfy
-          your cravings and elevate your snacking experience.
-        </p>
+          <p>
+            Buy Dry Fruits and Nuts online in India from DryFruit Basket. Order
+            premium quality dry fruits like almonds, cashews, walnuts, apricots,
+            raisins, pistachios, figs, dates, kesar, elaichi, mix dry fruits,
+            healthy seeds & berries etc at lowest price in Mumbai & all over
+            India.
+            <br />
+            <br />
+            Looking for a special treat for your loved ones? Explore our dry
+            fruit potlis, homemade dryfruit chocolates & dryfruit combo options.
+            We also offer a wide variety of exotic nuts & berries like prunes,
+            pine nuts, pecan nuts, macadamia nuts, hazelnuts, brazil nuts, fox
+            nuts, cranberries, blueberries & black currants.
+            <br />
+            <br />
+            Indulge in the rich flavors and nutritional benefits of our
+            handpicked premium quality dryfruits, carefully sourced from the
+            best regions around the world. From luscious almonds and cashews to
+            succulent dates and apricots, our collection offers a variety of
+            options to satisfy your cravings and elevate your snacking
+            experience.
+          </p>
+        </div>
       </div>
-    </div>
 
       {/* Bottom Strip */}
       <div className="bg-[#fffaf0] border-t border-gray-200 py-4 text-xs text-gray-900">

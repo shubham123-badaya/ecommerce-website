@@ -55,7 +55,7 @@ const dryFruits = [
 
 const DryFruitsPage = () => {
   return (
-    <div className="min-h-screen w-full mt-15 pb-15  bg-white">
+    <div className="min-h-screen w-full  pb-15  bg-white">
       {/* Header Banner */}
       <div
         className="w-full mx-auto h-50 flex items-center justify-center "
