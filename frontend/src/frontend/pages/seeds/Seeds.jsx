@@ -98,7 +98,7 @@ const dryFruits = [
 
 const Seeds = () => {
   return (
-    <div className="min-h-screen w-full pt-20 pb-20  bg-white">
+    <div className="min-h-screen w-full  pb-20  bg-white">
       {/* Header Banner */}
       <div
         className="w-full mx-auto h-50 flex items-center justify-center "

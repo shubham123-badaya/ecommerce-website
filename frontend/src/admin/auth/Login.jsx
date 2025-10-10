@@ -1,177 +1,154 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+// import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
-const Login = ({ isOpen, onClose }) => {
-  const [activeTab, setActiveTab] = useState("create"); // Defaulted to 'create' to match image
+import { API_URL } from "../config";
+
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // /const { setUser } = useAuth();
+
+  const navigate = useNavigate();
+// sign_in.jsx (login handler)
+const handleLogin = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await fetch(`${API_URL}/admin/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      // ✅ Save token & user in localStorage
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      toast.success("Login successful!");
+
+      // ✅ Navigate to dashboard
+      navigate("/admin/dashboard");
+    } else {
+      toast.error(data.message || "Invalid credentials");
+    }
+  } catch (err) {
+    toast.error("Something went wrong.");
+    console.error(err);
+  }
+};
+
 
   return (
-    <div
-      className={`fixed top-0 right-0 h-full w-96 bg-white shadow-lg transform transition-transform duration-300 z-50
-        ${isOpen ? "translate-x-0" : "translate-x-full"}`}
-    >
-      {/* Close Button */}
-      <button
-        className="absolute top-4 right-4 text-gray-700 text-xl"
-        onClick={onClose}
-      >
-        ✕
-      </button>
+    <div>
+      {/* <ToastContainer /> */}
+      <div className="w-full h-min-screen mx-auto bg-gradient-to-r from-blue-600 to-blue-800 flex min-h-screen">
+        <div className="w-full lg:w-1/2 bg-neutral-900 text-white flex flex-col lg:items-end justify-center lg:rounded-l-xs rounded-4xl sm:mx-18 mx-8 my-15 lg:m-0">
+          <div className="container px-2 bg-neutral-900 lg:pl-33 w-full mx-0 sm:py-32 py-2 rounded-4xl">
+            <div className="px-1 container mx-auto">
+              <div className="mx-10 text-[#c0bcbc] text-2xl font-bold rounded-md pt-4">
+                <h1>E-Commerce</h1>
+              </div>
 
-      {/* Sidebar Content */}
-      <div className="p-6 mt-6 h-full overflow-y-auto">
-        {/* Heading */}
-        <h2 className="text-2xl font-bold mb-1">My Dry Fruits Account</h2>
-        <p className="text-gray-600 mb-6">Create an account to personalize.</p>
+              <div className="pt-5">
+                <h1 className="text-xl mx-10 font-bold justify-start">
+                  Sign In
+                </h1>
+              </div>
+            </div>
 
-        {/* Tabs */}
-        <div className="flex border-b mb-6">
-          <button
-            className={`flex-1 py-2 font-medium ${
-              activeTab === "signin"
-                ? "border-b-2 border-[#8b3f1c] text-[#8b3f1c]"
-                : "text-gray-600"
-            }`}
-            onClick={() => setActiveTab("signin")}
-          >
-            SIGN IN
-          </button>
-          <button
-            className={`flex-1 py-2 font-medium ${
-              activeTab === "create"
-                ? "border-b-2 border-[#8b3f1c] text-[#8b3f1c]"
-                : "text-gray-600"
-            }`}
-            onClick={() => setActiveTab("create")}
-          >
-            CREATE ACCOUNT
-          </button>
+            <form className="container px-10 mx-auto" onSubmit={handleLogin}>
+              <div>
+                <label className="block text-sm mb-1 text-slate-600 pt-5">
+                  Email*
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="johnny.depp@left4code.com"
+                  className="w-full px-4 py-2 bg-neutral-800 text-white border ml-1 border-neutral-700 rounded-md"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm mb-1 text-slate-600 pt-5">
+                  Password*
+                </label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="*********"
+                  className="bg-neutral-800 w-full px-4 py-2 rounded-md ml-1 border border-neutral-700 text-white"
+                />
+              </div>
+
+              <div className="flex justify-between pt-2">
+                <label className="flex items-center">
+                  <input type="checkbox" className="accent-blue-500" />
+                  <p className="text-sm text-gray-400 ml-2 shrink-0">
+                    Remember Me
+                  </p>
+                </label>
+                <p className="text-gray-400 text-sm">Forgot Password?</p>
+              </div>
+
+              <div className="pt-4 items-center text-sm">
+                <label className="flex items-center gap-2">
+                  <input type="checkbox" className="accent-blue-500" />
+                  <p className="text-gray-400">
+                    I agree to the Envato{" "}
+                    <a href="#" className="text-white">
+                      Privacy Policy
+                    </a>
+                  </p>
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-800 py-2 rounded-full border-1 font-semibold mt-4 hover:opacity-90 mb-4"
+              >
+                Sign In
+              </button>
+            </form>
+          </div>
         </div>
 
-        {/* Sign In Form */}
-        {activeTab === "signin" && (
-          <form className="flex flex-col space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Username/email <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full border p-2 rounded"
+        {/* Right Section */}
+        <div className="hidden lg:flex w-full lg:w-1/2 bg-gradient-to-r from-blue-800 to-blue-200 text-white p-12 flex-col justify-center">
+          <h1 className="text-4xl font-bold leading-tight mb-4">
+            Innovate your imagination <br /> into Reality
+          </h1>
+          <p className="text-lg max-w-md text-blue-100">
+            Unlock the potential of Tailwise. Build stunning, structured
+            dashboards using Tailwind & React.
+          </p>
+          <div className="mt-6 flex items-center gap-3">
+            <div className="flex -space-x-2">
+              <img
+                className="w-8 h-8 rounded-full border-2 border-white"
+                src="https://randomuser.me/api/portraits/women/1.jpg"
+              />
+              <img
+                className="w-8 h-8 rounded-full border-2 border-white"
+                src="https://randomuser.me/api/portraits/women/2.jpg"
+              />
+              <img
+                className="w-8 h-8 rounded-full border-2 border-white"
+                src="https://randomuser.me/api/portraits/men/1.jpg"
               />
             </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Password <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="password"
-                placeholder="Enter your password"
-                className="w-full border p-2 rounded"
-              />
-            </div>
-
-            {/* Remember Me */}
-            <div className="flex items-center space-x-2">
-              <input type="checkbox" id="remember" />
-              <label htmlFor="remember" className="text-sm">
-                Remember Me
-              </label>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="bg-[#8b3f1c] text-white py-2 rounded font-medium"
-            >
-              SIGN IN
-            </button>
-
-            {/* Forgot Password */}
-            <a href="#" className="text-[#8b3f1c] text-sm font-medium mt-2">
-              Forgot Password?
-            </a>
-          </form>
-        )}
-
-        {/* Create Account Form (Updated as per the image) */}
-        {activeTab === "create" && (
-          <form className="flex flex-col space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                First Name <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                className="w-full border p-2 rounded"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Last Name <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                className="w-full border p-2 rounded"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Mobile <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="tel"
-                className="w-full border p-2 rounded"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Email <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                className="w-full border p-2 rounded"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Password <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="password"
-                className="w-full border p-2 rounded"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Confirm Password <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="password"
-                className="w-full border p-2 rounded"
-              />
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <input type="checkbox" id="privacy-policy" />
-              <label htmlFor="privacy-policy" className="text-sm">
-                I agree to the <a href="#" className="underline font-medium text-gray-700">Privacy Policy</a>
-              </label>
-            </div>
-
-            <button
-              type="submit"
-              className="bg-[#8b3f1c] text-white py-2 rounded font-medium mt-2"
-            >
-              CREATE ACCOUNT
-            </button>
-          </form>
-        )}
+            <p className="text-sm">Over 7k+ strong and growing!</p>
+          </div>
+        </div>
       </div>
     </div>
   );

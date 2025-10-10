@@ -1,33 +1,32 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+// import React from "react";
+// import { Routes, Route } from "react-router-dom";
 
-// Layout
-import FrontendLayout from "../frontend/components/layout/FrontendLayout";
+// // Layout
+// import FrontendLayout from "../frontend/components/layout/FrontendLayout";
 
-// Pages
-import HomeRoutes from "../frontend/pages/home/HomeRoutes";
-import Dryfruit from "../frontend/pages/dryfruit/dryfruit";
-import NutsBerries from "../frontend/pages/nuts_berries/NutsBerries";
-import Dates from "../frontend/pages/dates/Dates";
-import Seeds from "../frontend/pages/seeds/Seeds";
-import Login from "../admin/auth/Login";
+// // Pages
+// import HomeRoutes from "../frontend/pages/home/HomeRoutes";
+// import Dryfruit from "../frontend/pages/dryfruit/dryfruit";
+// import NutsBerries from "../frontend/pages/nuts_berries/NutsBerries";
+// import Dates from "../frontend/pages/dates/Dates";
+// import Seeds from "../frontend/pages/seeds/Seeds";
+// import Login from "../admin/auth/Login";
 
-function FrontendRoutes() {
-  return (
-    <Routes>
-      {/* Frontend pages wrapped in layout */}
-      <Route element={<FrontendLayout />}>
-        <Route path="/" element={<HomeRoutes />} />
-        <Route path="/dryfruit" element={<Dryfruit />} />
-        <Route path="/seeds" element={<Seeds />} />
-        <Route path="/dates" element={<Dates />} />
-        <Route path="/nuts_berries" element={<NutsBerries />} />
-      </Route>
+// function FrontendRoutes() {
+//   return (
+//     <Routes>
+//       {/* Frontend pages wrapped in layout */}
+     
+//         <Route path="/" element={<HomeRoutes />} />
+//         <Route path="/dryfruit" element={<Dryfruit />} />
+//         <Route path="/seeds" element={<Seeds />} />
+//         <Route path="/dates" element={<Dates />} />
+//         <Route path="/nuts_berries" element={<NutsBerries />} />
+    
 
-      {/* Admin login without frontend layout */}
-      <Route path="/admin/login" element={<Login />} />
-    </Routes>
-  );
-}
+//       {/* Admin login without frontend layout */}
+//     </Routes>
+//   );
+// }
 
-export default FrontendRoutes;
+// export default FrontendRoutes;
