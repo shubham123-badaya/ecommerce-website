@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import login from "../../user/auth/LoginUser";
 import {
   FaPhoneAlt,
   FaFacebookF,
@@ -14,7 +15,7 @@ import {
   FaMinus,
   FaTrash,
 } from "react-icons/fa";
-import Login from "../../admin/auth/Login";
+import LoginUser from "../../user/auth/LoginUser";
 
 export default function NavbarWithCart() {
   const navigate = useNavigate();
@@ -27,14 +28,38 @@ export default function NavbarWithCart() {
   const [mobileMenu, setMobileMenu] = useState(false);
 
   const seedsCategories = [
-    { name: "Watermelon Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
-    { name: "Pumpkin Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
-    { name: "Oats Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
-    { name: "Sunflower Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
-    { name: "Flax Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
-    { name: "Chia Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
-    { name: "Millets Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
-    { name: "Jowar Seeds", img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png" },
+    {
+      name: "Watermelon Seeds",
+      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
+    },
+    {
+      name: "Pumpkin Seeds",
+      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
+    },
+    {
+      name: "Oats Seeds",
+      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
+    },
+    {
+      name: "Sunflower Seeds",
+      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
+    },
+    {
+      name: "Flax Seeds",
+      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
+    },
+    {
+      name: "Chia Seeds",
+      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
+    },
+    {
+      name: "Millets Seeds",
+      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
+    },
+    {
+      name: "Jowar Seeds",
+      img: "https://www.dryfruitbasket.in/storage/media/yscvD5TGkp2HV6G4ZNRjBZ5OUPQny3gCcMpmAd3w.png",
+    },
   ];
 
   // Cart state
@@ -44,8 +69,20 @@ export default function NavbarWithCart() {
       return raw
         ? JSON.parse(raw)
         : [
-            { id: 1, name: "Sunflower Seeds", price: 199, qty: 1, img: seedsCategories[3].img },
-            { id: 2, name: "Chia Seeds", price: 149, qty: 2, img: seedsCategories[5].img },
+            {
+              id: 1,
+              name: "Sunflower Seeds",
+              price: 199,
+              qty: 1,
+              img: seedsCategories[3].img,
+            },
+            {
+              id: 2,
+              name: "Chia Seeds",
+              price: 149,
+              qty: 2,
+              img: seedsCategories[5].img,
+            },
           ];
     } catch {
       return [];
@@ -60,9 +97,15 @@ export default function NavbarWithCart() {
   const subtotal = cart.reduce((s, i) => s + i.qty * i.price, 0);
 
   const increaseQty = (id) =>
-    setCart((c) => c.map((it) => (it.id === id ? { ...it, qty: it.qty + 1 } : it)));
+    setCart((c) =>
+      c.map((it) => (it.id === id ? { ...it, qty: it.qty + 1 } : it))
+    );
   const decreaseQty = (id) =>
-    setCart((c) => c.map((it) => (it.id === id ? { ...it, qty: Math.max(1, it.qty - 1) } : it)));
+    setCart((c) =>
+      c.map((it) =>
+        it.id === id ? { ...it, qty: Math.max(1, it.qty - 1) } : it
+      )
+    );
   const removeItem = (id) => setCart((c) => c.filter((it) => it.id !== id));
   const clearCart = () => setCart([]);
 
@@ -105,17 +148,17 @@ export default function NavbarWithCart() {
               <span>|</span>
               <span className="font-bold">91 22 4127 8855</span>
             </div>
-            <div className="text-[#8b3f1c] font-bold text-xs sm:text-sm md:text-md text-center">
+            <div className="text-[#8b3f1c] hidden sm:block font-semibold text-center">
               ₹ 1 From every pack sold will be donated to SKRM Foundation
             </div>
             <div className="flex space-x-3 text-black">
-              <span className="bg-black rounded-full w-8 h-8 flex justify-center items-center">
+              <span className="bg-black rounded-full w-5 h-5 flex justify-center items-center">
                 <FaFacebookF className="text-white" />
               </span>
-              <span className="bg-black rounded-full w-8 h-8 flex justify-center items-center">
+              <span className="bg-black rounded-full w-5 h-5 flex justify-center items-center">
                 <FaTwitter className="text-white" />
               </span>
-              <span className="bg-black rounded-full w-8 h-8 flex justify-center items-center">
+              <span className="bg-black rounded-full w-5 h-5 flex justify-center items-center">
                 <FaInstagram className="text-white" />
               </span>
             </div>
@@ -129,7 +172,9 @@ export default function NavbarWithCart() {
             <div className="w-10 h-10 flex justify-center items-center font-bold text-white rounded-full bg-red-500">
               shop
             </div>
-            <span className="text-sm italic text-[#8b3f1c]">Nourishing life</span>
+            <span className="text-sm italic text-[#8b3f1c]">
+              Nourishing life
+            </span>
           </Link>
 
           {/* Desktop Menu */}
@@ -154,8 +199,14 @@ export default function NavbarWithCart() {
                       to={`/product/${encodeURIComponent(cat.name)}`}
                       className="flex flex-col items-center gap-2 hover:scale-105 transition"
                     >
-                      <img src={cat.img} alt={cat.name} className="w-12 h-12 object-contain" />
-                      <p className="text-sm font-medium text-gray-700 text-center">{cat.name}</p>
+                      <img
+                        src={cat.img}
+                        alt={cat.name}
+                        className="w-12 h-12 object-contain"
+                      />
+                      <p className="text-sm font-medium text-gray-700 text-center">
+                        {cat.name}
+                      </p>
                     </Link>
                   ))}
                 </div>
@@ -171,17 +222,31 @@ export default function NavbarWithCart() {
 
             {/* Icons */}
             <div className="flex items-center space-x-8">
-              <div className="flex items-center space-x-1 cursor-pointer">
-                <FaSearch onClick={() => setShowSearch(!showSearch)} />
+              <div
+                onClick={() => setShowSearch(!showSearch)}
+                className="flex items-center space-x-1 cursor-pointer"
+              >
+                <FaSearch /> <span>Search</span>
+              </div>
+              <div>
+                <div
+                  className="flex items-center space-x-1 cursor-pointer"
+                  onClick={() => setIsLoginOpen(true)}
+                >
+                  <FaUser />
+                  <span>Login</span>
+                </div>
+                <LoginUser
+                  isOpen={isLoginOpen}
+                  onClose={() => setIsLoginOpen(false)}
+                />
+
+                {/* Login Sidebar */}
               </div>
               <div
-                className="flex items-center space-x-1 cursor-pointer"
-                onClick={() => setIsLoginOpen(true)}
+                className="relative cursor-pointer"
+                onClick={() => setOpenCart(true)}
               >
-                <FaUser />
-                <span>Login</span>
-              </div>
-              <div className="relative cursor-pointer" onClick={() => setOpenCart(true)}>
                 <FaShoppingBag size={20} />
                 <span className="absolute -top-2 -right-2 bg-[#8b3f1c] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
                   {totalItems}
@@ -191,7 +256,10 @@ export default function NavbarWithCart() {
           </div>
 
           {/* Mobile Hamburger */}
-          <div className="md:hidden cursor-pointer" onClick={() => setMobileMenu(!mobileMenu)}>
+          <div
+            className="md:hidden cursor-pointer"
+            onClick={() => setMobileMenu(!mobileMenu)}
+          >
             {mobileMenu ? <FaTimes size={20} /> : <FaBars size={20} />}
           </div>
         </div>
@@ -207,7 +275,9 @@ export default function NavbarWithCart() {
               {/* Mobile Seeds Dropdown */}
               <div className="flex flex-col">
                 <button
-                  onClick={() => setOpenMenu(openMenu === "seeds" ? null : "seeds")}
+                  onClick={() =>
+                    setOpenMenu(openMenu === "seeds" ? null : "seeds")
+                  }
                   className="flex justify-between items-center w-full hover:text-[#8b3f1c] font-semibold"
                 >
                   SEEDS
@@ -221,7 +291,11 @@ export default function NavbarWithCart() {
                         className="flex flex-col items-center gap-1"
                         onClick={() => setMobileMenu(false)}
                       >
-                        <img src={cat.img} alt={cat.name} className="w-12 h-12 object-contain" />
+                        <img
+                          src={cat.img}
+                          alt={cat.name}
+                          className="w-12 h-12 object-contain"
+                        />
                         <p className="text-xs text-center">{cat.name}</p>
                       </Link>
                     ))}
@@ -240,12 +314,9 @@ export default function NavbarWithCart() {
         )}
       </nav>
 
-      {/* Login Modal */}
-      <Login isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
-
       {/* Search Bar */}
       {showSearch && (
-        <div className="search-bar-area w-full bg-[#f9f9f9] border-t border-gray-200 flex justify-center py-4">
+        <div className="fixed top-[128px]  duration-500 left-0  w-full bg-[#f9f9f9] border-t border-gray-200 flex justify-center z-50 py-4">
           <div className="flex w-2/3 max-w-2xl border border-gray-300 rounded-md overflow-hidden bg-white">
             <input
               type="text"
@@ -265,9 +336,15 @@ export default function NavbarWithCart() {
       )}
 
       {/* Cart Drawer */}
-      <div className={`fixed inset-0 z-50 ${openCart ? "pointer-events-auto" : "pointer-events-none"}`}>
+      <div
+        className={`fixed inset-0 z-50 ${
+          openCart ? "pointer-events-auto" : "pointer-events-none"
+        }`}
+      >
         <div
-          className={`absolute inset-0 transition-opacity ${openCart ? "opacity-100" : "opacity-0"}`}
+          className={`absolute inset-0 transition-opacity ${
+            openCart ? "opacity-100" : "opacity-0"
+          }`}
           onClick={() => setOpenCart(false)}
         >
           <div className="w-full h-full bg-black/40" />
@@ -290,9 +367,14 @@ export default function NavbarWithCart() {
             </div>
           </div>
 
-          <div className="p-4 overflow-y-auto" style={{ maxHeight: "calc(100vh - 160px)" }}>
+          <div
+            className="p-4 overflow-y-auto"
+            style={{ maxHeight: "calc(100vh - 160px)" }}
+          >
             {cart.length === 0 ? (
-              <div className="text-center py-20 text-gray-600">Your cart is empty.</div>
+              <div className="text-center py-20 text-gray-600">
+                Your cart is empty.
+              </div>
             ) : (
               <ul className="space-y-4">
                 {cart.map((item) => (
@@ -306,11 +388,17 @@ export default function NavbarWithCart() {
                       <div className="font-medium">{item.name}</div>
                       <div className="text-sm text-gray-500">₹{item.price}</div>
                       <div className="mt-2 flex items-center gap-2">
-                        <button onClick={() => decreaseQty(item.id)} className="p-1 border rounded">
+                        <button
+                          onClick={() => decreaseQty(item.id)}
+                          className="p-1 border rounded"
+                        >
                           <FaMinus />
                         </button>
                         <div className="px-3">{item.qty}</div>
-                        <button onClick={() => increaseQty(item.id)} className="p-1 border rounded">
+                        <button
+                          onClick={() => increaseQty(item.id)}
+                          className="p-1 border rounded"
+                        >
                           <FaPlus />
                         </button>
                         <button
@@ -333,10 +421,15 @@ export default function NavbarWithCart() {
               <span>₹{subtotal}</span>
             </div>
             <div className="mt-4 flex gap-2">
-              <button onClick={goToCartPage} className="w-full text-center p-2 border rounded">
+              <button
+                onClick={goToCartPage}
+                className="w-full text-center p-2 border rounded"
+              >
                 View Cart
               </button>
-              <button className="w-full bg-[#8b3f1c] text-white p-2 rounded">Checkout</button>
+              <button className="w-full bg-[#8b3f1c] text-white p-2 rounded">
+                Checkout
+              </button>
             </div>
           </div>
         </aside>

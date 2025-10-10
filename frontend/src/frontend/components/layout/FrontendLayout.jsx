@@ -7,9 +7,10 @@ const FrontendLayout = () => {
   return (
     <div className="">
       <Navbar />
-      <main className="pt-20 md:pt-24 lg:pt-32 ">
-        <Outlet /> {/* This is where the page content will render */}
+      <main className="pt-20 md:pt-24 lg:pt-32 min-h-screen">
+        <Outlet />
       </main>
+
       <Footer />
     </div>
   );
