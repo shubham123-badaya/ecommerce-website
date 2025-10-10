@@ -9,14 +9,14 @@ import Testimonials from "./Testimonials";
 
 const Home = () => {
   return (
-    <div>
+    <div >
       <HomeSlider />
       <ShopByCategories />
       <ShopBySecondCategories />
       <AboutUs />
       <LatestBlog />
-      <BenefitsSection />
-      <Testimonials/>
+      {/* <BenefitsSection /> */}
+      {/* <Testimonials/> */}
     </div>
   );
 };

@@ -46,6 +46,9 @@ import UserProfile from "../user/pages/UserProfile.jsx";
 import UserOrder from "../user/pages/UserOrder.jsx";
 import UserBilling from "../user/pages/UserBilling.jsx";
 import Userwishlist from "../user/pages/Userwishlist.jsx";
+import Contact from "../frontend/pages/customercare/Contact.jsx";
+import TermsConditions from "../frontend/pages/customercare/TermsConditions.jsx";
+import PrivacyPolicy from "../frontend/pages/customercare/PrivacyPolicy.jsx";
 
 // ---------- ProtectedRoute ----------
 const ProtectedRoute = ({ children }) => {
@@ -78,6 +81,9 @@ function AppRoutes() {
           <Route path="/myaccount" element={<MyAccount />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forget/reset" element={<ResetPassword/>} />
+          <Route path="/contact_us" element={<Contact/>} />
+          <Route path="/terms_conditions" element={<TermsConditions/>} />
+          <Route path="/privacy_policy" element={<PrivacyPolicy/>} />
 
 
 
