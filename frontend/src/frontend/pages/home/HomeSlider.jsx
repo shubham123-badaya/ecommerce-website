@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
+import axios from "axios";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import CategoryTabs from "./shopbycate/CategoryTabs";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-// Custom Arrow Buttons
+// ---------- Custom Arrow Buttons ----------
 const NextArrow = ({ onClick }) => (
   <div
     onClick={onClick}
-    className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer text-[#8b3f1c] text-5xl"
+    className="absolute right-6 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer text-[#8b3f1c] text-5xl hover:scale-110 transition-transform duration-300"
   >
     <SlArrowRight />
   </div>
@@ -16,75 +18,92 @@ const NextArrow = ({ onClick }) => (
 const PrevArrow = ({ onClick }) => (
   <div
     onClick={onClick}
-    className="absolute  left-4 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer text-[#8b3f1c] text-5xl"
+    className="absolute left-6 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer text-[#8b3f1c] text-5xl hover:scale-110 transition-transform duration-300"
   >
     <SlArrowLeft />
   </div>
 );
 
-// Slider Component
+// ---------- Main Slider ----------
 const HeroSlider = () => {
+  const [slides, setSlides] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const token =
+    "9d6d13290389ef4455fc3e69449e774b200815e4c70b02651364281fc92ef197f39699d506fc95cd386a2a09a1f784bfece5bc5b6c5e41c227ecfba36c38b13a";
+
+  useEffect(() => {
+    const fetchSlides = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/frontend/sliders", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setSlides(res.data?.sliders?.filter((s) => s.image) || []);
+      } catch (error) {
+        console.error("Error fetching sliders:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSlides();
+  }, []);
+
   const settings = {
-    dots: false,
+    dots: true,
     infinite: true,
     autoplay: true,
     autoplaySpeed: 4000,
-    speed: 500,
+    speed: 800,
     slidesToShow: 1,
     slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
+    pauseOnHover: true,
+    adaptiveHeight: false, // important: keep false
+    fade: true, // smoother transition
   };
 
-  const slides = [
-    {
-      id: 1,
-      img: "/images/slider1.png", // Update this with your real image path
-      title: "Discover Deliciously",
-      subtitle: "Delightful Health Boosters!",
-    },
-    {
-      id: 2,
-      img: "/images/slider2.png",
-      title: "Munch Better",
-      subtitle: "Premium Dry Fruits & Snacks",
-    },
-    {
-      id: 3,
-      img: "/images/slider3.png",
-      title: "Taste the Goodness",
-      subtitle: "Handpicked & Hygienic Packaging",
-    },
-  ];
-
   return (
-    <>
-     
-      <div className="relative py-15 w-full  mx-auto  bg-[#f2f2df]">
-        
-        {/* margin to compensate for fixed navbar */}
-        <Slider {...settings}>
-          {slides.map((slide) => (
-            <div key={slide.id}>
-              <div
-                className="h-[300px] sm:h-[200px]  bg-cover bg-center relative flex items-center"
-                style={{ backgroundImage: `url(${slide.img})` }}
-              >
-                <div className="pl-26">
-                  <div className="flex itmes-center">
-                    <h2 className="text-pink-600 text-4xl font-bold">
-                      {slide.title}
-                    </h2>
-                  </div>
-                  <p className="text-lg text-gray-700">{slide.subtitle}</p>
+    <div className="relative w-full overflow-hidden">
+      {loading ? (
+        <div className="text-center py-20 text-gray-600 text-lg font-semibold">
+          Loading sliders...
+        </div>
+      ) : slides.length === 0 ? (
+        <div className="text-center py-20 text-gray-600 text-lg font-semibold">
+          No sliders available.
+        </div>
+      ) : (
+        <div className="w-full overflow-hidden">
+          <Slider {...settings}>
+            {slides.map((slide) => (
+              <div key={slide._id} className="!m-0 !p-0">
+                <div className="relative w-full h-[500px] sm:h-[300px] md:h-[400px] overflow-hidden">
+                  <img
+                    src={`http://localhost:5000/uploads/slider/${slide.image}`}
+                    alt={slide.title || "Slide"}
+                    className="w-full h-full object-cover object-center block"
+                  />
+
+                  {slide.title && (
+                    <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-white/80 backdrop-blur-md px-6 py-3 rounded-lg shadow-lg">
+                      <h2 className="text-[#8b3f1c] text-2xl font-bold drop-shadow-md">
+                        {slide.title}
+                      </h2>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-          ))}
-        </Slider>
-      </div>
-    </>
+            ))}
+          </Slider>
+        </div>
+      )}
+    </div>
   );
 };
 
 export default HeroSlider;
+                                                                                                                                                                                  
