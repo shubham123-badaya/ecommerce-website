@@ -192,7 +192,7 @@ export default function NavbarWithCart() {
                 SEEDS
               </Link>
               {openMenu === "seeds" && (
-                <div className="absolute left-1/2 -translate-x-1/2 top-[110%] w-[90vw] lg:w-[100vw] bg-[#fef7f7] rounded-lg py-6 px-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 shadow-lg">
+                <div className="absolute left-1/2 -translate-x-1/2 top-[110%] w-[90vw] lg:w-[110vw] bg-[#fef7f7] rounded-lg py-6 px-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 shadow-lg ">
                   {seedsCategories.map((cat, i) => (
                     <Link
                       key={i}

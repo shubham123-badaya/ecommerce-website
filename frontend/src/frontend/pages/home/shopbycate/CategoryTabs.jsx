@@ -1,17 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+// Local icons (static)
 import dryfruit from "../../../../../src/assets/shopbycate/dryfruit.svg";
 import seeds from "../../../../../src/assets/shopbycate/seeds.svg";
 import dates from "../../../../../src/assets/shopbycate/dates.svg";
 import nuts from "../../../../../src/assets/shopbycate/nuts.svg";
 
-const categories = [
-  { label: "DRY FRUITS", icon: dryfruit },
-  { label: "SEEDS", icon: seeds },
-  { label: "DATES", icon: dates },
-  { label: "NUTS & BERRIES", icon: nuts },
-];
+const iconMap = {
+  "Dry Fruits": dryfruit,
+  "Seeds": seeds,
+  "Dates": dates,
+  "Nuts & Berries": nuts,
+};
 
 const CategoryTabs = ({ activeCategory, onCategoryChange }) => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/frontend/categories", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YzU2NDQ4MTBlYWIzMTkzOGViZjE0OCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MDAyMDUwMiwiZXhwIjoxNzYwNjI1MzAyfQ.x-sEpgRub6PVzOmegW7wVpwZqWQC4r_9K7MDPrsIhJs",
+          },
+        });
+
+        // Map API data with local icons
+        const apiCategories = res.data?.categories || [];
+        const merged = apiCategories.map((cat) => ({
+          label: cat.title,
+          icon: iconMap[cat.title] || dryfruit, // fallback icon
+        }));
+
+        setCategories(merged);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <div className="flex flex-wrap justify-center max-w-7xl mx-auto my-12 gap-6 md:gap-12">
       {categories.map((cat, index) => (
@@ -32,7 +64,7 @@ const CategoryTabs = ({ activeCategory, onCategoryChange }) => {
             />
           </span>
           <span className="text-sm md:text-lg font-bold mt-1 md:mt-0 text-center md:text-left">
-            {cat.label}
+            {cat.label.toUpperCase()}
           </span>
         </div>
       ))}

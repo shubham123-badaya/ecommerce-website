@@ -31,7 +31,7 @@ const ProductCard = ({ product }) => {
         <button className="border rounded-full p-2 text-[#8b3f1c] hover:text-red-500">
           <FaHeart />
         </button>
-        <button className="bg-[#fff] shadow-md text-[#8b3f1c] text-sm px-4 py-1 rounded-full hover:bg-[#6f3014]">
+        <button className="bg-[#fff] shadow-md text-[#8b3f1c] text-sm px-4 py-1 rounded-full hover:bg-[#a4d2dcfe]">
           Add to Cart
         </button>
         <button className="border rounded-full p-2 text-[#8b3f1c] hover:text-blue-500">
