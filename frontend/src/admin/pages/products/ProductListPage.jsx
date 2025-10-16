@@ -41,7 +41,7 @@ const ProductListPage = () => {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="w-full mx-auto p-6">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Products</h1>
         <Link
@@ -52,9 +52,9 @@ const ProductListPage = () => {
         </Link>
       </div>
 
-      <table className="w-full mt-15 ">
-        <thead>
-          <tr className="bg-gray-100 uppercase">
+      <table className="w-full  mt-15 ">
+        <thead className="">
+          <tr className="bg-gray-100  uppercase">
             <th className="p-3">Image</th>
             <th className="p-3">Name</th>
             <th className="p-3">Price</th>
@@ -64,8 +64,8 @@ const ProductListPage = () => {
         </thead>
         <tbody>
           {products.map((p) => (
-            <tr key={p._id} className="text-center">
-              <td className=" p-1">
+            <tr key={p._id} className="border-t text-center">
+              <td className=" p-2">
                 {p.images?.length > 0 && (
                   <img
                     src={`http://localhost:5000/uploads/product/${p.images[0]}`}

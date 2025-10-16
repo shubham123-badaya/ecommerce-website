@@ -5,8 +5,8 @@ import path from "path";
 export const createOrUpdateSetting = async (req, res) => {
   try {
     const {
-      facebook,
       instagram,
+      facebook,
       contactno,
       email,
       web,

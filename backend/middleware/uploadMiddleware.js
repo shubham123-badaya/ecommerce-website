@@ -85,7 +85,8 @@ export const uploadCategory = multer({ storage: categoryStorage, fileFilter }).s
 export const uploadProduct = multer({ storage: productStorage, fileFilter }).single("image");
 export const uploadSlider = multer({ storage: sliderStorage, fileFilter }).single("image");
 export const uploadAboutUs = multer({ storage: aboutUsStorage, fileFilter }).single("image");
-export const uploadLogo = multer({ storage: logoStorage, fileFilter }).single("image");
+export const uploadLogo = multer({ storage: logoStorage, fileFilter }).single("logo");
+
 export const uploadBlog = multer({ storage: blogStorage, fileFilter }).single("image");
 
 export default {

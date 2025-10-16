@@ -53,6 +53,11 @@ import EditCouponPage from "../admin/pages/coupon/EditCouponPage";
 import ProductListPage from "../admin/pages/products/ProductListPage";
 import AddProductPage from "../admin/pages/products/AddProductPage";
 import UpdateProductPage from "../admin/pages/products/UpdateProductPage";
+import AboutForm from "../admin/pages/about/aboutForm.jsx";
+import SettingForm from "../admin/pages/setting/SettingForm.jsx";
+import BlogListPage from "../admin/pages/blog/BlogListPage.jsx";
+import AddBlogPage from "../admin/pages/blog/AddBlogPage.jsx";
+import EditBlogPage from "../admin/pages/blog/EditBlogPage.jsx";
 
 // ---------- Protected Route ----------
 const ProtectedRoute = ({ children }) => {
@@ -126,6 +131,11 @@ function AppRoutes() {
           <Route path="products_list" element={<ProductListPage />} />
           <Route path="products_add" element={<AddProductPage />} />
           <Route path="products_update/:id" element={<UpdateProductPage />} />
+          <Route path="about_form" element={<AboutForm />} />
+          <Route path="setting" element={<SettingForm />} />
+          <Route path="blog_list" element={<BlogListPage />} />
+          <Route path="blog_add" element={<AddBlogPage />} />
+          <Route path="blog_update/:id" element={<EditBlogPage />} />
         </Route>
 
         {/* ---------- Catch-all ---------- */}

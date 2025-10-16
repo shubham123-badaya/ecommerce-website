@@ -44,7 +44,7 @@ const SliderListPage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="w-full mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Slider List</h1>
         <Link
@@ -66,7 +66,7 @@ const SliderListPage = () => {
           </thead>
           <tbody>
             {sliders.map((slider) => (
-              <tr key={slider._id} className=" border-t hover:bg-gray-50">
+              <tr key={slider._id} className=" border-t hover:bg-gray-200">
                 <td className="p-3 ">
                   <img
                     src={`http://localhost:5000/uploads/slider/${slider.image}`}

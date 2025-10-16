@@ -4,7 +4,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="flex justify-between  mb-5">
-        <h1>DASHBOARD</h1>
+        <h1 className="text-2xl font-bold">DASHBOARD</h1>
         <input type="text"  placeholder=" search" className="border rounded-lg" />
       </div>
       {/* Stats Cards */}

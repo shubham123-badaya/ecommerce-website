@@ -4,6 +4,7 @@ import fs from "fs";
 
 // Create blog
 export const createBlog = async (req, res) => {
+  
   try {
     const { title, description } = req.body;
     if (!title) {
@@ -17,7 +18,9 @@ export const createBlog = async (req, res) => {
     });
 
     await newBlog.save();
-    res.status(201).json({ success: true, message: "Blog created", blog: newBlog });
+    res
+      .status(201)
+      .json({ success: true, message: "Blog created", blog: newBlog });
   } catch (err) {
     console.error("Error creating blog:", err);
     res.status(500).json({ message: "Server error", error: err.message });
