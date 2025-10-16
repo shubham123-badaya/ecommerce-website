@@ -53,7 +53,7 @@ const ResetPassword = () => {
               type="submit"
               className="w-full bg-amber-700 text-white py-2 rounded-md hover:bg-amber-800 transition"
             >
-              RECOVER
+              SUBMIT
             </button>
             <button
               onClick={() => navigate(-1)}
