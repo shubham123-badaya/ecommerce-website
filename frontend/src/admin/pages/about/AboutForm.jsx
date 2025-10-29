@@ -12,7 +12,12 @@ function AboutForm() {
   useEffect(() => {
     const fetchAbout = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/about");
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://localhost:5000/api/about", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = res.data.aboutUs;
         if (data) {
           setTitle(data.title);
@@ -125,7 +130,7 @@ function AboutForm() {
               <img
                 src={preview}
                 alt="Preview"
-                className="h-48 w-48 object-cover rounded-xl border"
+                className="h-48 w-auto object-cover rounded-xl border"
               />
             </div>
           )}

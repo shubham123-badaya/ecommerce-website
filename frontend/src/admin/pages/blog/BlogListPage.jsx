@@ -58,7 +58,7 @@ export default function BlogListPage() {
                       <img
                         src={`http://localhost:5000/uploads/blog/${blog.image}`}
                         alt={blog.title}
-                        className="w-16 h-16 object-cover rounded-md shadow-sm"
+                        className="w-auto h-16 object-cover rounded-md shadow-sm"
                       />
                     ) : (
                       <div className="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center text-gray-500 text-sm">

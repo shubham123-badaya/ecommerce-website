@@ -75,7 +75,7 @@ function SettingForm() {
       if (logo) formData.append("logo", logo);
 
       const res = await axios.post(
-        "http://localhost:5000/api/setting",
+        "http://localhost:5000/api/setting/create",
         formData,
         {
           headers: {
