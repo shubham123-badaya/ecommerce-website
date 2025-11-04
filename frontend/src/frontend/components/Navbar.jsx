@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import login from "../../user/auth/LoginUser";
 import {
@@ -20,6 +20,9 @@ import LoginUser from "../../user/auth/LoginUser";
 export default function NavbarWithCart() {
   const navigate = useNavigate();
 
+  const [user, setUser] = useState(null);
+const [isProfileOpen, setIsProfileOpen] = useState(false);
+const profileRef = useRef(null); // Used to detect clicks outside the dropdown
   const [openMenu, setOpenMenu] = useState(null);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [openCart, setOpenCart] = useState(false);
@@ -27,6 +30,36 @@ export default function NavbarWithCart() {
   const [showSearch, setShowSearch] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
 
+ useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+   const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setUser(null);
+    setIsProfileOpen(false);
+    navigate("/"); // Navigate to homepage after logout
+  };
+
+    useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setIsProfileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);`  1`
+  const handleLoginSuccess = (userData) => {
+    setUser(userData); // Instantly update the user state in the navbar
+    setIsLoginOpen(false); // Close the login modal
+  };
   const seedsCategories = [
     {
       name: "Watermelon Seeds",
@@ -228,21 +261,34 @@ export default function NavbarWithCart() {
               >
                 <FaSearch /> <span>Search</span>
               </div>
-              <div>
-                <div
-                  className="flex items-center space-x-1 cursor-pointer"
-                  onClick={() => setIsLoginOpen(true)}
-                >
-                  <FaUser />
-                  <span>Login</span>
+                 {user ? (
+                // Logged-In View
+                <div className="relative" ref={profileRef}>
+                  <div className="flex items-center space-x-1 cursor-pointer" onClick={() => setIsProfileOpen(!isProfileOpen)}>
+                    <FaUser />
+                    <span>Welcome, {user.firstname}</span>
+                  </div>
+                  {isProfileOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
+                      <Link to="/user/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={() => setIsProfileOpen(false)}>My Account</Link>
+                      <Link to="/user/orders" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={() => setIsProfileOpen(false)}>Order History</Link>
+                      <Link to="/user/wishlist" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={() => setIsProfileOpen(false)}>Wish List</Link>
+                      <button onClick={handleLogout} className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Log Out</button>
+                    </div>
+                  )}
                 </div>
-                <LoginUser
-                  isOpen={isLoginOpen}
-                  onClose={() => setIsLoginOpen(false)}
-                />
-
-                {/* Login Sidebar */}
-              </div>
+              ) : (
+                // Logged-Out View
+                <div>
+                  <div className="flex items-center space-x-1 cursor-pointer" onClick={() => setIsLoginOpen(true)}>
+                    <FaUser />
+                    <span>Login</span>
+                  </div>
+                  <LoginUser isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)}
+                    onLoginSuccess={handleLoginSuccess} />
+                </div>
+              )}
+              
               <div
                 className="relative cursor-pointer"
                 onClick={() => setOpenCart(true)}
