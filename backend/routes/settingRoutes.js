@@ -7,8 +7,8 @@ const router = express.Router();
 
 // Admin create/update
 router.post("/create", verifyAdmin, uploadLogo, createOrUpdateSetting);
-router.get("/", verifyAdmin, getSetting);
+router.get("/", getSetting);
 
 
 
-export default router;
+export default router;  

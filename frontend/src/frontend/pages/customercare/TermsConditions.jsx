@@ -1,6 +1,28 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 function TermsConditions() {
+  const [terms, setTerms] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTerms = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/setting");
+        setTerms(res.data.setting?.termsCondition || "No terms available.");
+      } catch (err) {
+        console.error("Error fetching terms:", err);
+        setTerms("Error loading Terms & Conditions.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTerms();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-10 text-gray-600">Loading...</div>;
+  }
   return (
     <div className="w-full min-h-screen">
       {/* Header Section */}
@@ -30,12 +52,11 @@ function TermsConditions() {
           <h2 className="text-xl font-semibold text-[#92553d] mb-2">
             Dryfruit Basket Customer Agreement
           </h2>
-          <p>
-            This Agreement (the “Agreement”) is a legal agreement between you
-            and Supply Links (the sole owner of the brand “Dryfruit Basket”). By
-            using the Dryfruit Basket Service or website, you agree to these
-            terms and conditions.
-          </p>
+
+          {/* Dynamic Terms Content */}
+          <div className="max-w-6xl mx-auto p-6 bg-[#fdfdf6] rounded-md shadow-sm text-gray-700 leading-relaxed">
+            <div dangerouslySetInnerHTML={{ __html: terms }} />
+          </div>
         </div>
 
         {/* Section 2 */}
