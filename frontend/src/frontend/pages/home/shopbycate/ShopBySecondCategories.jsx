@@ -23,12 +23,14 @@ const ShopBySecondCategories = () => {
         `http://localhost:5000/api/frontend/products/by-type?type=${type}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
       // Add a default selectedVariant field for each product
       const productsWithVariant = (res.data.products || []).map((p) => ({
         ...p,
-        selectedVariant:
-          p.variants?.length > 0 ? p.variants[0] : null,
+        selectedVariant: p.variants?.length > 0 ? p.variants[0] : null,
+        originalPrice: p.originalPrice || (p.price ? p.price + 50 : null),
       }));
+
       setProducts(productsWithVariant);
     } catch (err) {
       console.error("Error fetching products:", err);
@@ -93,18 +95,28 @@ const ShopBySecondCategories = () => {
               ? `http://localhost:5000/uploads/product/${product.images[0]}`
               : "https://via.placeholder.com/200?text=No+Image";
 
-            const options =
-              product.variants?.length > 0
-                ? product.variants
-                : [{ name: "50", price: product.price, mrp: product.originalPrice }];
+            // ✅ Check if product actually has multiple variants
+            const hasVariants = product.variants && product.variants.length > 1;
 
+            // Use variants if available, otherwise single price object
+            const options = hasVariants
+              ? product.variants
+              : [
+                  {
+                    name: "default",
+                    price: product.price,
+                    mrp: product.originalPrice,
+                  },
+                ];
+
+            // Price setup
             const selectedPrice = product.selectedVariant
               ? product.selectedVariant.price
               : product.price;
             const selectedMrp = product.selectedVariant
               ? product.selectedVariant.mrp
               : product.originalPrice;
-              
+
             return (
               <div
                 key={productIndex}
@@ -120,30 +132,29 @@ const ShopBySecondCategories = () => {
                   {product.name}
                 </h3>
 
-                {/* Variant Selector */}
-                <select
-                  className="mt-2 border rounded px-3 py-1 text-sm w-full"
-                  value={product.selectedVariant?.name || "100"}
-                  onChange={(e) =>
-                    handleVariantChange(
-                      productIndex,
-                      e.target.selectedIndex
-                    )
-                  }
-                >
-                  {options.map((v, i) => (
-                    <option key={i} value={v.name}>
-                      {v.name}
-                    </option>
-                  ))}
-                </select>
+                {/* ✅ Show dropdown only if product has multiple variants */}
+                {hasVariants && (
+                  <select
+                    className="mt-2 border rounded px-3 py-1 text-sm w-full"
+                    value={product.selectedVariant?.name || ""}
+                    onChange={(e) =>
+                      handleVariantChange(productIndex, e.target.selectedIndex)
+                    }
+                  >
+                    {options.map((v, i) => (
+                      <option key={i} value={v.name}>
+                        {v.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
 
                 {/* Price Section */}
                 <div className="mt-2 space-x-3 text-md">
                   <span className="font-semibold text-gray-900">
                     ₹{selectedPrice}
                   </span>
-                  {selectedMrp && (
+                  {selectedMrp && selectedMrp > selectedPrice && (
                     <>
                       <span>|</span>
                       <span className="line-through text-gray-400">
