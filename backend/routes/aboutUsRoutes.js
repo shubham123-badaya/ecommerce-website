@@ -8,7 +8,7 @@ const router = express.Router();
 
 
 // Admin create or update
-router.get("/", verifyAdmin, getAboutUs);
+router.get("/", getAboutUs);
 router.post("/", verifyAdmin, uploadAboutUs, createOrUpdateAboutUs);
 
 export default router;

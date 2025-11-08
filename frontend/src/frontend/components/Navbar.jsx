@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import login from "../../user/auth/LoginUser";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSetting } from "../../frontend/redux/settingSlice";
 import {
   FaPhoneAlt,
   FaFacebookF,
@@ -29,6 +30,13 @@ const profileRef = useRef(null); // Used to detect clicks outside the dropdown
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
+
+  const dispatch = useDispatch();
+  const { setting, loading } = useSelector((state) => state.setting);
+
+  useEffect(() => {
+    dispatch(fetchSetting());
+  }, [dispatch]);
 
  useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -171,29 +179,52 @@ const profileRef = useRef(null); // Used to detect clicks outside the dropdown
       {/* Navbar */}
       <nav className="w-full fixed top-0 z-50 bg-white shadow-md">
         {/* Top Bar */}
+      
         <div className="bg-[#f2f2df]">
           <div className="max-w-7xl mx-auto flex justify-between items-center px-4 lg:px-10 py-2 text-xs sm:text-sm">
             <div className="flex items-center gap-3 sm:gap-4">
               <span className="bg-black rounded-full w-5 h-5 flex justify-center items-center">
                 <FaPhoneAlt className="text-white text-xs" />
               </span>
-              <span className="font-bold">91 8424 888 555</span>
-              <span>|</span>
-              <span className="font-bold">91 22 4127 8855</span>
+
+              {/* Dynamic contact numbers */}
+              {setting ? (
+                <>
+                  <span className="font-bold">{setting.contactno}</span>
+                  <span>|</span>
+                  <span className="font-bold">{setting.email}</span>
+                </>
+              ) : (
+                <span className="font-bold">Loading...</span>
+              )}
             </div>
+
             <div className="text-[#8b3f1c] hidden sm:block font-semibold text-center">
               ₹ 1 From every pack sold will be donated to SKRM Foundation
             </div>
+
+            {/* Dynamic social icons */}
             <div className="flex space-x-3 text-black">
-              <span className="bg-black rounded-full w-5 h-5 flex justify-center items-center">
-                <FaFacebookF className="text-white" />
-              </span>
-              <span className="bg-black rounded-full w-5 h-5 flex justify-center items-center">
-                <FaTwitter className="text-white" />
-              </span>
-              <span className="bg-black rounded-full w-5 h-5 flex justify-center items-center">
-                <FaInstagram className="text-white" />
-              </span>
+              {setting?.facebook && (
+                <a
+                  href={setting.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-black rounded-full w-5 h-5 flex justify-center items-center"
+                >
+                  <FaFacebookF className="text-white" />
+                </a>
+              )}
+              {setting?.instagram && (
+                <a
+                  href={setting.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-black rounded-full w-5 h-5 flex justify-center items-center"
+                >
+                  <FaInstagram className="text-white" />
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -202,10 +233,18 @@ const profileRef = useRef(null); // Used to detect clicks outside the dropdown
         <div className="max-w-7xl mx-auto flex justify-between items-center px-4 lg:px-10 py-4">
           {/* Logo */}
           <Link to="/" className="flex flex-col items-center">
-            <div className="w-10 h-10 flex justify-center items-center font-bold text-white rounded-full bg-red-500">
-              shop
-            </div>
-            <span className="text-sm italic text-[#8b3f1c]">
+            {setting?.logo ? (
+              <img
+                src={`http://localhost:5000/uploads/logo/${setting.logo}`}
+                alt="Logo"
+                className="w-16 h-16 scale-110  rounded-full object-contain"
+              />
+            ) : (
+              <div className="w-10 h-10 flex justify-center items-center font-bold text-white rounded-full bg-red-500">
+                shop
+              </div>
+            )}
+            <span className="text-sm italic text-[#8f1a0f]">
               Nourishing life
             </span>
           </Link>

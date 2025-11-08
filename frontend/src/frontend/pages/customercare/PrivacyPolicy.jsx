@@ -1,6 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function PrivacyPolicy() {
+  const [privacy, setPrivacy] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPrivacy = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/setting");
+        setPrivacy(
+          res.data.setting?.privacyPolicy || "No privacy policy found."
+        );
+      } catch (err) {
+        console.error("Error fetching privacy policy:", err);
+        setPrivacy("Error loading Privacy Policy.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPrivacy();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-10 text-gray-600">Loading...</div>;
+  }
   return (
     <div className="w-full min-h-screen bg-white">
       {/* Header with Icon */}
@@ -26,12 +50,11 @@ function PrivacyPolicy() {
       {/* Content */}
       <div className="max-w-6xl mx-auto p-6 space-y-8 text-gray-700 leading-relaxed">
         {/* Intro */}
-        <p>
-          Your privacy is important to Dryfruit Basket. We want to provide a
-          comfortable and secure shopping experience. This privacy policy
-          explains the type of information we collect, how it’s protected, and
-          how you can control or change this information.
-        </p>
+
+        {/* Dynamic Privacy Policy Content */}
+        <div className="max-w-6xl mx-auto p-6 bg-[#fdfdf6] rounded-md shadow-sm text-gray-700 leading-relaxed">
+          <div dangerouslySetInnerHTML={{ __html: privacy }} />
+        </div>
 
         {/* Section 1 */}
         <div className="bg-[#fdfdf6] p-6 rounded-md shadow-sm">

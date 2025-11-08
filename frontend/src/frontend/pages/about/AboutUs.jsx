@@ -6,43 +6,64 @@ import {
   FaShippingFast,
   FaStar,
 } from "react-icons/fa";
-import about from "../../../assets/about-us.png";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 
 const AboutUs = () => {
   const navigate = useNavigate();
+  const [aboutData, setAboutData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchAboutData();
+  }, []);
+
+  const fetchAboutData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.get("http://localhost:5000/api/about", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setAboutData(res.data.aboutUs);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching About Us:", err);
+      setLoading(false);
+    }
+  };
+
+  if (loading) return <p className="text-center mt-10">Loading...</p>;
+
+  if (!aboutData)
+    return (
+      <p className="text-center mt-10 text-red-500">No About Us data found.</p>
+    );
+
   return (
     <div className="w-full bg-white">
       {/* Main Section */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 py-16 px-6">
         {/* Left Image */}
         <div className="flex justify-center items-center">
-          <img
-            src={about}
-            alt="Dry Fruits"
-            className="max-h-[400px] object-contain"
-          />
+          {aboutData.image && (
+            <img
+              src={`http://localhost:5000/uploads/about/${aboutData.image}`}
+              alt="About"
+              className="max-h-[400px] object-contain rounded-lg shadow"
+            />
+          )}
         </div>
 
         {/* Right Content */}
         <div className="flex px-6 w-1xl  flex-col   justify-center">
-          <h2 className="text-3xl font-bold mb-4">ABOUT US</h2>
+          <h2 className="text-3xl font-bold mb-4">{aboutData.title}</h2>
           <p className="text-gray-700 mb-4">
-            <strong>
-              DryFruit Basket with all kinds of Dry Fruits have been a part of
-              our diet and our culture since times immemorial.
-            </strong>
-          </p>
-          <p className="text-gray-600 text-sm mb-4">
-            Established in 1996, we are dedicated to providing quality wholesale
-            dry fruits online that are rich in nutrients and taste.
-          </p>
-          <p className="text-gray-600 text-sm  mb-6">
-            Our hygienic packaging ensures that each product is carefully sealed
-            to preserve its flavour and freshness. Be it for your personal
-            health goals or luxury gifting solutions, DryFruit Basket simplifies
-            dry fruits online shopping by bringing quality, flavour, and
-            packaging under one roof.
+            <strong>{aboutData.description}</strong>
           </p>
 
           <button

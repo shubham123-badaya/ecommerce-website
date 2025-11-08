@@ -77,7 +77,7 @@ export default function BlogListPage() {
                   <td className=" px-4 py-2 text-center">
                     <div className="flex justify-center gap-2">
                       <Link
-                        to={`/edit/${blog._id}`}
+                        to={`/admin/blog_update/${blog._id}`}
                         className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm transition"
                       >
                         Edit
