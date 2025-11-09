@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import {API_URL} from "../../../admin/config"
+
 
 function TermsConditions() {
   const [terms, setTerms] = useState("");
@@ -8,7 +10,7 @@ function TermsConditions() {
   useEffect(() => {
     const fetchTerms = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/setting");
+        const res = await axios.get(`${API_URL}/setting`);
         setTerms(res.data.setting?.termsCondition || "No terms available.");
       } catch (err) {
         console.error("Error fetching terms:", err);

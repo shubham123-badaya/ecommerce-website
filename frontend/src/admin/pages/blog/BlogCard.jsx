@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { API_URL, IMG_URL } from "../../config";
 
 export default function BlogCard({ blog, onDelete }) {
   const handleDelete = async () => {
@@ -7,7 +8,7 @@ export default function BlogCard({ blog, onDelete }) {
       try {
         const token = localStorage.getItem("token"); // 👈 get token from storage
         await axios.delete(
-          `http://localhost:5000/api/blog/delete/${blog._id}`,
+          `${API_URL}/blog/delete/${blog._id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // 👈 send token to backend
@@ -26,7 +27,7 @@ export default function BlogCard({ blog, onDelete }) {
     <div className="border   rounded-lg bg-white shadow-md overflow-hidden">
       {blog.image && (
         <img
-          src={`http://localhost:5000/uploads/blog/${blog.image}`}
+          src={`${IMG_URL}/blog/${blog.image}`}
           alt={blog.title}
           className="h-30 w-full object-cover"
         />

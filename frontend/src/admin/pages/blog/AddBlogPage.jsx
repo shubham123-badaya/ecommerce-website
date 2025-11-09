@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_URL,IMG_URL } from "../../config";
 
 export default function AddBlogPage() {
   const [title, setTitle] = useState("");
@@ -20,7 +21,7 @@ export default function AddBlogPage() {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.post("http://localhost:5000/api/blog/create", formData, {
+      await axios.post(`${API_URL}/blog/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

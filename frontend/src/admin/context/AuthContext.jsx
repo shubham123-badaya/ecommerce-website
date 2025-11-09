@@ -1,31 +1,3 @@
-// import { createContext, useContext, useState, useEffect } from "react";
-
-// const AuthContext = createContext();
-
-// export const AuthProvider = ({ children }) => {
-//   const [user, setUser] = useState(null);
-
-//   // Optional: localStorage se user load karna on refresh
-//     useEffect(() => {
-//       try {
-//         const storedUser = localStorage.getItem("user");
-//         if (storedUser) {
-//           setUser(JSON.parse(storedUser));
-//         }
-//       } catch (error) {
-//         console.error("Invalid user data in localStorage:", error);
-//         localStorage.removeItem("user");
-//       }
-//     }, []);
-
-//   return (
-//     <AuthContext.Provider value={{ user, setUser }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
-
-// export const useAuth = () => useContext(AuthContext);
 import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();

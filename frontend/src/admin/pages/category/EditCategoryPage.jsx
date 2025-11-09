@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-
-const API_URL = "http://localhost:5000/api/categories";
+import { API_URL } from "../../config";
 
 const EditCategoryPage = () => {
   const { id } = useParams();
@@ -13,7 +12,7 @@ const EditCategoryPage = () => {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const res = await axios.get(`${API_URL}`);
+        const res = await axios.get(`${API_URL}/categories`);
         const cat = res.data.find((c) => c._id === id);
         if (cat) {
           setForm({
@@ -44,7 +43,7 @@ const EditCategoryPage = () => {
       formData.append("is_featured", form.is_featured ? 1 : 0);
 
       const token = localStorage.getItem("token");
-      await axios.put(`${API_URL}/update/${id}`, formData, {
+      await axios.put(`${API_URL}/categories/update/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {API_URL} from "../../../admin/config"
 
 function PrivacyPolicy() {
   const [privacy, setPrivacy] = useState("");
@@ -8,7 +9,7 @@ function PrivacyPolicy() {
   useEffect(() => {
     const fetchPrivacy = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/setting");
+        const res = await axios.get(`${API_URL}/setting`);
         setPrivacy(
           res.data.setting?.privacyPolicy || "No privacy policy found."
         );

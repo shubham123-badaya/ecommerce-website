@@ -6,8 +6,8 @@ import { uploadLogo } from "../middleware/uploadMiddleware.js";
 const router = express.Router();
 
 // Admin create/update
-router.post("/create", verifyAdmin, uploadLogo, createOrUpdateSetting);
 router.get("/", getSetting);
+router.post("/create", verifyAdmin, uploadLogo, createOrUpdateSetting);
 
 
 

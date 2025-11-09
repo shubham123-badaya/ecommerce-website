@@ -3,9 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { MdOutlineDeleteSweep } from "react-icons/md";
 import { RiEdit2Line } from "react-icons/ri";
-
-const API_URL = "http://localhost:5000/api/coupons/";
-
+import { API_URL } from "../../config";
 const CouponListPage = () => {
   const [coupons, setCoupons] = useState([]);
 

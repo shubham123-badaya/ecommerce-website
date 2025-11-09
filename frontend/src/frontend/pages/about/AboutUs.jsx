@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import {API_URL,IMG_URL} from "../../../admin/config"
+
 
 const AboutUs = () => {
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ const AboutUs = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await axios.get("http://localhost:5000/api/about", {
+      const res = await axios.get(`${API_URL}/about`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -52,7 +54,7 @@ const AboutUs = () => {
         <div className="flex justify-center items-center">
           {aboutData.image && (
             <img
-              src={`http://localhost:5000/uploads/about/${aboutData.image}`}
+              src={`${IMG_URL}/about/${aboutData.image}`}
               alt="About"
               className="max-h-[400px] object-contain rounded-lg shadow"
             />

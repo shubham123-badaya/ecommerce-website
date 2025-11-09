@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../config";
 
 const AddCouponPage = () => {
   // ✅ Make sure these useState hooks exist
@@ -25,7 +26,7 @@ const AddCouponPage = () => {
         expiryDate: new Date(expiryDate),
       };
 
-      await axios.post("http://localhost:5000/api/coupons/create", formData, {
+      await axios.post(`${API_URL}/coupons/create`, formData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
