@@ -4,8 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const API_URL = "http://localhost:5000/api/products";
+import { API_URL, IMG_URL } from "../../config";
 
 const UpdateProductPage = () => {
   const { id } = useParams();
@@ -20,7 +19,7 @@ const UpdateProductPage = () => {
     // Fetch product details
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`${API_URL}/${id}`);
+        const res = await axios.get(`${API_URL}/products/${id}`);
         setFormData({
           ...res.data,
           category: res.data.category?._id || "",
@@ -33,7 +32,7 @@ const UpdateProductPage = () => {
     // Fetch categories for dropdown
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/categories/");
+        const res = await axios.get(`${API_URL}/categories`);
         setCategories(res.data); // [{_id, title}, ...]
       } catch (err) {
         console.error("Error fetching categories:", err);
@@ -92,7 +91,7 @@ const UpdateProductPage = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`${API_URL}/update/${id}`, form, {
+      await axios.put(`${API_URL}/products/update/${id}`, form, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -163,7 +162,7 @@ const UpdateProductPage = () => {
         {formData.images && formData.images.length > 0 && (
           <div className="mb-2">
             <img
-              src={`http://localhost:5000/uploads/product/${formData.images[0]}`} // backend folder path
+              src={`${IMG_URL}/product/${formData.images[0]}`} // backend folder path
               alt="Product"
               className="w-32 h-32 object-cover"
             />

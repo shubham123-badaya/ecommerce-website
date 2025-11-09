@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const API_URL = "http://localhost:5000/api/products/create";
+import { API_URL } from "../../config";
 
 const AddProductPage = () => {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const AddProductPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/categories/");
+        const res = await axios.get(`${API_URL}/categories`);
         // If your categories endpoint returns { categories: [...] } adjust accordingly
         setCategories(res.data || []);
       } catch (error) {
@@ -87,7 +87,7 @@ const AddProductPage = () => {
       if (image) form.append("image", image);
 
       const token = localStorage.getItem("token");
-      await axios.post(API_URL, form, {
+      await axios.post(`${API_URL}/products/create`, form, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

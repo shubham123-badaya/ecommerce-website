@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL, IMG_URL } from "../../config";
 
 function AboutForm() {
   const [title, setTitle] = useState("");
@@ -13,7 +14,7 @@ function AboutForm() {
     const fetchAbout = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/about", {
+        const res = await axios.get(`${API_URL}/about`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -23,7 +24,7 @@ function AboutForm() {
           setTitle(data.title);
           setDescription(data.description);
           if (data.image) {
-            setPreview(`http://localhost:5000/uploads/about/${data.image}`);
+            setPreview(`${IMG_URL}/about/${data.image}`);
           }
         }
       } catch (err) {
@@ -54,7 +55,7 @@ function AboutForm() {
       const token = localStorage.getItem("token");
 
       const res = await axios.post(
-        "http://localhost:5000/api/about",
+        `${API_URL}/about`,
         formData,
         {
           headers: {

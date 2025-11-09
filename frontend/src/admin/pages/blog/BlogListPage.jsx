@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BlogCard from "./BlogCard";
 import axios from "axios";
+import { API_URL, IMG_URL } from "../../config";
 
 export default function BlogListPage() {
   const [blogs, setBlogs] = useState([]);
 
   const fetchBlogs = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/blog/all_blogs");
+      const res = await axios.get(`${API_URL}/blog/all_blogs`);
       setBlogs(res.data.blogs);
     } catch (err) {
       console.error("Error fetching blogs:", err);
@@ -56,7 +57,7 @@ export default function BlogListPage() {
                   <td className=" px-4 py-2">
                     {blog.image ? (
                       <img
-                        src={`http://localhost:5000/uploads/blog/${blog.image}`}
+                        src={`${IMG_URL}/blog/${blog.image}`}
                         alt={blog.title}
                         className="w-auto h-16 object-cover rounded-md shadow-sm"
                       />

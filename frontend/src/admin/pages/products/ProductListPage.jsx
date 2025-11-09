@@ -3,15 +3,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const API_URL = "http://localhost:5000/api/products/";
+import { API_URL, IMG_URL } from "../../config";
 
 const ProductListPage = () => {
   const [products, setProducts] = useState([]);
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(API_URL);
+      const res = await axios.get(`${API_URL}/products`);
       setProducts(res.data);
     } catch (err) {
       console.error("Error fetching products:", err);
@@ -68,7 +67,7 @@ const ProductListPage = () => {
               <td className=" p-2">
                 {p.images?.length > 0 && (
                   <img
-                    src={`http://localhost:5000/uploads/product/${p.images[0]}`}
+                    src={`${IMG_URL}/product/${p.images[0]}`}
                     alt={p.name}
                     className="w-16 h-16 object-auto mx-auto"
                   />

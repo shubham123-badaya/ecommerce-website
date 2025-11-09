@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL, IMG_URL } from "../../config";
 
 function SettingForm() {
   const [form, setForm] = useState({
@@ -21,7 +22,7 @@ function SettingForm() {
     const fetchSetting = async () => {
       try {
         const token = localStorage.getItem("token"); // if route is protected
-        const res = await axios.get("http://localhost:5000/api/setting", {
+        const res = await axios.get(`${API_URL}/setting`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -37,7 +38,7 @@ function SettingForm() {
             privacyPolicy: data.privacyPolicy || "",
           });
           if (data.logo) {
-            setPreview(`http://localhost:5000/uploads/logo/${data.logo}`);
+            setPreview(`${IMG_URL}/logo/${data.logo}`);
           }
         }
       } catch (err) {
@@ -75,7 +76,7 @@ function SettingForm() {
       if (logo) formData.append("logo", logo);
 
       const res = await axios.post(
-        "http://localhost:5000/api/setting/create",
+        `${API_URL}/setting/create`,
         formData,
         {
           headers: {

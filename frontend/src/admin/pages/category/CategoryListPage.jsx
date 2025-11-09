@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import { MdOutlineDeleteSweep } from "react-icons/md";
 import { RiEdit2Line } from "react-icons/ri";
 import { toast } from "react-toastify";
+import { API_URL } from "../../config";
 
 
-const API_URL = "http://localhost:5000/api/categories/"; // 👈 apna backend ka URL lagao
 
 const CategoryListPage = () => {
   const [categories, setCategories] = useState([]);
@@ -14,7 +14,7 @@ const CategoryListPage = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(API_URL);
+      const res = await axios.get(`${API_URL}/categories`);
       setCategories(res.data);
     } catch (err) {
       console.error(err);

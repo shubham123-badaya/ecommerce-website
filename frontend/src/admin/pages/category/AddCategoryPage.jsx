@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
-const API_URL = "http://localhost:5000/api/categories/create";
+import { API_URL } from "../../config";
 
 const AddCategoryPage = () => {
   const [form, setForm] = useState({ title: "", is_featured: false });
@@ -26,7 +25,7 @@ const AddCategoryPage = () => {
 
       const token = localStorage.getItem("token");
 
-      await axios.post(API_URL, formData, {
+      await axios.post(`${API_URL}/categories/create`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,

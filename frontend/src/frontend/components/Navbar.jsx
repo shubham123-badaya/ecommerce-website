@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSetting } from "../../frontend/redux/settingSlice";
+import   {fetchSetting}  from "../../frontend/redux/settingSlice";
+import { IMG_URL } from "../../admin/config";
 import {
   FaPhoneAlt,
   FaFacebookF,
@@ -235,7 +236,7 @@ const profileRef = useRef(null); // Used to detect clicks outside the dropdown
           <Link to="/" className="flex flex-col items-center">
             {setting?.logo ? (
               <img
-                src={`http://localhost:5000/uploads/logo/${setting.logo}`}
+                src={`${IMG_URL}/logo/${setting.logo}`}
                 alt="Logo"
                 className="w-16 h-16 scale-110  rounded-full object-contain"
               />

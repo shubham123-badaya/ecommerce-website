@@ -1,13 +1,13 @@
-// src/redux/settingSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import {API_URL} from "../../admin/config"
 
 // Async thunk to fetch setting from backend
 export const fetchSetting = createAsyncThunk(
   "setting/fetchSetting",
   async () => {
     const token = localStorage.getItem("token");
-    const res = await axios.get("http://localhost:5000/api/setting", {
+    const res = await axios.get(`${API_URL}/setting`, {
       headers: {
         Authorization: `Bearer  ${token}`,
       },
