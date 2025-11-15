@@ -30,7 +30,7 @@ const CategoryListPage = () => {
       return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`${API_URL}delete/${id}`, {
+      await axios.delete(`${API_URL}/categories/delete/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${token}`,

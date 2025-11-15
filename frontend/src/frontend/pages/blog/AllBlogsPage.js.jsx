@@ -1,11 +1,22 @@
-import React, { useState } from "react";
-import blogs from "./BlogsData";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBlogs } from "../../redux/blogSlice"; // ✅ adjust import path
 import { Link, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { IMG_URL } from "../../../admin/config";
 
 const AllBlogsPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // ✅ Redux state
+  const { blogs, loading, error } = useSelector((state) => state.blog);
+
+  // ✅ Fetch blogs on mount
+  useEffect(() => {
+    dispatch(fetchBlogs());
+  }, [dispatch]);
 
   return (
     <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 md:px-8 relative">
@@ -28,13 +39,11 @@ const AllBlogsPage = () => {
       <div className="flex flex-col md:flex-row gap-8">
         {/* Sidebar */}
         <aside
-          className={`
-    h-full w-64 bg-white p-6 overflow-y-auto
-    md:relative md:w-1/4 md:translate-x-0 md:z-auto
-    fixed top-0 right-0 z-50 transform transition-transform duration-300
-    md:flex-shrink-0
-    ${sidebarOpen ? "translate-x-0" : "translate-x-full"}
-  `}
+          className={`h-full w-64 bg-white p-6 overflow-y-auto
+            md:relative md:w-1/4 md:translate-x-0 md:z-auto
+            fixed top-0 right-0 z-50 transform transition-transform duration-300
+            ${sidebarOpen ? "translate-x-0" : "translate-x-full"}
+          `}
         >
           {/* Close Button for Mobile */}
           <div className="flex justify-end md:hidden mb-4">
@@ -61,9 +70,9 @@ const AllBlogsPage = () => {
             <h3 className="text-lg font-semibold mb-2">RECENT POSTS</h3>
             <ul className="space-y-2 text-sm text-[#70512e] font-medium">
               {blogs.slice(0, 3).map((post) => (
-                <li key={post.id} className="flex items-center gap-2 border-b pb-2">
+                <li key={post._id} className="flex items-center gap-2 border-b pb-2">
                   <img
-                    src={post.image}
+                    src={post.image || "/default-blog.jpg"}
                     alt={post.title}
                     className="w-20 h-20 object-cover rounded"
                   />
@@ -114,15 +123,27 @@ const AllBlogsPage = () => {
             </button>
           </div>
 
+          {/* Loading / Error Handling */}
+          {loading && <p className="text-center text-gray-500">Loading blogs...</p>}
+          {error && (
+            <p className="text-center text-red-500">
+              Failed to load blogs: {error}
+            </p>
+          )}
+
+          {!loading && !error && blogs.length === 0 && (
+            <p className="text-center text-gray-500">No blogs found.</p>
+          )}
+
           {blogs.map((blog, index) => (
             <div
-              key={blog.id}
-              className={`grid grid-cols-1 sm:grid-cols-2 gap-6 items-center border rounded-2xl p-4 w-full transition-transform hover:shadow-lg`}
+              key={blog._id}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center border rounded-2xl p-4 w-full transition-transform hover:shadow-lg"
             >
               {index % 2 === 0 ? (
                 <>
                   <img
-                    src={blog.image}
+                    src={`${IMG_URL}/blog/${blog.image}` || "/default-blog.jpg"}
                     alt={blog.title}
                     className="w-full h-48 sm:h-52 object-cover rounded-md hover:scale-105 duration-500"
                   />
@@ -131,10 +152,10 @@ const AllBlogsPage = () => {
                       {blog.title}
                     </h2>
                     <p className="text-gray-600 mb-3 text-sm sm:text-base">
-                      {blog.desc}
+                      {blog.description?.slice(0, 120)}...
                     </p>
                     <Link
-                      to={`/blogs/${blog.id}`}
+                      to={`/blogs/${blog._id}`}
                       className="text-[#70512e] font-semibold hover:underline text-sm sm:text-base"
                     >
                       READ MORE →
@@ -148,17 +169,17 @@ const AllBlogsPage = () => {
                       {blog.title}
                     </h2>
                     <p className="text-gray-600 mb-3 text-sm sm:text-base">
-                      {blog.desc}
+                      {blog.description?.slice(0, 120)}...
                     </p>
                     <Link
-                      to={`/blogs/${blog.id}`}
+                      to={`/blogs/${blog._id}`}
                       className="text-[#70512e] font-semibold hover:underline text-sm sm:text-base"
                     >
                       READ MORE →
                     </Link>
                   </div>
                   <img
-                    src={blog.image}
+                    src={`${IMG_URL}/blog/${blog.image}`|| "/default-blog.jpg"}
                     alt={blog.title}
                     className="w-full h-48 sm:h-52 object-cover rounded-md hover:scale-105 duration-500"
                   />

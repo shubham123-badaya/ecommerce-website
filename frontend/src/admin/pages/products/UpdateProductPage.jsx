@@ -83,6 +83,8 @@ const UpdateProductPage = () => {
     Object.keys(formData).forEach((key) => {
       if (key === "variants") {
         form.append("variants", JSON.stringify(formData.variants));
+      } else if (formData[key] === null || formData[key] === undefined) {
+        form.append(key, ""); // null value ko blank string bana do
       } else {
         form.append(key, formData[key]);
       }
@@ -99,7 +101,7 @@ const UpdateProductPage = () => {
       });
 
       toast.success("Product updated successfully!");
-      navigate("/admin/products_list"); 
+      navigate("/admin/products_list");
     } catch (err) {
       console.error("Error updating product:", err);
       toast.error("Failed to update product");

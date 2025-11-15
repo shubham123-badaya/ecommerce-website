@@ -3,6 +3,9 @@ import axios from "axios";
 import CategoryTabs from "./CategoryTabs";
 import { useNavigate } from "react-router-dom";
 import { FaHeart, FaShareAlt } from "react-icons/fa";
+import { addToWishlist } from "../../../../user/pages/wishlistService";
+import { useAuth } from "../../../../user/auth/UserAuthContext";
+import { toast } from "react-toastify";
 
 const ShopByCategories = () => {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -11,11 +14,29 @@ const ShopByCategories = () => {
   const [selectedVariants, setSelectedVariants] = useState({});
   const navigate = useNavigate();
 
+  const { token } = useAuth();
+
+  const handleAddWishlist = async (productId) => {
+    if (!token) {
+      toast.error("Please login to add products in wishlist");
+      return;
+    }
+
+    try {
+      await addToWishlist(productId, token);
+      toast.success("Added to wishlist!");
+    } catch (error) {
+      toast.error("Already in wishlist");
+    }
+  };
+
   // ✅ Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/frontend/categories");
+        const res = await axios.get(
+          "http://localhost:5000/api/frontend/categories"
+        );
         const data = res.data.categories || [];
         setCategories(data);
         if (data.length > 0) setActiveCategory(data[0]);
@@ -42,7 +63,11 @@ const ShopByCategories = () => {
           if (p.variants?.length > 0) {
             variantInit[p._id] = p.variants[0];
           } else {
-            variantInit[p._id] = { name: "", price: p.price, mrp: p.price + 50 };
+            variantInit[p._id] = {
+              name: "",
+              price: p.price,
+              mrp: p.price + 50,
+            };
           }
         });
 
@@ -144,14 +169,18 @@ const ShopByCategories = () => {
 
                   {/* Buttons */}
                   <div className="flex items-center justify-center gap-3 mt-2">
-                    <button className="p-2 rounded-full border border-[#8b3f1c] text-[#8b3f1c] hover:bg-[#8b3f1c] hover:text-white transition">
+                    <button
+                      onClick={() => handleAddWishlist(product._id)}
+                      className="p-2 rounded-full border border-[#a39690] text-[#8b3f1c] hover:bg-[#8b3f1c] hover:text-white transition"
+                    >
                       <FaHeart />
                     </button>
+
                     <button className="px-4 py-2 bg-white border border-[#8b3f1c] text-[#8b3f1c] rounded-full hover:bg-[#8b3f1c] hover:text-white transition">
                       Add to Cart
                     </button>
-                    <button className="p-2 rounded-full border border-[#8b3f1c] text-[#8b3f1c] hover:bg-[#8b3f1c] hover:text-white transition">
-                      <FaShareAlt/>
+                    <button className="p-2 rounded-full border border-[#a39690] text-[#8b3f1c] hover:bg-[#8b3f1c] hover:text-white transition">
+                      <FaShareAlt />
                     </button>
                   </div>
                 </div>

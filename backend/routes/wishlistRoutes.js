@@ -5,8 +5,8 @@ import { addToWishlist, getWishlist, removeFromWishlist } from "../controller/wi
 const router = express.Router();
 
 // Protected routes
+router.get("/",verifyUser, getWishlist);
 router.post("/add", verifyUser, addToWishlist);
-router.get("/", verifyUser, getWishlist);
 router.delete("/:productId", verifyUser, removeFromWishlist);
 
 export default router;

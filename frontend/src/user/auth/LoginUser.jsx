@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import axios from "axios"; // Make sure to install axios
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
-const LoginUser = ({ isOpen, onClose, onLoginSuccess }) => {
+const LoginUser = ({
+  isOpen = false,
+  onClose = () => {},
+  onLoginSuccess = () => {},
+}) => {
+
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("create");
 

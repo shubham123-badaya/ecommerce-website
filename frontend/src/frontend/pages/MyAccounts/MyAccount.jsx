@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -11,8 +11,15 @@ function MyAccount() {
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // --- API URL ---
-  const API_BASE_URL = "http://localhost:5000/api/user"; // Adjust if your backend port is different
+  const API_BASE_URL = "http://localhost:5000/api/user";
+
+  // ✅ Redirect if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/user/dashboard");
+    }
+  }, [navigate]);
 
   // --- Handlers ---
   const handleChange = (e) => {
@@ -31,22 +38,18 @@ function MyAccount() {
     }
 
     setLoading(true);
-
     try {
-      // --- API Call ---
       const response = await axios.post(`${API_BASE_URL}/login`, loginData);
 
-      // Store token and user data
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      // Save token + user
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
 
       setSuccess(response.data.message);
 
-      // Redirect to the dashboard after a short delay
       setTimeout(() => {
         navigate("/user/dashboard");
       }, 1500);
-
     } catch (err) {
       setError(err.response?.data?.message || "An unexpected error occurred.");
     } finally {
@@ -64,7 +67,9 @@ function MyAccount() {
           </h1>
         </div>
       </div>
-      <div className="max-w-xl mx-auto ">
+
+      {/* --- Login Form --- */}
+      <div className="max-w-xl mx-auto">
         <form
           onSubmit={handleSubmit}
           className="rounded-md p-6 space-y-5 flex flex-col justify-center border border-gray-400"
@@ -83,6 +88,7 @@ function MyAccount() {
               required
             />
           </div>
+
           <div>
             <label>
               Password <span className="text-red-600">*</span>
@@ -97,10 +103,13 @@ function MyAccount() {
               required
             />
           </div>
+
           <div className="flex justify-between">
             <div>
               <input className="text-xl" type="checkbox" id="remember-me" />
-              <label className="ml-3" htmlFor="remember-me">Remember me</label>
+              <label className="ml-3" htmlFor="remember-me">
+                Remember me
+              </label>
             </div>
             <div
               className="underline cursor-pointer"
@@ -110,9 +119,11 @@ function MyAccount() {
             </div>
           </div>
 
-          {/* --- API Feedback Messages --- */}
+          {/* --- Feedback Messages --- */}
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-          {success && <p className="text-green-600 text-sm text-center">{success}</p>}
+          {success && (
+            <p className="text-green-600 text-sm text-center">{success}</p>
+          )}
 
           <button
             type="submit"
@@ -123,6 +134,7 @@ function MyAccount() {
           </button>
         </form>
       </div>
+
       <div className="flex flex-col mt-10 justify-center space-y-4 items-center">
         <h1>Don't Have an Account?</h1>
         <button

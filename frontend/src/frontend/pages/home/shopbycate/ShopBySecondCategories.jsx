@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaHeart, FaShareAlt } from "react-icons/fa";
+import { addToWishlist } from "../../../../user/pages/wishlistService";
+import { useAuth } from "../../../../user/auth/UserAuthContext";
+import { toast } from "react-toastify";
 
 // Categories
 const categories = [
@@ -13,8 +16,48 @@ const ShopBySecondCategories = () => {
   const [activeCategory, setActiveCategory] = useState("BEST SELLING");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const { token } = useAuth();
 
-  const token = "YOUR_TOKEN_HERE";
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      try {
+        if (!token) return;
+
+        const res = await axios.get("http://localhost:5000/api/wishlist", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const productIds = res.data.wishlist?.products?.map(
+          (item) => item.product._id
+        );
+
+        setWishlistItems(productIds || []);
+      } catch (error) {
+        console.log("Wishlist load error");
+      }
+    };
+
+    fetchWishlist();
+  }, [token]);
+
+  const handleAddWishlist = async (productId) => {
+    if (!token) {
+      toast.error("Please login to add items in wishlist");
+      return;
+    }
+
+    try {
+      await addToWishlist(productId, token);
+
+      // 👇 UI ko turant update karein
+      setWishlistItems((prev) => [...prev, productId]);
+
+      toast.success("Added to wishlist!");
+    } catch (error) {
+      toast.error("Already in wishlist");
+    }
+  };
 
   const fetchProducts = async (type) => {
     try {
@@ -38,6 +81,8 @@ const ShopBySecondCategories = () => {
       setLoading(false);
     }
   };
+
+  // console.log("TOKEN FRONTEND →", token);
 
   useEffect(() => {
     const selectedType =
@@ -91,6 +136,8 @@ const ShopBySecondCategories = () => {
       ) : (
         <div className="grid max-w-7xl mx-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
           {products.map((product, productIndex) => {
+            const isInWishlist = wishlistItems.includes(product._id);
+
             const imagePath = product.images?.[0]
               ? `http://localhost:5000/uploads/product/${product.images[0]}`
               : "https://via.placeholder.com/200?text=No+Image";
@@ -166,12 +213,22 @@ const ShopBySecondCategories = () => {
 
                 {/* Buttons */}
                 <div className="mt-3 flex justify-center gap-2">
-                  <button className="border rounded-full p-2 text-[#8b3f1c] hover:text-red-500">
-                    <FaHeart />
+                  <button
+                    onClick={() => handleAddWishlist(product._id)}
+                    className={`border rounded-full p-2 transition 
+    ${isInWishlist ? "text-red-600" : "text-[#8b3f1c] hover:text-red-500"}`}
+                  >
+                    {isInWishlist ? (
+                      <FaHeart className="text-red-600" /> // filled + red
+                    ) : (
+                      <FaHeart /> // normal
+                    )}
                   </button>
+
                   <button className="bg-[#fff] shadow-md text-[#8b3f1c] text-md px-4 py-1 rounded-full hover:bg-[#6f3014] hover:text-white">
                     Add to Cart
                   </button>
+
                   <button className="border rounded-full p-2 text-[#8b3f1c] hover:text-blue-500">
                     <FaShareAlt />
                   </button>

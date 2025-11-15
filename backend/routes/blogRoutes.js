@@ -17,7 +17,7 @@ router.post("/create", verifyAdmin, uploadBlog, createBlog);
 router.get("/all_blogs", getAllBlogs);
 
 // Get single blog by ID
-router.get("/blog_detail/:id", verifyAdmin, getBlogById);
+router.get("/blog_detail/:id", getBlogById);
 
 // Update blog (Admin)
 router.put("/update/:id", verifyAdmin, uploadBlog, updateBlog);
