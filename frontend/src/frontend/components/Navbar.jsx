@@ -51,7 +51,9 @@ const profileRef = useRef(null); // Used to detect clicks outside the dropdown
     localStorage.removeItem("token");
     setUser(null);
     setIsProfileOpen(false);
-    navigate("/"); // Navigate to homepage after logout
+    navigate("/"); 
+     // Page refresh
+    window.location.reload();// Navigate to homepage after logout
   };
 
     useEffect(() => {

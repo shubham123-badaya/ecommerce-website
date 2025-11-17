@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios"; // Make sure to install axios
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 const LoginUser = ({
   isOpen = false,
   onClose = () => {},
   onLoginSuccess = () => {},
 }) => {
-
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("create");
 
@@ -85,22 +84,23 @@ const LoginUser = ({
 
     try {
       const response = await axios.post(`${API_BASE_URL}/login`, loginData);
-      
+
       console.log("Login successful:", response.data);
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-      toast.success('User Logged In Successfully!');
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      toast.success("User Logged In Successfully!");
+      // Page refresh
+      window.location.reload();
       if (onLoginSuccess) {
         onLoginSuccess(response.data.user);
       }
-      
+
       setSuccess(response.data.message);
-      
+
       setTimeout(() => {
         onClose();
         navigate("/");
       }, 1500);
-
     } catch (err) {
       setError(err.response?.data?.message || "An error occurred.");
       toast.error(errorMessage);
@@ -159,8 +159,12 @@ const LoginUser = ({
         </div>
 
         {/* --- API Messages --- */}
-        {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
-        {success && <p className="text-green-600 text-sm text-center mb-4">{success}</p>}
+        {error && (
+          <p className="text-red-500 text-sm text-center mb-4">{error}</p>
+        )}
+        {success && (
+          <p className="text-green-600 text-sm text-center mb-4">{success}</p>
+        )}
 
         {/* Sign In Form */}
         {activeTab === "signin" && (
