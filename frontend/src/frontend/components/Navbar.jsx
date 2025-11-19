@@ -25,7 +25,6 @@ export default function NavbarWithCart() {
   const [user, setUser] = useState(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileRef = useRef(null);
-  const [openMenu, setOpenMenu] = useState(null);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -33,8 +32,15 @@ export default function NavbarWithCart() {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [categories, setCategories] = useState([]); // Dynamic categories from API
 
+  // NEW: category products panel
+  const [activeCategoryId, setActiveCategoryId] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [categoryProducts, setCategoryProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(false);
+  const [productsPanelOpen, setProductsPanelOpen] = useState(false);
+
   const dispatch = useDispatch();
-  const { setting, loading } = useSelector((state) => state.setting);
+  const { setting } = useSelector((state) => state.setting || {});
 
   // Fetch settings (existing logic)
   useEffect(() => {
@@ -47,7 +53,13 @@ export default function NavbarWithCart() {
       try {
         const res = await axios.get("http://localhost:5000/api/frontend/categories");
         if (res.data?.categories) {
-          setCategories(res.data.categories);
+          // normalize keys: your API used id/name or title — handle both
+          const normalized = res.data.categories.map((c) => ({
+            id: c.id || c._id || c._id?.toString(),
+            title: c.name || c.title || c.name,
+            raw: c,
+          }));
+          setCategories(normalized);
         }
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -88,7 +100,7 @@ export default function NavbarWithCart() {
     setIsLoginOpen(false);
   };
 
-  // Cart logic
+  // Cart logic (persisted)
   const [cart, setCart] = useState(() => {
     try {
       const raw = localStorage.getItem("cart_v1");
@@ -112,6 +124,40 @@ export default function NavbarWithCart() {
   const removeItem = (id) => setCart((c) => c.filter((it) => it.id !== id));
   const clearCart = () => setCart([]);
 
+  // ===== NEW: addToCart logic (idempotent, merges qty) =====
+  const addToCart = (product, variant = null) => {
+    // product object must include _id, name, price, images (array)
+    const id = product._id || product.id || product._id?.toString();
+    const price = variant ? variant.price : product.price || (product.variants && product.variants[0]?.price) || 0;
+    const img = product.images && product.images.length > 0 ? product.images[0] : "";
+    const name = product.name || product.title || "Product";
+
+    setCart((c) => {
+      const exists = c.find((it) => it.id === id && it.variantId === (variant?._id || null));
+      if (exists) {
+        return c.map((it) =>
+          it.id === id && it.variantId === (variant?._id || null)
+            ? { ...it, qty: it.qty + 1 }
+            : it
+        );
+      } else {
+        const newItem = {
+          id,
+          name,
+          price,
+          qty: 1,
+          img: img ? `${IMG_URL}/product/${img}` : "",
+          variantId: variant?._id || null,
+          raw: product,
+        };
+        return [...c, newItem];
+      }
+    });
+    // Open cart drawer so user sees the result
+    setOpenCart(true);
+  };
+
+  // handle search navigation
   const handleSearch = () => {
     if (searchQuery.trim() !== "") {
       navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
@@ -125,6 +171,7 @@ export default function NavbarWithCart() {
       if (e.key === "Escape") {
         setOpenCart(false);
         setShowSearch(false);
+        setProductsPanelOpen(false);
       }
     };
     document.addEventListener("keydown", onKey);
@@ -135,6 +182,41 @@ export default function NavbarWithCart() {
     setOpenCart(false);
     navigate("/cart");
   };
+
+  // ===== NEW: fetch products for a category and show inline panel =====
+  const fetchCategoryProducts = async (catId) => {
+    try {
+      setLoadingProducts(true);
+      setActiveCategoryId(catId);
+      // call API that you provided earlier format
+      const res = await axios.get(`http://localhost:5000/api/frontend/category/products/${catId}`);
+      setActiveCategory(res.data.category || null);
+      setCategoryProducts(res.data.products || []);
+      setProductsPanelOpen(true);
+    } catch (err) {
+      console.error("Error fetching category products:", err);
+      setActiveCategory(null);
+      setCategoryProducts([]);
+      setProductsPanelOpen(false);
+    } finally {
+      setLoadingProducts(false);
+    }
+  };
+
+  // helper: close panels on outside click
+  const productsPanelRef = useRef(null);
+  useEffect(() => {
+    const handleOutside = (e) => {
+      if (productsPanelRef.current && !productsPanelRef.current.contains(e.target)) {
+        // don't auto-close if user clicked a category again
+        // but for cleanliness, close the panel
+        // you can comment this out if you prefer manual close only
+        // setProductsPanelOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutside);
+    return () => document.removeEventListener("mousedown", handleOutside);
+  }, []);
 
   return (
     <>
@@ -207,13 +289,13 @@ export default function NavbarWithCart() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-10 px-6 text-black text-md">
             {categories.map((cat) => (
-              <Link
+              <button
                 key={cat.id}
-                to={`/${cat.title.toLowerCase().replace(/\s+/g, "_")}`}
-                className="hover:text-[#8b3f1c]"
+                onClick={() => fetchCategoryProducts(cat.id)}
+                className="hover:text-[#8b3f1c] uppercase font-medium"
               >
-                {cat.title.toUpperCase()}
-              </Link>
+                {cat.title}
+              </button>
             ))}
 
             {/* Icons */}
@@ -275,14 +357,16 @@ export default function NavbarWithCart() {
           <div className="md:hidden bg-white w-full shadow-lg">
             <div className="flex flex-col px-4 py-4 space-y-3">
               {categories.map((cat) => (
-                <Link
+                <button
                   key={cat.id}
-                  to={`/${cat.title.toLowerCase().replace(/\s+/g, "_")}`}
-                  className="hover:text-[#8b3f1c]"
-                  onClick={() => setMobileMenu(false)}
+                  onClick={() => {
+                    fetchCategoryProducts(cat.id);
+                    setMobileMenu(false);
+                  }}
+                  className="text-left hover:text-[#8b3f1c] font-medium"
                 >
                   {cat.title.toUpperCase()}
-                </Link>
+                </button>
               ))}
             </div>
           </div>
@@ -299,6 +383,7 @@ export default function NavbarWithCart() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1 px-4 py-2 text-sm focus:outline-none"
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
             <button
               onClick={handleSearch}
@@ -306,6 +391,78 @@ export default function NavbarWithCart() {
             >
               SEARCH
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* ===== Products Panel (shows when a category clicked) ===== */}
+      {productsPanelOpen && (
+        <div
+          ref={productsPanelRef}
+          className="fixed top-[120px] left-0 w-full bg-white border-t z-40 shadow-inner"
+        >
+          <div className="max-w-7xl mx-auto px-4 py-12">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold">{activeCategory?.name || activeCategory?.title || "Products"}</h3>
+              <div className="flex items-center gap-2">
+                <button onClick={() => { setProductsPanelOpen(false); setActiveCategory(null); setCategoryProducts([]); }} className="text-sm px-3 py-1 border rounded">Close</button>
+              </div>
+            </div>
+
+            {loadingProducts ? (
+              <div className="py-8 text-center">Loading products…</div>
+            ) : categoryProducts.length === 0 ? (
+              <div className="py-8 text-center text-gray-600">No products found.</div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                {categoryProducts.map((p) => (
+                  <div key={p._id} className="border rounded p-3 flex flex-col">
+                    <div className="w-full h-36 bg-gray-100 rounded overflow-hidden flex items-center justify-center">
+                      {p.images && p.images[0] ? (
+                        <img src={`${IMG_URL}/product/${p.images[0]}`} alt={p.name} className="object-contain h-full" />
+                      ) : (
+                        <div className="text-sm text-gray-500">No image</div>
+                      )}
+                    </div>
+
+                    <div className="mt-3 flex-1">
+                      <div className="font-semibold">{p.name}</div>
+                      <div className="text-sm text-gray-600 mt-1">₹{p.price}</div>
+
+                      {/* variants quick-select if available */}
+                      {p.variants && p.variants.length > 0 && (
+                        <div className="mt-2 text-xs text-gray-700">
+                          <span className="font-medium">Variants: </span>
+                          {p.variants.slice(0, 3).map((v) => (
+                            <span key={v._id} className="mr-2">{v.name}({v.price})</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-3 flex gap-2">
+                      <button
+                        onClick={() => {
+                          // if variants exist, prefer first variant by default (you can enhance UI to choose)
+                          const variant = p.variants && p.variants.length > 0 ? p.variants[0] : null;
+                          addToCart(p, variant);
+                        }}
+                        className="w-full bg-[#8b3f1c] text-white py-2 rounded text-sm"
+                      >
+                        Add to Cart
+                      </button>
+
+                      <button
+                        onClick={() => navigate(`/product/${p._id}`)}
+                        className="w-24 border rounded py-2 text-sm"
+                      >
+                        View
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -320,19 +477,13 @@ export default function NavbarWithCart() {
         </div>
 
         <aside
-          className={`absolute right-0 top-0 h-full w-full sm:w-96 bg-white shadow-xl transform transition-transform duration-300 ${
-            openCart ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`absolute right-0 top-0 h-full w-full sm:w-96 bg-white shadow-xl transform transition-transform duration-300 ${openCart ? "translate-x-0" : "translate-x-full"}`}
         >
           <div className="p-4 flex items-center justify-between border-b">
             <h2 className="text-lg font-semibold">Your Cart</h2>
             <div className="flex items-center gap-2">
-              <button onClick={clearCart} className="text-sm text-red-500">
-                Clear
-              </button>
-              <button onClick={() => setOpenCart(false)}>
-                <FaTimes />
-              </button>
+              <button onClick={clearCart} className="text-sm text-red-500">Clear</button>
+              <button onClick={() => setOpenCart(false)}><FaTimes /></button>
             </div>
           </div>
 
@@ -342,22 +493,16 @@ export default function NavbarWithCart() {
             ) : (
               <ul className="space-y-4">
                 {cart.map((item) => (
-                  <li key={item.id} className="flex items-center gap-3">
+                  <li key={`${item.id}_${item.variantId || "nov"}`} className="flex items-center gap-3">
                     <img src={item.img} alt={item.name} className="w-16 h-16 object-contain rounded" />
                     <div className="flex-1">
                       <div className="font-medium">{item.name}</div>
                       <div className="text-sm text-gray-500">₹{item.price}</div>
                       <div className="mt-2 flex items-center gap-2">
-                        <button onClick={() => decreaseQty(item.id)} className="p-1 border rounded">
-                          <FaMinus />
-                        </button>
+                        <button onClick={() => decreaseQty(item.id)} className="p-1 border rounded"><FaMinus /></button>
                         <div className="px-3">{item.qty}</div>
-                        <button onClick={() => increaseQty(item.id)} className="p-1 border rounded">
-                          <FaPlus />
-                        </button>
-                        <button onClick={() => removeItem(item.id)} className="ml-auto text-red-500">
-                          <FaTrash />
-                        </button>
+                        <button onClick={() => increaseQty(item.id)} className="p-1 border rounded"><FaPlus /></button>
+                        <button onClick={() => removeItem(item.id)} className="ml-auto text-red-500"><FaTrash /></button>
                       </div>
                     </div>
                   </li>
@@ -372,9 +517,7 @@ export default function NavbarWithCart() {
               <span>₹{subtotal}</span>
             </div>
             <div className="mt-4 flex gap-2">
-              <button onClick={goToCartPage} className="w-full text-center p-2 border rounded">
-                View Cart
-              </button>
+              <button onClick={goToCartPage} className="w-full text-center p-2 border rounded">View Cart</button>
               <button className="w-full bg-[#8b3f1c] text-white p-2 rounded">Checkout</button>
             </div>
           </div>
