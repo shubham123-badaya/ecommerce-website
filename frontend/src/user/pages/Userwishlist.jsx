@@ -1,4 +1,3 @@
-// src/user/pages/WishlistPage.jsx
 
 import React, { useState } from 'react';
 import Sidebar from './Sidebar'; // Adjust path if needed

@@ -84,7 +84,9 @@ function AppRoutes() {
           <Route path="/seeds" element={<Seeds />} />
           <Route path="/dates" element={<Dates />} />
           <Route path="/nuts_berries" element={<NutsBerries />} />
-          <Route path="/product/:name" element={<ProductDetail />} />
+          {/* <Route path="/product/:name" element={<ProductDetail />} /> */}
+          <Route path="/product/:id" element={<ProductDetail />} />
+
           <Route path="/blogs" element={<AllBlogsPage />} />
           <Route path="/blogs/:id" element={<BlogDetails />} />
           <Route path="/about_company" element={<About_Company />} />

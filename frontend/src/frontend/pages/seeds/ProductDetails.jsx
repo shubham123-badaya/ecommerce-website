@@ -1,87 +1,139 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useParams } from "react-router-dom";
-import Review from "./review";
-import YouMayAlsoLike from "./YouMayAlsoLike";
-
-const dryFruits = [
-  {
-    name: "Sunflower Seeds",
-    img: "https://www.dryfruitbasket.in/storage/media/MbZbj4xG03oByliTd48UfKqA9AFUpePzxhUDYZqf.jpg",
-    price: 40,
-    oldPrice: 120,
-    weight: "100g",
-    description:
-      "Crunchy and full of flavor, sunflower seeds are a healthy substitute for candy bars. High in vitamin E, fiber, and iron. Help lower blood pressure, prevent migraines, and have anti-inflammatory properties.",
-  },
-  {
-    name: "Anjir (Figs)",
-    img: "https://www.dryfruitbasket.in/storage/media/MbZbj4xG03oByliTd48UfKqA9AFUpePzxhUDYZqf.jpg",
-    price: 40,
-    oldPrice: 120,
-    weight: "100g",
-    description:
-      "Delicious dried figs rich in fiber and minerals. Help in digestion and provide natural energy.",
-  },
-  {
-    name: "Kishmish (Raisins)",
-    img: "https://www.dryfruitbasket.in/storage/media/MbZbj4xG03oByliTd48UfKqA9AFUpePzxhUDYZqf.jpg",
-    price: 40,
-    oldPrice: 120,
-    weight: "100g",
-    description:
-      "Naturally sweet raisins packed with antioxidants, iron, and energy-boosting properties.",
-  },
-  // ... other items remain unchanged
-];
+import { API_URL, IMG_URL } from "../../../admin/config";
 
 const ProductDetail = () => {
-  const { name } = useParams();
-  const decodedName = decodeURIComponent(name);
-  const product = dryFruits.find((item) => item.name === decodedName);
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [variant, setVariant] = useState(null);
 
-  if (!product)
-    return <div className="p-10 text-center">Product not found</div>;
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/products/${id}`);
+        setProduct(res.data);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    };
+    fetchProduct();
+  }, [id]);
+
+  // Set default variant
+  useEffect(() => {
+    if (product?.variants?.length > 0) {
+      setVariant(product.variants[0]);
+    }
+  }, [product]);
+
+  if (!product) return <p className="text-center mt-10">Loading...</p>;
 
   return (
     <>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-10 py-20 mt-10 font-serif">
-        <div className="flex flex-col lg:flex-row  items-center lg:items-start">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-10 py-8 mt-12 font-serif">
+        {/* <h1 className="text-3xl lg:text-4xl text-[#8a6745] font-extrabold tracking-wide text-center pb-10 underline">
+          Product Details
+        </h1> */}
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product Image */}
-          <div className="w-full lg:w-1/2 flex justify-center">
-            <img
-              src={product.img}
-              alt={product.name}
-              className="w-64 sm:w-72 md:w-80 border hover:scale-130 border-gray-300 rounded"
-            />
+          <div className="flex justify-center">
+            <div className="bg-white border rounded-2xl shadow-md p-4 hover:shadow-xl transition duration-300">
+              <img
+                src={`${IMG_URL}/product/${product.images[0]}`}
+                alt={product.name}
+                className="w-72 md:w-96 rounded-xl object-cover"
+              />
+            </div>
           </div>
 
-          {/* Product Details */}
-          <div className="w-full lg:w-1/2 space-y-5">
-            <h1 className="text-2xl md:text-3xl text-[#8a6745] font-bold">
-              {product.name}
-            </h1>
-            <p className="text-gray-700 text-sm md:text-base">
+          {/* Product Info */}
+          <div className="space-y-6">
+            <h1 className="text-3xl text-[#8a6745] font-bold">{product.name}</h1>
+
+            <p className="text-lg text-gray-700">
+              <span className="font-semibold">Category:</span>{" "}
+              {product.category?.title}
+            </p>
+
+            <p className="text-lg text-gray-700">
+              <span className="font-semibold">Stock:</span>{" "}
+              {product.stock > 0 ? `${product.stock} Available` : "Out of Stock"}
+            </p>
+
+            <p className="text-gray-600 text-base md:text-lg leading-relaxed">
               {product.description}
             </p>
 
-            <p className="text-base md:text-lg">
-              <strong>Weight:</strong> {product.weight}
-            </p>
-
-            <div className="text-xl md:text-2xl text-[#8a6745] font-semibold">
-              ₹{product.price.toFixed(2)}
-              <span className="mx-2 text-gray-400">|</span>
-              <span className="line-through text-[#8a6745]">
-                ₹{product.oldPrice.toFixed(2)}
+            {/* Price */}
+            <div className="flex items-baseline gap-3">
+              <span className="text-2xl font-bold text-[#8b3f1c]">
+                ₹{variant?.price || product.price}
               </span>
+              {variant?.mrp && (
+                <span className="text-gray-400 line-through text-lg">
+                  ₹{variant.mrp}
+                </span>
+              )}
+            </div>
+
+            {/* Variants */}
+            {product.variants?.length > 0 && (
+              <div>
+                <h3 className="text-xl font-semibold text-[#8a6745] mb-2">
+                  Select Variant:
+                </h3>
+
+                <div className="flex gap-3 flex-wrap">
+                  {product.variants.map((v, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setVariant(v)}
+                      className={`px-3 py-1 rounded-full text-sm border ${
+                        variant?.name === v.name
+                          ? "bg-[#8a6745] text-white"
+                          : "bg-gray-200 text-gray-800"
+                      }`}
+                    >
+                      {v.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Status Tags */}
+            <div className="flex gap-3 flex-wrap">
+              {product.is_featured === 1 && (
+                <span className="px-3 py-1 bg-yellow-200 text-yellow-800 rounded-full text-sm">
+                  Featured
+                </span>
+              )}
+              {product.isBestSelling === 1 && (
+                <span className="px-3 py-1 bg-green-200 text-green-800 rounded-full text-sm">
+                  Best Selling
+                </span>
+              )}
+              {product.isNewArrival === 1 && (
+                <span className="px-3 py-1 bg-blue-200 text-blue-800 rounded-full text-sm">
+                  New Arrival
+                </span>
+              )}
+              {product.isTopRated === 1 && (
+                <span className="px-3 py-1 bg-purple-200 text-purple-800 rounded-full text-sm">
+                  Top Rated
+                </span>
+              )}
             </div>
 
             {/* Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 mt-4">
-              <button className="bg-gray-700 text-white px-5 py-2 rounded hover:bg-gray-800 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button className="bg-gray-800 hover:bg-black text-white px-6 py-3 rounded-xl shadow-lg font-medium transition w-full sm:w-auto">
                 Add to Cart
               </button>
-              <button className="bg-[#8a6745] text-white px-5 py-2 rounded hover:bg-brown-800 w-full sm:w-auto">
+
+              <button className="bg-[#8a6745] hover:bg-[#6b4f34] text-white px-6 py-3 rounded-xl shadow-lg font-medium transition w-full sm:w-auto">
                 Buy Now
               </button>
             </div>
@@ -89,11 +141,7 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      {/* Review Section */}
-      <Review />
-
-      {/* You May Also Like Section */}
-      <YouMayAlsoLike />
+      <hr className="my-10" />
     </>
   );
 };

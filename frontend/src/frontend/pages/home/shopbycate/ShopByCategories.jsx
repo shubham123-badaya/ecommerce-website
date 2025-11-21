@@ -3,6 +3,7 @@ import axios from "axios";
 import CategoryTabs from "./CategoryTabs";
 import { useNavigate } from "react-router-dom";
 import { FaHeart, FaShareAlt } from "react-icons/fa";
+import { API_URL, IMG_URL } from "../../../../admin/config";
 
 const ShopByCategories = () => {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -15,7 +16,9 @@ const ShopByCategories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/frontend/categories");
+        const res = await axios.get(
+          `${API_URL}/frontend/categories`
+        );
         const data = res.data.categories || [];
         setCategories(data);
         if (data.length > 0) setActiveCategory(data[0]);
@@ -32,7 +35,7 @@ const ShopByCategories = () => {
       if (!activeCategory) return;
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/frontend/category/products/${activeCategory.id}`
+          `${API_URL}/frontend/category/products/${activeCategory.id}`
         );
         const productData = res.data.products || [];
 
@@ -42,7 +45,11 @@ const ShopByCategories = () => {
           if (p.variants?.length > 0) {
             variantInit[p._id] = p.variants[0];
           } else {
-            variantInit[p._id] = { name: "", price: p.price, mrp: p.price + 50 };
+            variantInit[p._id] = {
+              name: "",
+              price: p.price,
+              mrp: p.price + 50,
+            };
           }
         });
 
@@ -98,12 +105,13 @@ const ShopByCategories = () => {
             return (
               <div
                 key={product._id}
+                onClick={() => navigate(`/product/${product._id}`)}
                 className="w-[250px] bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between"
               >
                 {/* Image */}
                 <div className="w-full h-[200px] flex items-center justify-center overflow-hidden rounded-t-2xl bg-gray-50">
                   <img
-                    src={`http://localhost:5000/uploads/product/${product.images?.[0]}`}
+                    src={`${IMG_URL}/product/${product.images?.[0]}`}
                     alt={product.name}
                     className="object-contain h-full w-full"
                   />
@@ -151,7 +159,7 @@ const ShopByCategories = () => {
                       Add to Cart
                     </button>
                     <button className="p-2 rounded-full border border-[#8b3f1c] text-[#8b3f1c] hover:bg-[#8b3f1c] hover:text-white transition">
-                      <FaShareAlt/>
+                      <FaShareAlt />
                     </button>
                   </div>
                 </div>

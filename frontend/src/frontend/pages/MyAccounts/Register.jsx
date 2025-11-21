@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from "../../../admin/config";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const API_BASE_URL = "http://localhost:5000/api/user"; // Ensure this matches your backend port
+  const API_BASE_URL = `${API_URL}/user`; // Ensure this matches your backend port
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

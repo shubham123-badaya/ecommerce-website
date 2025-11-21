@@ -6,6 +6,7 @@ import dryfruit from "../../../../../src/assets/shopbycate/dryfruit.svg";
 import seeds from "../../../../../src/assets/shopbycate/seeds.svg";
 import dates from "../../../../../src/assets/shopbycate/dates.svg";
 import nuts from "../../../../../src/assets/shopbycate/nuts.svg";
+import { API_URL } from "../../../../admin/config";
 
 const iconMap = {
   "Dry Fruits": dryfruit,
@@ -20,7 +21,7 @@ const CategoryTabs = ({ activeCategory, onCategoryChange }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/frontend/categories", {
+        const res = await axios.get(`${API_URL}/frontend/categories`, {
           headers: {
             "Content-Type": "application/json",
             Authorization:

@@ -4,6 +4,7 @@ import axios from "axios";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { API_URL, IMG_URL } from "../../../admin/config";
 
 // ---------- Custom Arrow Buttons ----------
 const NextArrow = ({ onClick }) => (
@@ -35,7 +36,7 @@ const HeroSlider = () => {
   useEffect(() => {
     const fetchSlides = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/frontend/sliders", {
+        const res = await axios.get(`${API_URL}/frontend/sliders`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -83,7 +84,7 @@ const HeroSlider = () => {
               <div key={slide._id} className="!m-0 !p-0">
                 <div className="relative w-full h-[500px] sm:h-[300px] md:h-[400px] overflow-hidden">
                   <img
-                    src={`http://localhost:5000/uploads/slider/${slide.image}`}
+                    src={`${IMG_URL}/slider/${slide.image}`}
                     alt={slide.title || "Slide"}
                     className="w-full h-full object-cover object-center block"
                   />

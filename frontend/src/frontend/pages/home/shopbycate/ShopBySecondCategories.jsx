@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaHeart, FaShareAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { API_URL, IMG_URL } from "../../../../admin/config";
 
 // Categories
 const categories = [
@@ -20,7 +22,7 @@ const ShopBySecondCategories = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `http://localhost:5000/api/frontend/products/by-type?type=${type}`,
+        `${API_URL}/frontend/products/by-type?type=${type}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -92,7 +94,7 @@ const ShopBySecondCategories = () => {
         <div className="grid max-w-7xl mx-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
           {products.map((product, productIndex) => {
             const imagePath = product.images?.[0]
-              ? `http://localhost:5000/uploads/product/${product.images[0]}`
+              ? `${IMG_URL}/product/${product.images[0]}`
               : "https://via.placeholder.com/200?text=No+Image";
 
             // ✅ Check if product actually has multiple variants
@@ -118,65 +120,70 @@ const ShopBySecondCategories = () => {
               : product.originalPrice;
 
             return (
-              <div
-                key={productIndex}
-                className="hover:shadow-md space-y-5 duration-300 text-center px-4 py-10 rounded-md bg-white"
-              >
-                <img
-                  src={imagePath}
-                  alt={product.name}
-                  className="mx-auto h-[200px] object-cover rounded-md"
-                />
+              <Link  to={`/product/${product._id}`} >
+                <div
+                  key={productIndex}
+                  className="hover:shadow-md space-y-5 duration-300 text-center px-4 py-10 rounded-md bg-white"
+                >
+                  <img
+                    src={imagePath}
+                    alt={product.name}
+                    className="mx-auto h-[200px] object-cover rounded-md"
+                  />
 
-                <h3 className="mt-3 font-semibold text-sm capitalize">
-                  {product.name}
-                </h3>
+                  <h3 className="mt-3 font-semibold text-sm capitalize">
+                    {product.name}
+                  </h3>
 
-                {/* ✅ Show dropdown only if product has multiple variants */}
-                {hasVariants && (
-                  <select
-                    className="mt-2 border rounded px-3 py-1 text-sm w-full"
-                    value={product.selectedVariant?.name || ""}
-                    onChange={(e) =>
-                      handleVariantChange(productIndex, e.target.selectedIndex)
-                    }
-                  >
-                    {options.map((v, i) => (
-                      <option key={i} value={v.name}>
-                        {v.name}
-                      </option>
-                    ))}
-                  </select>
-                )}
-
-                {/* Price Section */}
-                <div className="mt-2 space-x-3 text-md">
-                  <span className="font-semibold text-gray-900">
-                    ₹{selectedPrice}
-                  </span>
-                  {selectedMrp && selectedMrp > selectedPrice && (
-                    <>
-                      <span>|</span>
-                      <span className="line-through text-gray-400">
-                        ₹{selectedMrp}
-                      </span>
-                    </>
+                  {/* ✅ Show dropdown only if product has multiple variants */}
+                  {hasVariants && (
+                    <select
+                      className="mt-2 border rounded px-3 py-1 text-sm w-full"
+                      value={product.selectedVariant?.name || ""}
+                      onChange={(e) =>
+                        handleVariantChange(
+                          productIndex,
+                          e.target.selectedIndex
+                        )
+                      }
+                    >
+                      {options.map((v, i) => (
+                        <option key={i} value={v.name}>
+                          {v.name}
+                        </option>
+                      ))}
+                    </select>
                   )}
-                </div>
 
-                {/* Buttons */}
-                <div className="mt-3 flex justify-center gap-2">
-                  <button className="border rounded-full p-2 text-[#8b3f1c] hover:text-red-500">
-                    <FaHeart />
-                  </button>
-                  <button className="bg-[#fff] shadow-md text-[#8b3f1c] text-md px-4 py-1 rounded-full hover:bg-[#6f3014] hover:text-white">
-                    Add to Cart
-                  </button>
-                  <button className="border rounded-full p-2 text-[#8b3f1c] hover:text-blue-500">
-                    <FaShareAlt />
-                  </button>
+                  {/* Price Section */}
+                  <div className="mt-2 space-x-3 text-md">
+                    <span className="font-semibold text-gray-900">
+                      ₹{selectedPrice}
+                    </span>
+                    {selectedMrp && selectedMrp > selectedPrice && (
+                      <>
+                        <span>|</span>
+                        <span className="line-through text-gray-400">
+                          ₹{selectedMrp}
+                        </span>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Buttons */}
+                  <div className="mt-3 flex justify-center gap-2">
+                    <button className="border rounded-full p-2 text-[#8b3f1c] hover:text-red-500">
+                      <FaHeart />
+                    </button>
+                    <button className="bg-[#fff] shadow-md text-[#8b3f1c] text-md px-4 py-1 rounded-full hover:bg-[#6f3014] hover:text-white">
+                      Add to Cart
+                    </button>
+                    <button className="border rounded-full p-2 text-[#8b3f1c] hover:text-blue-500">
+                      <FaShareAlt />
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>

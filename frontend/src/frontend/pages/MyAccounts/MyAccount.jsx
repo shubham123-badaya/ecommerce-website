@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from "../../../admin/config";
 
 function MyAccount() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ function MyAccount() {
   const [loading, setLoading] = useState(false);
 
   // --- API URL ---
-  const API_BASE_URL = "http://localhost:5000/api/user"; // Adjust if your backend port is different
+  const API_BASE_URL = `${API_URL}/user`; // Adjust if your backend port is different
 
   // --- Handlers ---
   const handleChange = (e) => {

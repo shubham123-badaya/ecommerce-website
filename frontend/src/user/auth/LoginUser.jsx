@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios"; // Make sure to install axios
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../admin/config";
 const LoginUser = ({ isOpen, onClose, onLoginSuccess }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("create");
@@ -29,7 +30,7 @@ const LoginUser = ({ isOpen, onClose, onLoginSuccess }) => {
   const [success, setSuccess] = useState(null);
 
   // --- API URL ---
-  const API_BASE_URL = "http://localhost:5000/api/user"; // Adjust if your port is different
+  const API_BASE_URL = `${API_URL}/user`; // Adjust if your port is different
 
   // --- HANDLERS ---
   // Generic handler to update state for registration form
