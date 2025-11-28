@@ -7,6 +7,19 @@ const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [variant, setVariant] = useState(null);
+  const [mainImageIndex, setMainImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (product?.images?.length > 1) {
+      const interval = setInterval(() => {
+        setMainImageIndex((prevIndex) =>
+          prevIndex === product.images.length - 1 ? 0 : prevIndex + 1
+        );
+      }, 3000); // 3 seconds per image
+
+      return () => clearInterval(interval); // cleanup on unmount
+    }
+  }, [product]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -38,19 +51,37 @@ const ProductDetail = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product Image */}
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-4">
+            <div className="flex gap-2 mt-3 justify-center">
+              {product.images.map((img, i) => (
+                <img
+                  key={i}
+                  src={`${IMG_URL}/product/${img}`}
+                  alt={`Thumbnail ${i}`}
+                  className={`w-20 h-20 object-cover rounded border cursor-pointer ${
+                    mainImageIndex === i
+                      ? "border-2 border-[#8a6745]"
+                      : "border-gray-300"
+                  }`}
+                  onClick={() => setMainImageIndex(i)} // user click overrides auto slide temporarily
+                />
+              ))}
+            </div>
+
             <div className="bg-white border rounded-2xl shadow-md p-4 hover:shadow-xl transition duration-300">
               <img
-                src={`${IMG_URL}/product/${product.images[0]}`}
+                src={`${IMG_URL}/product/${product.images[mainImageIndex]}`}
                 alt={product.name}
-                className="w-72 md:w-96 rounded-xl object-cover"
+                className="w-72 md:w-90 rounded-xl object-cover"
               />
             </div>
           </div>
 
           {/* Product Info */}
           <div className="space-y-6">
-            <h1 className="text-3xl text-[#8a6745] font-bold">{product.name}</h1>
+            <h1 className="text-3xl text-[#8a6745] font-bold">
+              {product.name}
+            </h1>
 
             <p className="text-lg text-gray-700">
               <span className="font-semibold">Category:</span>{" "}
@@ -59,7 +90,9 @@ const ProductDetail = () => {
 
             <p className="text-lg text-gray-700">
               <span className="font-semibold">Stock:</span>{" "}
-              {product.stock > 0 ? `${product.stock} Available` : "Out of Stock"}
+              {product.stock > 0
+                ? `${product.stock} Available`
+                : "Out of Stock"}
             </p>
 
             <p className="text-gray-600 text-base md:text-lg leading-relaxed">

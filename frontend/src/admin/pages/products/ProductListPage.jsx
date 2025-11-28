@@ -64,15 +64,17 @@ const ProductListPage = () => {
         <tbody>
           {products.map((p) => (
             <tr key={p._id} className="border-t text-center">
-              <td className=" p-2">
-                {p.images?.length > 0 && (
+              <td className="p-2 flex gap-2 justify-center">
+                {p.images?.map((img, i) => (
                   <img
-                    src={`${IMG_URL}/product/${p.images[0]}`}
+                    key={i}
+                    src={`${IMG_URL}/product/${img}`}
                     alt={p.name}
-                    className="w-16 h-16 object-auto mx-auto"
+                    className="w-14 h-14 object-cover rounded border"
                   />
-                )}
+                ))}
               </td>
+
               <td className=" p-2">{p.name}</td>
               <td className=" p-2">₹{p.price}</td>
               <td className=" p-2">{p.stock}</td>

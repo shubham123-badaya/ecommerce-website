@@ -84,7 +84,11 @@ const AddProductPage = () => {
         }
       });
 
-      if (image) form.append("image", image);
+      if (image && image.length > 0) {
+        image.forEach((img) => {
+          form.append("image", img); // backend receives array
+        });
+      }
 
       const token = localStorage.getItem("token");
       await axios.post(`${API_URL}/products/create`, form, {
@@ -165,10 +169,10 @@ const AddProductPage = () => {
           onChange={handleChange}
           className="w-full border p-2"
         />
-
         <input
           type="file"
-          onChange={(e) => setImage(e.target.files[0])}
+          multiple
+          onChange={(e) => setImage([...e.target.files])}
           className="w-full border p-2"
         />
 

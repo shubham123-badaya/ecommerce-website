@@ -11,7 +11,7 @@ const UpdateProductPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState([]); // array for multiple files
 
   console.log("Form Data:", formData);
 
@@ -87,7 +87,12 @@ const UpdateProductPage = () => {
         form.append(key, formData[key]);
       }
     });
-    if (image) form.append("image", image);
+
+    if (image && image.length > 0) {
+      image.forEach((img) => {
+        form.append("image", img); // backend receives array
+      });
+    }
 
     try {
       const token = localStorage.getItem("token");
@@ -99,7 +104,7 @@ const UpdateProductPage = () => {
       });
 
       toast.success("Product updated successfully!");
-      navigate("/admin/products_list"); 
+      navigate("/admin/products_list");
     } catch (err) {
       console.error("Error updating product:", err);
       toast.error("Failed to update product");
@@ -118,7 +123,6 @@ const UpdateProductPage = () => {
           onChange={handleChange}
           className="w-full border p-2"
         />
-
         {/* Category Dropdown */}
         <select
           name="category"
@@ -135,7 +139,6 @@ const UpdateProductPage = () => {
             </option>
           ))}
         </select>
-
         <input
           type="number"
           name="price"
@@ -159,22 +162,38 @@ const UpdateProductPage = () => {
           onChange={handleChange}
           className="w-full border p-2"
         />
-        {formData.images && formData.images.length > 0 && (
-          <div className="mb-2">
-            <img
-              src={`${IMG_URL}/product/${formData.images[0]}`} // backend folder path
-              alt="Product"
-              className="w-32 h-32 object-cover"
-            />
+        {/* Existing Images */}
+        {formData.images?.length > 0 && (
+          <div className="flex gap-2 mb-2">
+            {formData.images.map((img, i) => (
+              <img
+                key={i}
+                src={`${IMG_URL}/product/${img}`}
+                alt={`Product ${i}`}
+                className="w-24 h-24 object-cover rounded border"
+              />
+            ))}
           </div>
         )}
-
+        /* New Images Preview */
+        {image.length > 0 && (
+          <div className="flex gap-2 mb-2">
+            {images.map((img, i) => (
+              <img
+                key={i}
+                src={URL.createObjectURL(img)}
+                alt={`New ${i}`}
+                className="w-24 h-24 object-cover rounded border"
+              />
+            ))}
+          </div>
+        )}
         <input
           type="file"
-          onChange={(e) => setImage(e.target.files[0])}
+          multiple
+          onChange={(e) => setImages([...e.target.files])}
           className="w-full border p-2"
         />
-
         {/* Variants */}
         <div>
           <h2 className="font-semibold mb-2">Variants</h2>
@@ -230,7 +249,6 @@ const UpdateProductPage = () => {
             </div>
           ))}
         </div>
-
         {/* Flags */}
         <div className="flex gap-4">
           <label>
@@ -270,7 +288,6 @@ const UpdateProductPage = () => {
             Top Rated
           </label>
         </div>
-
         <button
           type="submit"
           className="bg-green-600 text-white px-4 py-2 rounded"

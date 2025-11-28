@@ -81,8 +81,8 @@ const fileFilter = (req, file, cb) => {
 };
 
 // --- Multer instances ---
+export const uploadProduct = multer({ storage: productStorage, fileFilter }).array("image",2);
 export const uploadCategory = multer({ storage: categoryStorage, fileFilter }).single("image");
-export const uploadProduct = multer({ storage: productStorage, fileFilter }).single("image");
 export const uploadSlider = multer({ storage: sliderStorage, fileFilter }).single("image");
 export const uploadAboutUs = multer({ storage: aboutUsStorage, fileFilter }).single("image");
 export const uploadLogo = multer({ storage: logoStorage, fileFilter }).single("logo");

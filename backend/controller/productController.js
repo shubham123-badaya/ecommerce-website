@@ -41,19 +41,24 @@ export const addProduct = async (req, res) => {
       is_featured,
       isBestSelling,
       isNewArrival,
-      isTopRated
+      isTopRated,
     } = req.body;
 
     if (!name || !category) {
-      return res.status(400).json({ message: "Name, category and price are required" });
+      return res
+        .status(400)
+        .json({ message: "Name, category and price are required" });
     }
 
-    if (!req.file) {
-      return res.status(400).json({ message: "Image is required" });
+    // req.files => array of images
+    if (!req.files || req.files.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "At least 2 images are required" });
     }
 
-    const imageFile = req.file.filename;
-
+    // convert file array to image names
+    const imageFiles = req.files.map((file) => file.filename);
     const product = new Product({
       name: name.trim(),
       category,
@@ -61,11 +66,11 @@ export const addProduct = async (req, res) => {
       stock: stock || 0,
       description: description || "",
       variants: variants ? JSON.parse(variants) : [],
-      images: [imageFile],
+      images: imageFiles,
       is_featured: is_featured === "1" || is_featured === 1 ? 1 : 0,
       isBestSelling: isBestSelling === "1" || isBestSelling === 1 ? 1 : 0,
       isNewArrival: isNewArrival === "1" || isNewArrival === 1 ? 1 : 0,
-      isTopRated: isTopRated === "1" || isTopRated === 1 ? 1 : 0
+      isTopRated: isTopRated === "1" || isTopRated === 1 ? 1 : 0,
     });
 
     await product.save();
@@ -73,9 +78,8 @@ export const addProduct = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Product created successfully",
-      product
+      product,
     });
-
   } catch (err) {
     console.error("Error creating product:", err);
     res.status(500).json({ message: "Server error", error: err.message });
@@ -98,7 +102,7 @@ export const updateProduct = async (req, res) => {
       is_featured,
       isBestSelling,
       isNewArrival,
-      isTopRated
+      isTopRated,
     } = req.body;
 
     const product = await Product.findById(id);
@@ -115,7 +119,8 @@ export const updateProduct = async (req, res) => {
       product.is_featured = is_featured === "1" || is_featured === 1 ? 1 : 0;
     }
     if (isBestSelling !== undefined) {
-      product.isBestSelling = isBestSelling === "1" || isBestSelling === 1 ? 1 : 0;
+      product.isBestSelling =
+        isBestSelling === "1" || isBestSelling === 1 ? 1 : 0;
     }
     if (isNewArrival !== undefined) {
       product.isNewArrival = isNewArrival === "1" || isNewArrival === 1 ? 1 : 0;
@@ -126,9 +131,14 @@ export const updateProduct = async (req, res) => {
 
     if (req.file) {
       if (product.images.length > 0) {
-        const oldImagePath = path.join(process.cwd(), "uploads/product", product.images[0]);
+        const oldImagePath = path.join(
+          process.cwd(),
+          "uploads/product",
+          product.images[0]
+        );
         fs.unlink(oldImagePath, (err) => {
-          if (err) console.error("Error deleting old product image:", err.message);
+          if (err)
+            console.error("Error deleting old product image:", err.message);
         });
       }
       product.images = [req.file.filename];
@@ -139,9 +149,8 @@ export const updateProduct = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Product updated successfully",
-      product
+      product,
     });
-
   } catch (err) {
     console.error("Error updating product:", err);
     res.status(500).json({ message: "Server error", error: err.message });
@@ -159,7 +168,7 @@ export const deleteProduct = async (req, res) => {
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
-    
+
     if (product.images && product.images.length > 0) {
       product.images.forEach((img) => {
         const imagePath = path.join(process.cwd(), "uploads/product", img);
@@ -177,7 +186,7 @@ export const deleteProduct = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Product and its images deleted successfully"
+      message: "Product and its images deleted successfully",
     });
   } catch (err) {
     console.error("Error deleting product:", err);
