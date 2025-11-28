@@ -66,6 +66,12 @@ const Sidebar = () => {
         >
           Blog
         </Link>
+        <Link
+          to="/admin/contact_list"
+          className="hover:bg-gray-400 p-3 rounded-lg"
+        >
+          Contact
+        </Link>
 
         <button
           onClick={handleLogout}

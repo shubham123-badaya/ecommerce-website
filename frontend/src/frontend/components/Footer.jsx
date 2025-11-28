@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { fetchSetting } from "../redux/settingSlice";
 
 const Footer = () => {
+  const dispatch = useDispatch();
+  const { setting, loading } = useSelector((state) => state.setting);
+
+  useEffect(() => {
+    dispatch(fetchSetting());
+  }, [dispatch]);
+
   return (
     <footer className="bg-[#fafafa] w-full text-[#7a3e2e] border-t text-md">
       {/* Top Section */}
@@ -49,7 +58,7 @@ const Footer = () => {
         <div className="hidden sm:block">
           <h3 className="font-bold mb-2">ABOUT US</h3>
           <ul className="space-y-1 text-[#7a3e2e] text-sm font-semibold">
-             <Link to="/blogs">
+            <Link to="/blogs">
               <li>Blog</li>
             </Link>
             <li>Testimonials</li>
@@ -74,8 +83,14 @@ const Footer = () => {
               </button>
             </div>
             <div className="mt-4 space-y-1 text-black font-semibold text-sm">
-              <p>📞 +91 8424 888 555</p>
-              <p>📧 info@dryfruitsbasket.in</p>
+              {setting ? (
+                <span>
+                  <p>📞{setting.contactno}</p>
+                  <p>💌{setting.email}</p>
+                </span>
+              ) : (
+                <span className="font-bold">Loading...</span>
+              )}
             </div>
           </div>
 

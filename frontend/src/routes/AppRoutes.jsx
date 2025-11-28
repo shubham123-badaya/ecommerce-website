@@ -58,6 +58,7 @@ import SettingForm from "../admin/pages/setting/SettingForm.jsx";
 import BlogListPage from "../admin/pages/blog/BlogListPage.jsx";
 import AddBlogPage from "../admin/pages/blog/AddBlogPage.jsx";
 import EditBlogPage from "../admin/pages/blog/EditBlogPage.jsx";
+import ContactList from "../admin/pages/contact/ContactList.jsx";
 
 // ---------- Protected Route ----------
 const ProtectedRoute = ({ children }) => {
@@ -138,6 +139,8 @@ function AppRoutes() {
           <Route path="blog_list" element={<BlogListPage />} />
           <Route path="blog_add" element={<AddBlogPage />} />
           <Route path="blog_update/:id" element={<EditBlogPage />} />
+          <Route path="contact_list" element={<ContactList />} />
+
         </Route>
 
         {/* ---------- Catch-all ---------- */}

@@ -22,7 +22,7 @@ const ProductListPage = () => {
       return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`${API_URL}delete/${id}`, {
+      await axios.delete(`${API_URL}/products/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

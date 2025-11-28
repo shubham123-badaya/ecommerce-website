@@ -19,6 +19,7 @@ import reviewRoutes from "./routes/reviewRoutes.js";
 import aboutUsRoutes from "./routes/aboutUsRoutes.js";
 import settingRoutes from "./routes/settingRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
 
 // --- Config ---
 dotenv.config();
@@ -47,14 +48,13 @@ app.use("/api/coupons", couponRoutes);
 app.use("/api/about", aboutUsRoutes);
 app.use("/api/setting", settingRoutes);
 app.use("/api/blog", blogRoutes);
-
+app.use("/api/contact", contactRoutes);
 
 // User
 app.use("/api/user", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/review", reviewRoutes);
-
 
 // --- Global Error Handler ---
 app.use((err, req, res, next) => {
